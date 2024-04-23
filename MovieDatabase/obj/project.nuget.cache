@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "ZR5isjx3k5sq+fTiAdbBuTL4nvvjucRZBO1+U/x+mVBdRfEidSuELIeb9oBFBrwXNzFO6DeRK8zuWoaozjQiEw==",
+  "dgSpecHash": "eLJU89DhXt7ORi7nL0RdK5/gNtJoL0eynXfm4sONc/1MuQqAQzWPzUANrpWsqJJrFDA9iAj8v3gCKnBl9lhEYQ==",
   "success": true,
   "projectFilePath": "C:\\X\\Homework\\Polsl\\DSA\\2024_DSA_S5_PINDEL\\MovieDatabase\\MovieDatabase.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Daniel\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\8.0.4\\microsoft.aspnetcore.authentication.google.8.0.4.nupkg.sha512"
+  ],
   "logs": []
 }

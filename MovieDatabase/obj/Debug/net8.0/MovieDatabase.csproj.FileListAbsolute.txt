@@ -29,3 +29,6 @@ C:\X\Homework\Polsl\DSA\2024_DSA_S5_PINDEL\MovieDatabase\obj\Debug\net8.0\refint
 C:\X\Homework\Polsl\DSA\2024_DSA_S5_PINDEL\MovieDatabase\obj\Debug\net8.0\MovieDatabase.pdb
 C:\X\Homework\Polsl\DSA\2024_DSA_S5_PINDEL\MovieDatabase\obj\Debug\net8.0\MovieDatabase.genruntimeconfig.cache
 C:\X\Homework\Polsl\DSA\2024_DSA_S5_PINDEL\MovieDatabase\obj\Debug\net8.0\ref\MovieDatabase.dll
+C:\X\Homework\Polsl\DSA\2024_DSA_S5_PINDEL\MovieDatabase\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.Google.dll
+C:\X\Homework\Polsl\DSA\2024_DSA_S5_PINDEL\MovieDatabase\obj\Debug\net8.0\MovieDatabase.csproj.AssemblyReference.cache
+C:\X\Homework\Polsl\DSA\2024_DSA_S5_PINDEL\MovieDatabase\obj\Debug\net8.0\MovieDat.7888269F.Up2Date
