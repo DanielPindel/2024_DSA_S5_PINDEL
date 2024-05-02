@@ -6,17 +6,3 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
-
-@if(Context.User.Identity.IsAuthenticated)
-{
-    <br />
-    <h3>Welcome @User.Identity.Name</h3>
-    <br />
-    <a asp-controller="Login" asp-action="Logout">Logout</a>
-}
-else
-{
-    <div class="text-center">
-        <a asp-controller="Login" asp-action="Login" class="btn btn-primary form-control">Sign-in with Google</a>
-    </div>
-}

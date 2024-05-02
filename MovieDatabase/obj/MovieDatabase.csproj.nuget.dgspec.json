@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\X\\Homework\\Polsl\\DSA\\2024_DSA_S5_PINDEL\\MovieDatabase\\MovieDatabase.csproj": {}
+    "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\MovieDatabase.csproj": {}
   },
   "projects": {
-    "C:\\X\\Homework\\Polsl\\DSA\\2024_DSA_S5_PINDEL\\MovieDatabase\\MovieDatabase.csproj": {
+    "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\MovieDatabase.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\X\\Homework\\Polsl\\DSA\\2024_DSA_S5_PINDEL\\MovieDatabase\\MovieDatabase.csproj",
+        "projectUniqueName": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\MovieDatabase.csproj",
         "projectName": "MovieDatabase",
-        "projectPath": "C:\\X\\Homework\\Polsl\\DSA\\2024_DSA_S5_PINDEL\\MovieDatabase\\MovieDatabase.csproj",
-        "packagesPath": "C:\\Users\\Daniel\\.nuget\\packages\\",
-        "outputPath": "C:\\X\\Homework\\Polsl\\DSA\\2024_DSA_S5_PINDEL\\MovieDatabase\\obj\\",
+        "projectPath": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\MovieDatabase.csproj",
+        "packagesPath": "C:\\Users\\Iwona\\.nuget\\packages\\",
+        "outputPath": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Daniel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Iwona\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
