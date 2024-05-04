@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\MovieDatabase.bundle.scp.css"
     },
     {
+      "Id": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\wwwroot\\css\\LoginStyleSheet.css",
+      "PackagePath": "staticwebassets\\css\\LoginStyleSheet.css"
+    },
+    {
       "Id": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "iO5Gd4C1Fg7vWowp/FTDJBD6XlKfQb0b/R5hUWoGwxI=",
+  "Hash": "O1/5OABJ32iDp3OUP1i5DcqhIVzcVzqho32BqjDOBKI=",
   "Source": "MovieDatabase",
   "BasePath": "_content/MovieDatabase",
   "Mode": "Default",
@@ -53,6 +53,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\MovieDatabase.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\wwwroot\\css\\LoginStyleSheet.css",
+      "SourceId": "MovieDatabase",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\wwwroot\\",
+      "BasePath": "_content/MovieDatabase",
+      "RelativePath": "css/LoginStyleSheet.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\LoginStyleSheet.css"
     },
     {
       "Identity": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\wwwroot\\css\\site.css",

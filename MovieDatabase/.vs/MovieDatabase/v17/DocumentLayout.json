@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|c:\\x\\2024_dsa_s5_pindel\\moviedatabase\\views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|solutionrelative:views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|c:\\x\\2024_dsa_s5_pindel\\moviedatabase\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|c:\\x\\2024_dsa_s5_pindel\\moviedatabase\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|solutionrelative:wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|c:\\x\\2024_dsa_s5_pindel\\moviedatabase\\wwwroot\\css\\loginstylesheet.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|solutionrelative:wwwroot\\css\\loginstylesheet.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|c:\\x\\2024_dsa_s5_pindel\\moviedatabase\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -19,24 +23,16 @@
       "RelativeMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|solutionrelative:views\\login\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|c:\\x\\2024_dsa_s5_pindel\\moviedatabase\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:2:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|c:\\x\\2024_dsa_s5_pindel\\moviedatabase\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:2:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|c:\\x\\2024_dsa_s5_pindel\\moviedatabase\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|solutionrelative:controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:1:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|c:\\x\\2024_dsa_s5_pindel\\moviedatabase\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:1:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|c:\\x\\2024_dsa_s5_pindel\\moviedatabase\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|c:\\x\\2024_dsa_s5_pindel\\moviedatabase\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|c:\\x\\2024_dsa_s5_pindel\\moviedatabase\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{45C75124-D0AC-4CF1-8259-9C38F3B91D82}|MovieDatabase.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,37 +42,63 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "site.css",
+              "DocumentMoniker": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\wwwroot\\css\\site.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\site.css",
+              "ToolTip": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\wwwroot\\css\\site.css",
+              "RelativeToolTip": "wwwroot\\css\\site.css",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABgAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2024-05-04T17:57:22.995Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "LoginStyleSheet.css",
+              "DocumentMoniker": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\wwwroot\\css\\LoginStyleSheet.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\LoginStyleSheet.css",
+              "ToolTip": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\wwwroot\\css\\LoginStyleSheet.css",
+              "RelativeToolTip": "wwwroot\\css\\LoginStyleSheet.css",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAMkAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2024-05-04T17:07:35.86Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
               "ToolTip": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\Views\\Shared\\_Layout.cshtml",
               "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAAAAsAAAAGAAAA",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAAkAAAA+AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-05-02T18:29:34.409Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Privacy.cshtml",
-              "DocumentMoniker": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\Views\\Home\\Privacy.cshtml",
-              "RelativeDocumentMoniker": "Views\\Home\\Privacy.cshtml",
-              "ToolTip": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\Views\\Home\\Privacy.cshtml",
-              "RelativeToolTip": "Views\\Home\\Privacy.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "DocumentIndex": 4,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\Views\\Login\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Login\\Index.cshtml",
+              "ToolTip": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\Views\\Login\\Index.cshtml",
+              "RelativeToolTip": "Views\\Login\\Index.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAA+AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-05-02T18:26:46.879Z",
+              "WhenOpened": "2024-04-23T19:40:52.16Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
@@ -89,67 +111,29 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-02T18:20:44.193Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "HomeController.cs",
               "DocumentMoniker": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
               "ToolTip": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\Controllers\\HomeController.cs",
               "RelativeToolTip": "Controllers\\HomeController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAAAAAAA",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAowBMAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-04-23T20:04:40.069Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 5,
               "Title": "LoginController.cs",
               "DocumentMoniker": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\Controllers\\LoginController.cs",
               "RelativeDocumentMoniker": "Controllers\\LoginController.cs",
               "ToolTip": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\Controllers\\LoginController.cs",
               "RelativeToolTip": "Controllers\\LoginController.cs",
-              "ViewState": "AQIAABUAAAAAAAAAAAAowB4AAAAbAAAA",
+              "ViewState": "AQIAAA0AAAAAAAAAAAAgwB4AAAAbAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-04-23T19:40:41.551Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\Views\\Login\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\Login\\Index.cshtml",
-              "ToolTip": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\Views\\Login\\Index.cshtml",
-              "RelativeToolTip": "Views\\Login\\Index.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAGAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-23T19:40:52.16Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "C:\\X\\2024_DSA_S5_PINDEL\\MovieDatabase\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAEAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-04-23T19:21:14.413Z"
             },
             {
               "$type": "Document",
