@@ -23,3 +23,7 @@ body
   background-color: #202020;
   color: white;
 }
+
+tr, th, td {
+    color: white;
+}

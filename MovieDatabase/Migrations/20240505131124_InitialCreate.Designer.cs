@@ -34,7 +34,7 @@ namespace MovieDatabase.Migrations
 
                     b.Property<string>("title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("year")
                         .HasColumnType("int");

@@ -16,7 +16,7 @@ namespace MovieDatabase.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    title = table.Column<string>(type: "nvarchar(255)", nullable: false),
                     year = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
