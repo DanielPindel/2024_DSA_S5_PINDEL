@@ -1,8 +1,29 @@
-﻿@{
+﻿@model IEnumerable<MovieDatabase.Models.Movie>
+
+@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<head>
+    <link rel="stylesheet" href="~/css/HomePageSheet.css" />
+</head>
+<body>
+    <div class="grid-container-main-page">
+        @foreach (var item in Model)
+        {
+            <div class="main-page-movie">
+                <div class="main-page-movie-poster">
+                    Placeholder
+                </div>
+                <div class="main-page-movie-title">
+                    @Html.DisplayFor(modelItem => item.title)
+                </div>
+                <div class="main-page-star">
+                    &#9733;
+                </div>
+                <div class="main-page-movie-rating">
+                    Placeholder
+                </div>
+            </div>
+        }
+    </div>
+</body>

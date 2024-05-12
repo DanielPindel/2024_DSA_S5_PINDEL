@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MovieDatabase.Data;
 using MySql.Data.MySqlClient;
+using MovieDatabase;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -28,6 +29,8 @@ builder.Services.AddAuthentication(options =>
     options.ClientId = configuration["Authentication:Google:ClientId"];
     options.ClientSecret = configuration["Authentication:Google:ClientSecret"];
 });
+
+builder.Services.AddScoped<IMovieService, MovieService>();
 
 var app = builder.Build();
 
