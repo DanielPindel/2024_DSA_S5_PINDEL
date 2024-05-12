@@ -13,6 +13,5 @@ namespace MovieDatabase.Models
         public int year { get; set; }
 
         public int director_id { get; set; }
-        public Director director { get; set; }
     }
 }

@@ -22,8 +22,7 @@ namespace MovieDatabase.Controllers
         // GET: Movies
         public async Task<IActionResult> Index()
         {
-            var movieDatabaseContext = _context.Movie.Include(m => m.director);
-            return View(await movieDatabaseContext.ToListAsync());
+            return View(await _context.Movie.ToListAsync());
         }
 
         // GET: Movies/Details/5
@@ -35,7 +34,6 @@ namespace MovieDatabase.Controllers
             }
 
             var movie = await _context.Movie
-                .Include(m => m.director)
                 .FirstOrDefaultAsync(m => m.id == id);
             if (movie == null)
             {
@@ -131,7 +129,6 @@ namespace MovieDatabase.Controllers
             }
 
             var movie = await _context.Movie
-                .Include(m => m.director)
                 .FirstOrDefaultAsync(m => m.id == id);
             if (movie == null)
             {

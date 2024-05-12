@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using MovieDatabase.Models;
 
 namespace MovieDatabase.Data
@@ -21,11 +22,17 @@ namespace MovieDatabase.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Director>()
+/*            modelBuilder.Entity<Director>()
                 .HasMany(e => e.movies)
                 .WithOne(e => e.director)
                 .HasForeignKey(e => e.director_id)
-                .HasPrincipalKey(e => e.id);
+            .HasPrincipalKey(e => e.id);*/
+
+            modelBuilder.Entity<Movie>()
+                .HasOne<Director>()
+                .WithMany(e => e.movies)
+                .HasForeignKey(e => e.director_id)
+                .IsRequired();
         }
     }
 }
