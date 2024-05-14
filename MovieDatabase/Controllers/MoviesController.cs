@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,11 @@ namespace MovieDatabase.Controllers
     public class MoviesController : Controller
     {
         private readonly MovieDatabaseContext _context;
-
-        public MoviesController(MovieDatabaseContext context)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public MoviesController(MovieDatabaseContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Movies
@@ -55,13 +57,36 @@ namespace MovieDatabase.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,title,year,director_id")] Movie movie)
+        public async Task<IActionResult> Create([Bind("id,title,year,director_id")] Movie movie, IFormFile posterImagePath)
         {
+            if (posterImagePath != null && posterImagePath.Length > 0)
+            {
+                var fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(posterImagePath.FileName);
+                var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", fileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await posterImagePath.CopyToAsync(fileStream);
+                }
+
+                movie.posterImagePath = fileName;
+                ModelState.Remove("posterImagePath");
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(movie);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        Console.WriteLine(error.ErrorMessage);
+                    }
+                }
             }
             ViewData["director_id"] = new SelectList(_context.Director, "id", "id", movie.director_id);
             return View(movie);
@@ -146,6 +171,15 @@ namespace MovieDatabase.Controllers
             var movie = await _context.Movie.FindAsync(id);
             if (movie != null)
             {
+                if (!string.IsNullOrEmpty(movie.posterImagePath))
+                {
+                    var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", movie.posterImagePath);
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
+
                 _context.Movie.Remove(movie);
             }
 

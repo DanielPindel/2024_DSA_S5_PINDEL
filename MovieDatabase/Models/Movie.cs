@@ -4,8 +4,6 @@ namespace MovieDatabase.Models
 {
     public class Movie
     {
-        private MovieDatabaseContext context;
-
         public int id { get; set; }
 
         public string title { get; set; }
@@ -13,5 +11,7 @@ namespace MovieDatabase.Models
         public int year { get; set; }
 
         public int director_id { get; set; }
+
+        public string posterImagePath { get; set; }
     }
 }
