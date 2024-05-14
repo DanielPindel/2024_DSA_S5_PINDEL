@@ -42,13 +42,18 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
+            ViewData["director"] = _context.Director
+                        .Where(d => d.id == movie.director_id)
+                        .ToList();
+
             return View(movie);
         }
 
         // GET: Movies/Create
         public IActionResult Create()
         {
-            ViewData["director_id"] = new SelectList(_context.Director, "id", "id");
+            ViewData["director"] = new SelectList(_context.Director, "id", "nameSurnameLabel");
+            ViewData["actors"] = new MultiSelectList(_context.Actor, "id", "nameSurnameLabel");
             return View();
         }
 
@@ -88,7 +93,8 @@ namespace MovieDatabase.Controllers
                     }
                 }
             }
-            ViewData["director_id"] = new SelectList(_context.Director, "id", "id", movie.director_id);
+            ViewData["director"] = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
+            ViewData["actors"] = new MultiSelectList(_context.Actor, "id", "nameSurnameLabel", movie.actors);
             return View(movie);
         }
 
@@ -105,7 +111,7 @@ namespace MovieDatabase.Controllers
             {
                 return NotFound();
             }
-            ViewData["director_id"] = new SelectList(_context.Director, "id", "id", movie.director_id);
+            ViewData["director"] = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
             return View(movie);
         }
 
@@ -141,7 +147,7 @@ namespace MovieDatabase.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["director_id"] = new SelectList(_context.Director, "id", "id", movie.director_id);
+            ViewData["director"] = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
             return View(movie);
         }
 

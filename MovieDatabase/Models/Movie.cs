@@ -13,5 +13,7 @@ namespace MovieDatabase.Models
         public int director_id { get; set; }
 
         public string posterImagePath { get; set; }
+
+        public List<Actor> actors { get; } = [];
     }
 }

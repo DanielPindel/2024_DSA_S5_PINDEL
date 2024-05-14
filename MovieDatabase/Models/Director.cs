@@ -16,5 +16,14 @@ namespace MovieDatabase.Models
         public DateOnly date_of_birth { get; set; }
 
         public ICollection<Movie> movies { get; } = new List<Movie>();
+
+        //for displaying name and surname at once
+        public string nameSurnameLabel
+        {
+            get
+            {
+                return string.Format("{0} {1}", name, surname);
+            }
+        }
     }
 }
