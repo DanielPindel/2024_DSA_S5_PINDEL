@@ -45,12 +45,6 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
-<<<<<<< Updated upstream
-            ViewData["director"] = _context.Director
-                        .Where(d => d.id == movie.director_id)
-                        .ToList();
-
-=======
             ViewBag.directorVB = _context.Director
                         .Where(d => d.id == movie.director_id)
                         .ToList();
@@ -69,21 +63,15 @@ namespace MovieDatabase.Controllers
             }
             Console.WriteLine("==========================================");*/
 
->>>>>>> Stashed changes
             return View(movie);
         }
 
         // GET: Movies/Create
         public IActionResult Create()
         {
-<<<<<<< Updated upstream
-            ViewData["director"] = new SelectList(_context.Director, "id", "nameSurnameLabel");
-            ViewData["actors"] = new MultiSelectList(_context.Actor, "id", "nameSurnameLabel");
-=======
             ViewBag.directorVB = new SelectList(_context.Director, "id", "nameSurnameLabel");
             ViewBag.actorsVB = new MultiSelectList(_context.Actor, "id", "nameSurnameLabel");
            
->>>>>>> Stashed changes
             return View();
         }
 
@@ -150,14 +138,9 @@ namespace MovieDatabase.Controllers
                     }
                 }
             }
-<<<<<<< Updated upstream
-            ViewData["director"] = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
-            ViewData["actors"] = new MultiSelectList(_context.Actor, "id", "nameSurnameLabel", movie.actors);
-=======
 
             
 
->>>>>>> Stashed changes
             return View(movie);
         }
 
@@ -174,11 +157,7 @@ namespace MovieDatabase.Controllers
             {
                 return NotFound();
             }
-<<<<<<< Updated upstream
-            ViewData["director"] = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
-=======
             ViewBag.directorVB = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
->>>>>>> Stashed changes
             return View(movie);
         }
 
@@ -214,11 +193,7 @@ namespace MovieDatabase.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-<<<<<<< Updated upstream
-            ViewData["director"] = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
-=======
             ViewBag.directorVB = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
->>>>>>> Stashed changes
             return View(movie);
         }
 

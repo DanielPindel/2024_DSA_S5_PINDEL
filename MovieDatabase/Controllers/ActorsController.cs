@@ -40,8 +40,6 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
-<<<<<<< Updated upstream
-=======
             //Console.WriteLine("--------------------movies:");
             foreach (Movie m in actor.movies)
             {
@@ -50,7 +48,6 @@ namespace MovieDatabase.Controllers
 
 
 
->>>>>>> Stashed changes
             return View(actor);
         }
 
