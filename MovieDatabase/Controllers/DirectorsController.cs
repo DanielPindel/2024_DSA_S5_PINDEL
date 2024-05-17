@@ -40,7 +40,11 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
+<<<<<<< Updated upstream
             ViewData["movies"] = _context.Movie
+=======
+            ViewBag.moviesVB = _context.Movie
+>>>>>>> Stashed changes
                         .Where(m => m.director_id == id)
                         .ToList();
 

@@ -14,6 +14,15 @@ namespace MovieDatabase.Models
 
         public string posterImagePath { get; set; }
 
+<<<<<<< Updated upstream
         public List<Actor> actors { get; } = [];
+=======
+        public ICollection<Actor> actors { get; set;  } = [];
+
+        public Movie()
+        {
+            this.actors = new HashSet<Actor>();
+        }
+>>>>>>> Stashed changes
     }
 }

@@ -6,8 +6,10 @@ using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MovieDatabase.Data;
 using MovieDatabase.Models;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace MovieDatabase.Controllers
 {
@@ -15,6 +17,7 @@ namespace MovieDatabase.Controllers
     {
         private readonly MovieDatabaseContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+
         public MoviesController(MovieDatabaseContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
@@ -42,18 +45,45 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
+<<<<<<< Updated upstream
             ViewData["director"] = _context.Director
                         .Where(d => d.id == movie.director_id)
                         .ToList();
 
+=======
+            ViewBag.directorVB = _context.Director
+                        .Where(d => d.id == movie.director_id)
+                        .ToList();
+
+            /*ViewBag.actorsVB = _context.Actor
+                        .Include(a => a.movies).Where(m => m.id == movie.id)
+                        .ToList();*/
+
+            
+            //ViewBag.actorsVB = movie.actors;
+
+            /*Console.WriteLine("==========================================");
+            foreach (var a in movie.actors)
+            {
+                Console.WriteLine("actor found");
+            }
+            Console.WriteLine("==========================================");*/
+
+>>>>>>> Stashed changes
             return View(movie);
         }
 
         // GET: Movies/Create
         public IActionResult Create()
         {
+<<<<<<< Updated upstream
             ViewData["director"] = new SelectList(_context.Director, "id", "nameSurnameLabel");
             ViewData["actors"] = new MultiSelectList(_context.Actor, "id", "nameSurnameLabel");
+=======
+            ViewBag.directorVB = new SelectList(_context.Director, "id", "nameSurnameLabel");
+            ViewBag.actorsVB = new MultiSelectList(_context.Actor, "id", "nameSurnameLabel");
+           
+>>>>>>> Stashed changes
             return View();
         }
 
@@ -62,8 +92,12 @@ namespace MovieDatabase.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,title,year,director_id")] Movie movie, IFormFile posterImagePath)
+        public async Task<IActionResult> Create([Bind("id,title,year,director_id")] Movie movie, IFormFile posterImagePath, int[] actorsVB)
         {
+            ////to delete later
+            Console.WriteLine("############################## " + actorsVB.Length);
+            ////
+
             if (posterImagePath != null && posterImagePath.Length > 0)
             {
                 var fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(posterImagePath.FileName);
@@ -77,10 +111,33 @@ namespace MovieDatabase.Controllers
                 movie.posterImagePath = fileName;
                 ModelState.Remove("posterImagePath");
             }
+
             if (ModelState.IsValid)
             {
+                if(actorsVB != null)
+                {
+                    var a = new List<Actor>();
+                    foreach(var actor in actorsVB)
+                    {
+                        var item = _context.Actor.Find(actor);
+                        a.Add(item);
+                    }
+                    movie.actors = a;
+                }
+
+                ////to delete later
+                Console.WriteLine("Actors:");
+                foreach (Actor a in movie.actors)
+                {
+                    Console.WriteLine(a.nameSurnameLabel);
+                }
+                ////
+
                 _context.Add(movie);
                 await _context.SaveChangesAsync();
+
+
+
                 return RedirectToAction(nameof(Index));
             }
             else
@@ -93,8 +150,14 @@ namespace MovieDatabase.Controllers
                     }
                 }
             }
+<<<<<<< Updated upstream
             ViewData["director"] = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
             ViewData["actors"] = new MultiSelectList(_context.Actor, "id", "nameSurnameLabel", movie.actors);
+=======
+
+            
+
+>>>>>>> Stashed changes
             return View(movie);
         }
 
@@ -111,7 +174,11 @@ namespace MovieDatabase.Controllers
             {
                 return NotFound();
             }
+<<<<<<< Updated upstream
             ViewData["director"] = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
+=======
+            ViewBag.directorVB = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
+>>>>>>> Stashed changes
             return View(movie);
         }
 
@@ -147,7 +214,11 @@ namespace MovieDatabase.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+<<<<<<< Updated upstream
             ViewData["director"] = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
+=======
+            ViewBag.directorVB = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
+>>>>>>> Stashed changes
             return View(movie);
         }
 

@@ -32,7 +32,11 @@
             @Html.DisplayNameFor(model => model.movies)
         </dt>
         <dd class="col-sm-10">
+<<<<<<< Updated upstream
             @foreach (Movie m in ViewBag.movies)
+=======
+            @foreach (Movie m in ViewBag.moviesVB)
+>>>>>>> Stashed changes
             {
                 @Html.Raw(m.title + ", ")
             }

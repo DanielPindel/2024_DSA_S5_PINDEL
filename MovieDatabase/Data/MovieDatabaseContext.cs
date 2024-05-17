@@ -22,11 +22,6 @@ namespace MovieDatabase.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-/*            modelBuilder.Entity<Director>()
-                .HasMany(e => e.movies)
-                .WithOne(e => e.director)
-                .HasForeignKey(e => e.director_id)
-            .HasPrincipalKey(e => e.id);*/
 
             modelBuilder.Entity<Movie>()
                 .HasOne<Director>()

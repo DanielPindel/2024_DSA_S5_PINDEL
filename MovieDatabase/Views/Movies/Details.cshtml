@@ -26,11 +26,28 @@
             @Html.Raw("director")
         </dt>
         <dd class="col-sm-10">
+<<<<<<< Updated upstream
             @foreach (Director d in ViewBag.director)
+=======
+            @foreach (Director d in ViewBag.directorVB)
+>>>>>>> Stashed changes
             {
                 @Html.Raw(d.nameSurnameLabel)
             }
         </dd>
+<<<<<<< Updated upstream
+=======
+        @* <dt class="col-sm-2">
+            @Html.Raw("actors")
+            @foreach (Actor a in ViewBag.actorsVB)
+            {
+                @Html.Raw(a.nameSurnameLabel)
+            }
+        </dt> *@
+        <dd class="col-sm-10">
+            
+        </dd>
+>>>>>>> Stashed changes
     </dl>
 </div>
 <div>
