@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using MovieDatabase.Data;
 using MovieDatabase.Models;
 
-namespace MovieDatabase.Controllers
+namespace MovieDatabase
 {
     public class UsersController : Controller
     {
@@ -54,7 +54,7 @@ namespace MovieDatabase.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,username,email,password")] User user)
+        public async Task<IActionResult> Create([Bind("id,username,email,password,related_account_id")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace MovieDatabase.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,username,email,password")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("id,username,email,password,related_account_id")] User user)
         {
             if (id != user.id)
             {

@@ -14,6 +14,8 @@ namespace MovieDatabase.Models
 
         public string password { get; set; }
 
+        public int related_account_id { get; set; }
+
         public ICollection<Movie> watchlist { get; set; } = [];
 
         public User()
