@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using MovieDatabase.Data;
 using MovieDatabase.Models;
 
-namespace MovieDatabase
+namespace MovieDatabase.Controllers
 {
     public class UsersController : Controller
     {
