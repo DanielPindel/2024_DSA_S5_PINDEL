@@ -16,9 +16,11 @@ namespace MovieDatabase.Models
 
         public ICollection<Actor> actors { get; set;  } = [];
 
+        public ICollection<User> users{ get; set; } = [];
+
         public Movie()
         {
-            this.actors = new HashSet<Actor>();
+            this.users = new HashSet<User>();
         }
     }
 }

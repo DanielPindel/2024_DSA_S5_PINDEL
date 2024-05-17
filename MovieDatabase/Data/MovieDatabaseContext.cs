@@ -19,6 +19,7 @@ namespace MovieDatabase.Data
         public DbSet<MovieDatabase.Models.Movie> Movie { get; set; } = default!;
 		public DbSet<MovieDatabase.Models.Actor> Actor { get; set; } = default!;
         public DbSet<MovieDatabase.Models.Director> Director { get; set; } = default!;
+        public DbSet<MovieDatabase.Models.User> User { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
