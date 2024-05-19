@@ -1,57 +1,108 @@
+@keyframes fadeIn
+{
+    from
+    {
+        opacity: 0;
+    }
+
+    to
+    {
+        opacity: 1;
+    }
+}
+
 .grid-container-main-page
 {
     display: grid;
-    row-gap: 20px;
+    row-gap: 1em;
 }
 
 .main-page-movie
 {
-    grid-column-start: 1;
-    grid-column-end: 5;
     display: grid;
-    grid-template-columns: 150px 100px auto;
-    grid-template-rows: 100px auto;
+    grid-template-columns: 15% 10% auto;
+    grid-template-rows: auto auto;
     background-color: #202020;
+    animation: fadeIn 1s ease-in;
+}
+
+    .main-page-movie:hover
+    {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(-5px);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+.main-page-movie
+{
 }
 
 .main-page-movie-poster
 {
     grid-column: 1;
-    grid-row-start: 1;
-    grid-row-end: 2;
+    grid-row: 1 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #202020;
 }
 
 .main-poster
 {
-    width: 150px;
-    height: 225px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 3;
+    transition: transform 0.4s ease;
 }
+
+    .main-poster:hover
+    {
+        transform: scale(1.1);
+    }
 
 .main-page-movie-title
 {
-    grid-column-start: 2;
-    grid-column-end: 4;
+    grid-column: 2 / 4;
     grid-row: 1;
-    font-size: 64px;
+    font-size: 4rem;
     color: white;
-    padding-left: 70px;
+    padding-left: 5%;
+    padding-top: 2%;
 }
+
+    .main-page-movie-title:hover
+    {
+        color: cornflowerblue;
+        transition: color 0.4s ease;
+    }
 
 .main-page-star
 {
     grid-column: 2;
     grid-row: 2;
     color: gold;
-    font-size: 64px;
-    padding: 0px;
-    margin: 0px;
-    padding-left: 25px;
+    font-size: 4rem;
+    padding: 0;
+    margin: 0;
+    padding-left: 50%;
 }
 
 .main-page-movie-rating
 {
     grid-column: 3;
     grid-row: 2;
-    font-size: 64px;
+    font-size: 4rem;
     color: white;
+}
+
+    .main-page-movie-rating:hover
+    {
+        color: gold;
+        transition: color 0.4s ease;
+    }
+
+.main-page-movie:last-child
+{
+    margin-bottom: 2%;
 }
