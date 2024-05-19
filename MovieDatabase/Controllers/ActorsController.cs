@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MovieDatabase.Data;
 using MovieDatabase.Models;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace MovieDatabase.Controllers
 {
@@ -40,12 +41,14 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
-            //Console.WriteLine("--------------------movies:");
-            foreach (Movie m in actor.movies)
-            {
-                Console.WriteLine(m.title);
-            }
 
+            ViewBag.moviesVB = _context.Movie
+                       .Include(m => m.actors.Where(a => a.id == actor.id))
+                       .ToList();
+
+            //Not sure why, but after the previous query ViewBag has all the movies available, but actor.movies
+            //has only the ones added to it, that's why this line has to be here.
+            ViewBag.moviesVB = actor.movies;
 
 
             return View(actor);
