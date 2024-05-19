@@ -21,6 +21,7 @@ namespace MovieDatabase.Models
         public Movie()
         {
             this.users = new HashSet<User>();
+            this.actors = new HashSet<Actor>();
         }
     }
 }

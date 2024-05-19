@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
+using Azure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using MovieDatabase.Models;
@@ -29,6 +30,11 @@ namespace MovieDatabase.Data
                 .WithMany(e => e.movies)
                 .HasForeignKey(e => e.director_id)
                 .IsRequired();
+
+            modelBuilder.Entity<Movie>()
+                .HasMany(m => m.actors)
+                .WithMany(a => a.movies);
+
         }
     }
 }

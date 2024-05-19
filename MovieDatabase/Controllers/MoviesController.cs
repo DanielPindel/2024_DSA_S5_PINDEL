@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,8 @@ using Microsoft.IdentityModel.Tokens;
 using MovieDatabase.Data;
 using MovieDatabase.Models;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
+
+//there are some parts regarding editing of the actors to be uncommented and tested once editing works
 
 namespace MovieDatabase.Controllers
 {
@@ -49,19 +52,13 @@ namespace MovieDatabase.Controllers
                         .Where(d => d.id == movie.director_id)
                         .ToList();
 
-            /*ViewBag.actorsVB = _context.Actor
-                        .Include(a => a.movies).Where(m => m.id == movie.id)
-                        .ToList();*/
+            ViewBag.actorsVB = _context.Actor
+                        .Include(a => a.movies.Where(m => m.id == movie.id))
+                        .ToList();
 
-            
-            //ViewBag.actorsVB = movie.actors;
-
-            /*Console.WriteLine("==========================================");
-            foreach (var a in movie.actors)
-            {
-                Console.WriteLine("actor found");
-            }
-            Console.WriteLine("==========================================");*/
+            //Not sure why, but after the previous query ViewBag has all the actors available, but movie.actors
+            //has only the ones added to it, that's why this line has to be here.
+            ViewBag.actorsVB = movie.actors;
 
             return View(movie);
         }
@@ -70,8 +67,8 @@ namespace MovieDatabase.Controllers
         public IActionResult Create()
         {
             ViewBag.directorVB = new SelectList(_context.Director, "id", "nameSurnameLabel");
-            ViewBag.actorsVB = new MultiSelectList(_context.Actor, "id", "nameSurnameLabel");
-           
+            ViewBag.actors = new MultiSelectList(_context.Actor, "id", "nameSurnameLabel");
+
             return View();
         }
 
@@ -80,12 +77,8 @@ namespace MovieDatabase.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,title,year,director_id")] Movie movie, IFormFile posterImagePath, int[] actorsVB)
+        public async Task<IActionResult> Create([Bind("id,title,year,director_id")] Movie movie, IFormFile posterImagePath, int[] actors)
         {
-            ////to delete later
-            Console.WriteLine("############################## " + actorsVB.Length);
-            ////
-
             if (posterImagePath != null && posterImagePath.Length > 0)
             {
                 var fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(posterImagePath.FileName);
@@ -102,10 +95,12 @@ namespace MovieDatabase.Controllers
 
             if (ModelState.IsValid)
             {
-                if(actorsVB != null)
+                //int[] actors is the result of selected stuff from the list, and for some reason
+                //it also has to have the same name as the list from the object (Movie.actors)
+                if (actors != null)
                 {
                     var a = new List<Actor>();
-                    foreach(var actor in actorsVB)
+                    foreach (var actor in actors)
                     {
                         var item = _context.Actor.Find(actor);
                         a.Add(item);
@@ -113,18 +108,8 @@ namespace MovieDatabase.Controllers
                     movie.actors = a;
                 }
 
-                ////to delete later
-                Console.WriteLine("Actors:");
-                foreach (Actor a in movie.actors)
-                {
-                    Console.WriteLine(a.nameSurnameLabel);
-                }
-                ////
-
                 _context.Add(movie);
                 await _context.SaveChangesAsync();
-
-
 
                 return RedirectToAction(nameof(Index));
             }
@@ -139,10 +124,10 @@ namespace MovieDatabase.Controllers
                 }
             }
 
-            
-
             return View(movie);
         }
+
+
 
         // GET: Movies/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -153,11 +138,24 @@ namespace MovieDatabase.Controllers
             }
 
             var movie = await _context.Movie.FindAsync(id);
+
+            /*ViewBag.actorsVB = _context.Actor
+                        .Include(a => a.movies.Where(m => m.id == movie.id))
+                        .ToList();
+
+            List<int> selectedActors = new List<int>();
+            foreach (var actor in movie.actors)
+            {
+                selectedActors.Add(actor.id);
+            }
+            int[] selectedAs = selectedActors.ToArray();*/
+
             if (movie == null)
             {
                 return NotFound();
             }
             ViewBag.directorVB = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
+            //ViewBag.actors = new MultiSelectList(_context.Actor, "id", "nameSurnameLabel", selectedAs);
             return View(movie);
         }
 
@@ -175,6 +173,18 @@ namespace MovieDatabase.Controllers
 
             if (ModelState.IsValid)
             {
+
+                /*ViewBag.actorsVB = _context.Actor
+                        .Include(a => a.movies.Where(m => m.id == movie.id))
+                        .ToList();
+
+                _context.Entry(movie).State = EntityState.Modified;
+                _context.Entry(movie).Collection(p => p.actors).Load();
+
+                var newActors = _context.Actor.Where(x => actors.Contains(x.id)).ToList();
+                movie.actors = newActors;*/
+
+
                 try
                 {
                     _context.Update(movie);
@@ -194,6 +204,7 @@ namespace MovieDatabase.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.directorVB = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
+
             return View(movie);
         }
 
