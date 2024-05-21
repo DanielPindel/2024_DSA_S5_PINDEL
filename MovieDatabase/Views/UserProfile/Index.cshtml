@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "User Profile";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/ProfileStyleSheet.css" />
+</head>
+
+<div class="profile-container">
+    <div class="profile-photo">
+        <div class="photo-placeholder">
+            <input type="file" id="profile-image-input" accept="image/*" style="display: none;">
+            <label for="profile-image-input">
+                <i class="fa-solid fa-camera" style="color: black;"></i>
+            </label>
+            <img id="profile-image-preview" src="#" alt="Preview" style="display: none;">
+        </div>
+    </div>
+    <div class="profile-info">
+        <div class="info-placeholder">John</div>
+        <div class="info-placeholder">john@example.com</div>
+    </div>
+    <div class="profile-buttons">
+        <button class="profile-button">Want to watch</button>
+        <button class="profile-button">Ratings and reviews</button>
+        <button class="profile-button">Favorite films</button>
+    </div>
+</div>
+
+<script>
+
+    const profileImageInput = document.getElementById('profile-image-input');
+    const profileImagePreview = document.getElementById('profile-image-preview');
+    const chooseProfileImageLabel = document.querySelector('label[for="profile-image-input"]');
+
+    profileImageInput.addEventListener('change', function () {
+        if (profileImageInput.files && profileImageInput.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                profileImagePreview.src = e.target.result;
+                profileImagePreview.style.display = 'block';
+            };
+
+            reader.readAsDataURL(profileImageInput.files[0]);
+
+            chooseProfileImageLabel.style.display = 'none';
+        }
+    });
+</script>
