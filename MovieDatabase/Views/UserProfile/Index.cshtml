@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "User Profile";
 }
 
@@ -17,8 +17,22 @@
         </div>
     </div>
     <div class="profile-info">
-        <div class="info-placeholder">@User.Identity.Name</div>
+        <div class="name-placeholder">John</div>
+        <div class="info-placeholder">john@example.com</div>
+        <div class="statistics-header">Statistics</div>
+        <div class="user-stats">
+            <div class="stats-item">
+                <span class="stats-text">Movies <span class="stats-number">0</span></span>
+            </div>
+            <div class="stats-item">
+                <span class="stats-text">Watchlist <span class="stats-number">0</span></span>
+            </div>
+            <div class="stats-item">
+                <span class="stats-text">Favorites <span class="stats-number">0</span></span>
+            </div>
+        </div>
     </div>
+    <div class="buttons-header">My movies</div>
     <div class="profile-buttons">
         <button class="profile-button">Want to watch</button>
         <button class="profile-button">Ratings and reviews</button>
