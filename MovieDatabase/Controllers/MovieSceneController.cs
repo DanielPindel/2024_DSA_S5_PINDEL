@@ -8,5 +8,20 @@ namespace MovieDatabase.Controllers
         {
             return View();
         }
+
+        public IActionResult LaLaLand()
+        {
+            return View();
+        }
+
+        public IActionResult Oppenheimer()
+        {
+            return View();
+        }
+
+        public IActionResult BladeRunner2049()
+        {
+            return View();
+        }
     }
 }

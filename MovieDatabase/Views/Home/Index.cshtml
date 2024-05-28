@@ -15,7 +15,18 @@
                     <img class="main-poster" src="~/images/@item.posterImagePath" alt="@item.title Poster" />
                 </div>
                 <div class="main-page-movie-title">
-                    @Html.DisplayFor(modelItem => item.title)
+                    @if (item.title == "La La Land")
+                    {
+                        <a href="@Url.Action("LaLaLand", "MovieScene")" style="text-decoration:none; color:white;">@item.title</a>
+                    }
+                    else if (item.title == "Oppenheimer")
+                    {
+                        <a href="@Url.Action("Oppenheimer", "MovieScene")" style="text-decoration:none; color:white;">@item.title</a>
+                    }
+                    else if (item.title == "Blade Runner 2049")
+                    {
+                        <a href="@Url.Action("BladeRunner2049", "MovieScene")" style="text-decoration:none; color:white;">@item.title</a>
+                    }
                 </div>
                 <div class="main-page-star">
                     &#9733;
