@@ -40,6 +40,16 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
+
+            ViewBag.moviesVB = _context.Movie
+                       .Include(m => m.users.Where(u => u.id == user.id))
+                       .ToList();
+
+            //Not sure why, but after the previous query this ViewBag has all the movies available, but user.movies
+            //has only the ones added to it, that's why this line has to be here.
+            ViewBag.moviesVB = user.movies;
+            ViewBag.usermoviesVB = user.usermovies;
+
             return View(user);
         }
 

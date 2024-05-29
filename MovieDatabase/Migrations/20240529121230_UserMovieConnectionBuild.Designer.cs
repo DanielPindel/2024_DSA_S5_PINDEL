@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieDatabase.Data;
 
@@ -11,9 +12,11 @@ using MovieDatabase.Data;
 namespace MovieDatabase.Migrations
 {
     [DbContext(typeof(MovieDatabaseContext))]
-    partial class MovieDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240529121230_UserMovieConnectionBuild")]
+    partial class UserMovieConnectionBuild
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,30 +145,19 @@ namespace MovieDatabase.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("MovieDatabase.Models.UserMovie", b =>
+            modelBuilder.Entity("MovieUser", b =>
                 {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("moviesid")
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<int>("context_id")
+                    b.Property<int>("usersid")
                         .HasColumnType("int");
 
-                    b.Property<int>("movie_id")
-                        .HasColumnType("int");
+                    b.HasKey("moviesid", "usersid");
 
-                    b.Property<int>("user_id")
-                        .HasColumnType("int");
+                    b.HasIndex("usersid");
 
-                    b.HasKey("id");
-
-                    b.HasIndex("movie_id");
-
-                    b.HasIndex("user_id");
-
-                    b.ToTable("UserMovie");
+                    b.ToTable("MovieUser");
                 });
 
             modelBuilder.Entity("ActorMovie", b =>
@@ -192,17 +184,17 @@ namespace MovieDatabase.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MovieDatabase.Models.UserMovie", b =>
+            modelBuilder.Entity("MovieUser", b =>
                 {
                     b.HasOne("MovieDatabase.Models.Movie", null)
-                        .WithMany("usermovies")
-                        .HasForeignKey("movie_id")
+                        .WithMany()
+                        .HasForeignKey("moviesid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MovieDatabase.Models.User", null)
-                        .WithMany("usermovies")
-                        .HasForeignKey("user_id")
+                        .WithMany()
+                        .HasForeignKey("usersid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -210,16 +202,6 @@ namespace MovieDatabase.Migrations
             modelBuilder.Entity("MovieDatabase.Models.Director", b =>
                 {
                     b.Navigation("movies");
-                });
-
-            modelBuilder.Entity("MovieDatabase.Models.Movie", b =>
-                {
-                    b.Navigation("usermovies");
-                });
-
-            modelBuilder.Entity("MovieDatabase.Models.User", b =>
-                {
-                    b.Navigation("usermovies");
                 });
 #pragma warning restore 612, 618
         }

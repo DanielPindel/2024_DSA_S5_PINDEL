@@ -21,6 +21,7 @@ namespace MovieDatabase.Data
 		public DbSet<MovieDatabase.Models.Actor> Actor { get; set; } = default!;
         public DbSet<MovieDatabase.Models.Director> Director { get; set; } = default!;
         public DbSet<MovieDatabase.Models.User> User { get; set; } = default!;
+        public DbSet<MovieDatabase.Models.User> UserMovie { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,6 +35,26 @@ namespace MovieDatabase.Data
             modelBuilder.Entity<Movie>()
                 .HasMany(m => m.actors)
                 .WithMany(a => a.movies);
+
+            modelBuilder.Entity<Movie>()
+                .HasMany(m => m.users)
+                .WithMany(u => u.movies)
+                .UsingEntity<UserMovie>(
+                    l => l.HasOne<User>().WithMany(u => u.usermovies).HasForeignKey(um => um.user_id),
+                    r => r.HasOne<Movie>().WithMany(m => m.usermovies).HasForeignKey(um => um.movie_id));
+
+            /*modelBuilder.Entity<UserMovie>()
+                .HasNoKey()
+                .HasOne<Movie>()
+                .WithMany(m => m.usermovies)
+                .HasForeignKey(um => um.movie_id);
+
+
+            modelBuilder.Entity<UserMovie>()
+                .HasNoKey()
+                .HasOne<User>()
+                .WithMany(m => m.usermovies)
+                .HasForeignKey(um => um.user_id);*/
 
         }
     }
