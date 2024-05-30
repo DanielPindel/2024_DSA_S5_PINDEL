@@ -5,12 +5,15 @@ using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Azure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Hosting;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
 using MovieDatabase.Models;
 
 namespace MovieDatabase.Data
 {
-    public class MovieDatabaseContext : DbContext
+    public class MovieDatabaseContext : IdentityDbContext<User>
     {
         public MovieDatabaseContext (DbContextOptions<MovieDatabaseContext> options)
             : base(options)
@@ -25,6 +28,7 @@ namespace MovieDatabase.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Movie>()
                 .HasOne<Director>()

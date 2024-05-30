@@ -34,7 +34,7 @@ namespace MovieDatabase.Controllers
             }
 
             var user = await _context.User
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
             {
                 return NotFound();
@@ -42,7 +42,7 @@ namespace MovieDatabase.Controllers
 
 
             ViewBag.moviesVB = _context.Movie
-                       .Include(m => m.users.Where(u => u.id == user.id))
+                       .Include(m => m.users.Where(u => u.Id == user.Id))
                        .ToList();
 
             //Not sure why, but after the previous query this ViewBag has all the movies available, but user.movies
@@ -98,7 +98,7 @@ namespace MovieDatabase.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("id,username,email,password,related_account_id")] User user)
         {
-            if (id != user.id)
+            if (id != user.Id)
             {
                 return NotFound();
             }
@@ -112,7 +112,7 @@ namespace MovieDatabase.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.id))
+                    if (!UserExists(user.Id))
                     {
                         return NotFound();
                     }
@@ -135,7 +135,7 @@ namespace MovieDatabase.Controllers
             }
 
             var user = await _context.User
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
             {
                 return NotFound();
@@ -161,7 +161,7 @@ namespace MovieDatabase.Controllers
 
         private bool UserExists(string id)
         {
-            return _context.User.Any(e => e.id == id);
+            return _context.User.Any(e => e.Id == id);
         }
     }
 }

@@ -4,6 +4,8 @@ using System.Configuration;
 using MovieDatabase.Models;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MovieDatabase.Data;
 using MySql.Data.MySqlClient;
@@ -14,7 +16,12 @@ var configuration = builder.Configuration;
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("MovieDatabaseContext") ?? throw new InvalidOperationException("Connection string 'MovieDatabaseContext' not found.");
-builder.Services.AddDbContextPool<MovieDatabaseContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+builder.Services.AddDbContext<MovieDatabaseContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+builder.Services.AddIdentity<User, IdentityRole>()
+.AddEntityFrameworkStores<MovieDatabaseContext>();
+
+builder.Services.AddRazorPages();
 
 builder.Services.AddControllersWithViews();
 
@@ -49,6 +56,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
