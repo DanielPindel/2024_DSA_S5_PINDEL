@@ -26,7 +26,7 @@ namespace MovieDatabase.Controllers
         }
 
         // GET: Users/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
             {
@@ -76,7 +76,7 @@ namespace MovieDatabase.Controllers
         }
 
         // GET: Users/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null)
             {
@@ -96,7 +96,7 @@ namespace MovieDatabase.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,username,email,password,related_account_id")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("id,username,email,password,related_account_id")] User user)
         {
             if (id != user.id)
             {
@@ -127,7 +127,7 @@ namespace MovieDatabase.Controllers
         }
 
         // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null)
             {
@@ -159,7 +159,7 @@ namespace MovieDatabase.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(int id)
+        private bool UserExists(string id)
         {
             return _context.User.Any(e => e.id == id);
         }

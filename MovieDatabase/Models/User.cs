@@ -7,7 +7,7 @@ namespace MovieDatabase.Models
     {
         private MovieDatabaseContext context;
 
-        public int id { get; set; }
+        public string id { get; set; }
 
         public string username { get; set; }
 
