@@ -12,8 +12,8 @@ using MovieDatabase.Data;
 namespace MovieDatabase.Migrations
 {
     [DbContext(typeof(MovieDatabaseContext))]
-    [Migration("20240530160017_Identity")]
-    partial class Identity
+    [Migration("20240530165436_Test")]
+    partial class Test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

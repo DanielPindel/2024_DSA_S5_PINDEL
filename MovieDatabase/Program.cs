@@ -18,23 +18,20 @@ var configuration = builder.Configuration;
 var connectionString = builder.Configuration.GetConnectionString("MovieDatabaseContext") ?? throw new InvalidOperationException("Connection string 'MovieDatabaseContext' not found.");
 builder.Services.AddDbContext<MovieDatabaseContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-builder.Services.AddIdentity<User, IdentityRole>()
-.AddEntityFrameworkStores<MovieDatabaseContext>();
-
-builder.Services.AddRazorPages();
+builder.Services.AddDefaultIdentity<User>()
+    .AddEntityFrameworkStores<MovieDatabaseContext>();
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
-builder.Services.AddAuthentication(options =>
+builder.Services.Configure<IdentityOptions>(options =>
 {
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-})
-.AddCookie()
-.AddGoogle(options =>
-{
-    options.ClientId = configuration["Authentication:Google:ClientId"];
-    options.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.SignIn.RequireConfirmedAccount = false;
+    options.SignIn.RequireConfirmedEmail = false;
 });
 
 builder.Services.AddScoped<IMovieService, MovieService>();
@@ -50,16 +47,17 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapRazorPages();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 app.Run();
