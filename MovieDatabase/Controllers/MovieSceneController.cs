@@ -4,24 +4,19 @@ namespace MovieDatabase.Controllers
 {
     public class MovieSceneController : Controller
     {
-        public IActionResult Index()
+        private readonly ILogger<MovieSceneController> _logger;
+        private readonly IMovieService _movieService;
+
+        public MovieSceneController(ILogger<MovieSceneController> logger, IMovieService movieService)
         {
-            return View();
+            _logger = logger;
+            _movieService = movieService;
+        }
+        public async Task<IActionResult> Index()
+        {
+            var movies = await _movieService.GetAllMoviesAsync();
+            return View(movies);
         }
 
-        public IActionResult LaLaLand()
-        {
-            return View();
-        }
-
-        public IActionResult Oppenheimer()
-        {
-            return View();
-        }
-
-        public IActionResult BladeRunner2049()
-        {
-            return View();
-        }
     }
 }
