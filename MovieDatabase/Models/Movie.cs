@@ -14,6 +14,10 @@ namespace MovieDatabase.Models
 
         public string posterImagePath { get; set; }
 
+        public string? description { get; set; }
+
+        public string? trailer_link {  get; set; }
+
         public ICollection<Actor> actors { get; set;  } = [];
 
         public ICollection<UserMovie> usermovies { get; set; } = [];
