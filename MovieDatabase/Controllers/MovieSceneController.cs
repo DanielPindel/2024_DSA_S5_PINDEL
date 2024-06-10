@@ -12,10 +12,17 @@ namespace MovieDatabase.Controllers
             _logger = logger;
             _movieService = movieService;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
+            ViewBag.id = id;
             var movies = await _movieService.GetAllMoviesAsync();
             return View(movies);
+        }
+
+        public IActionResult MovieScene(int id)
+        {
+            ViewBag.id = id;
+            return View();
         }
 
     }

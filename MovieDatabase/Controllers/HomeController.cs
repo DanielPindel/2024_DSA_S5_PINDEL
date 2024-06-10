@@ -18,10 +18,10 @@ namespace MovieDatabase.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var movies = await _movieService.GetAllMoviesAsync();
+           var movies = await _movieService.GetAllMoviesAsync();
             return View(movies);
         }
-
+        
         public IActionResult Privacy()
         {
             return View();

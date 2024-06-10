@@ -18,6 +18,7 @@ namespace MovieDatabase.Controllers
 {
     public class MoviesController : Controller
     {
+
         private readonly MovieDatabaseContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
 

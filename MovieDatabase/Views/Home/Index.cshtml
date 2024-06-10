@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+
 <head>
     <link rel="stylesheet" href="~/css/HomePageSheet.css?t=<%= DateTime.Now.Ticks %>" />
 </head>
@@ -12,10 +13,12 @@
         {
             <div class="main-page-movie">
                 <div class="main-page-movie-poster">
-                    <img class="main-poster" src="~/images/@item.posterImagePath" alt="@item.title Poster" />
+                    <a href="@Url.Action("Index", "MovieScene", new { id = item.id })">
+                        <img class="main-poster" src="~/images/@item.posterImagePath" alt="@item.title Poster" />
+                    </a>
                 </div>
                 <div class="main-page-movie-title">
-                    @Html.DisplayFor(modelItem => item.title)
+                    @Html.ActionLink(item.title, "Index", "MovieScene", new { id = item.id })
                 </div>
                 <div class="main-page-star">
                     &#9733;
