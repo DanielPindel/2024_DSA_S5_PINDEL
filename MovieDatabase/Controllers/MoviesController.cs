@@ -78,7 +78,7 @@ namespace MovieDatabase.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,title,year,director_id")] Movie movie, IFormFile posterImagePath, int[] actors)
+        public async Task<IActionResult> Create([Bind("id,title,year,director_id,description,trailer_link")] Movie movie, IFormFile posterImagePath, int[] actors)
         {
             if (posterImagePath != null && posterImagePath.Length > 0)
             {
@@ -165,7 +165,7 @@ namespace MovieDatabase.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,title,year,director_id")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("id,title,year,director_id,description,trailer_link")] Movie movie)
         {
             if (id != movie.id)
             {
