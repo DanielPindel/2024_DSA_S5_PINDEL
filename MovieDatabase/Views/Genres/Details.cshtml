@@ -1,0 +1,33 @@
+﻿@model MovieDatabase.Models.Genre
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Genre</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.tag)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.tag)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.Raw("movies")
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (Movie m in ViewBag.moviesVB)
+            {
+                @Html.Raw(m.title + ", ")
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

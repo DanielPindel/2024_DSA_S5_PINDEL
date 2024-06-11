@@ -57,9 +57,15 @@ namespace MovieDatabase.Controllers
                         .Include(a => a.movies.Where(m => m.id == movie.id))
                         .ToList();
 
+
+            ViewBag.genresVB = _context.Genre
+                        .Include(g => g.movies.Where(m => m.id == movie.id))
+                        .ToList();
+
             //Not sure why, but after the previous query ViewBag has all the actors available, but movie.actors
             //has only the ones added to it, that's why this line has to be here.
             ViewBag.actorsVB = movie.actors;
+            ViewBag.genresVB = movie.genres;
 
             return View(movie);
         }
@@ -69,6 +75,7 @@ namespace MovieDatabase.Controllers
         {
             ViewBag.directorVB = new SelectList(_context.Director, "id", "nameSurnameLabel");
             ViewBag.actors = new MultiSelectList(_context.Actor, "id", "nameSurnameLabel");
+            ViewBag.genres = new MultiSelectList(_context.Genre, "id", "tag");
 
             return View();
         }
@@ -78,7 +85,7 @@ namespace MovieDatabase.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,title,year,director_id,description,trailer_link")] Movie movie, IFormFile posterImagePath, int[] actors)
+        public async Task<IActionResult> Create([Bind("id,title,year,director_id,description,trailer_link")] Movie movie, IFormFile posterImagePath, int[] actors, int[] genres)
         {
             if (posterImagePath != null && posterImagePath.Length > 0)
             {
@@ -97,7 +104,7 @@ namespace MovieDatabase.Controllers
             if (ModelState.IsValid)
             {
                 //int[] actors is the result of selected stuff from the list, and for some reason
-                //it also has to have the same name as the list from the object (Movie.actors)
+                //it also has to have the same name as the list from the object (Movie.actors), same with genres
                 if (actors != null)
                 {
                     var a = new List<Actor>();
@@ -107,6 +114,17 @@ namespace MovieDatabase.Controllers
                         a.Add(item);
                     }
                     movie.actors = a;
+                }
+
+                if (genres != null)
+                {
+                    var g = new List<Genre>();
+                    foreach (var genre in genres)
+                    {
+                        var item = _context.Genre.Find(genre);
+                        g.Add(item);
+                    }
+                    movie.genres = g;
                 }
 
                 _context.Add(movie);
