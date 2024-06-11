@@ -63,6 +63,17 @@
                 @Html.Raw(a.nameSurnameLabel + ", ")
             }
         </dd>
+
+        <dt class="col-sm-2">
+            @Html.Raw("comments")
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (Comment c in ViewBag.commentsVB)
+            {
+                @Html.Raw(c.content + " || ")
+            }
+        </dd>
+
         <dd class="col-sm-10">
 
         </dd>

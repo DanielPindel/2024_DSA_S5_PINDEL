@@ -16,6 +16,7 @@ namespace MovieDatabase.Models
         public ICollection<UserMovie> usermovies { get; set; } = [];
         public ICollection<User> users { get; set; } = [];
         public ICollection<Genre> genres { get; set; } = [];
+        public ICollection<Comment> comments { get; set; } = [];
 
         public Movie()
         {
@@ -23,6 +24,7 @@ namespace MovieDatabase.Models
             this.usermovies = new HashSet<UserMovie>();
             this.actors = new HashSet<Actor>();
             this.genres = new HashSet<Genre>();
+            this.comments = new HashSet<Comment>();
         }
     }
 }

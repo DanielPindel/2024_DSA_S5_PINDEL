@@ -26,6 +26,7 @@ namespace MovieDatabase.Data
         public DbSet<MovieDatabase.Models.User> User { get; set; } = default!;
         public DbSet<MovieDatabase.Models.UserMovie> UserMovie { get; set; } = default!;
         public DbSet<MovieDatabase.Models.Genre> Genre { get; set; } = default!;
+        public DbSet<MovieDatabase.Models.Comment> Comment { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,18 +49,19 @@ namespace MovieDatabase.Data
                     l => l.HasOne<User>().WithMany(u => u.usermovies).HasForeignKey(um => um.user_id),
                     r => r.HasOne<Movie>().WithMany(m => m.usermovies).HasForeignKey(um => um.movie_id));
 
-            /*modelBuilder.Entity<UserMovie>()
-                .HasNoKey()
+            modelBuilder.Entity<Comment>()
                 .HasOne<Movie>()
-                .WithMany(m => m.usermovies)
-                .HasForeignKey(um => um.movie_id);
+                .WithMany(m => m.comments)
+                .HasForeignKey(c => c.movie_id)
+                .IsRequired();
 
-
-            modelBuilder.Entity<UserMovie>()
-                .HasNoKey()
+            modelBuilder.Entity<Comment>()
                 .HasOne<User>()
-                .WithMany(m => m.usermovies)
-                .HasForeignKey(um => um.user_id);*/
+                .WithMany(u => u.comments)
+                .HasForeignKey(c => c.user_id)
+                .IsRequired();
+
+
 
         }
     }
