@@ -10,22 +10,22 @@ using MovieDatabase.Models;
 
 namespace MovieDatabase.Controllers
 {
-    public class CommentsController : Controller
+    public class SubcommentsController : Controller
     {
         private readonly MovieDatabaseContext _context;
 
-        public CommentsController(MovieDatabaseContext context)
+        public SubcommentsController(MovieDatabaseContext context)
         {
             _context = context;
         }
 
-        // GET: Comments
+        // GET: Subcomments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Comment.ToListAsync());
+            return View(await _context.Subcomment.ToListAsync());
         }
 
-        // GET: Comments/Details/5
+        // GET: Subcomments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,45 +33,41 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comment
+            var subcomment = await _context.Subcomment
                 .FirstOrDefaultAsync(m => m.id == id);
-            if (comment == null)
+            if (subcomment == null)
             {
                 return NotFound();
             }
 
-            ViewBag.subcommentsVB = _context.Subcomment
-                        .Where(s => s.comment_id == id)
-                        .ToList();
-
-            return View(comment);
+            return View(subcomment);
         }
 
-        // GET: Comments/Create
+        // GET: Subcomments/Create
         public IActionResult Create()
         {
-            ViewBag.movieVB = new SelectList(_context.Movie, "id", "title");
+            ViewBag.commentVB = new SelectList(_context.Comment, "id", "content");
             ViewBag.userVB = new SelectList(_context.User, "Id", "UserName");
             return View();
         }
 
-        // POST: Comments/Create
+        // POST: Subcomments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,movie_id,user_id,content,time,is_blocked")] Comment comment)
+        public async Task<IActionResult> Create([Bind("id,comment_id,user_id,content,time,is_blocked")] Subcomment subcomment)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(comment);
+                _context.Add(subcomment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(comment);
+            return View(subcomment);
         }
 
-        // GET: Comments/Edit/5
+        // GET: Subcomments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -79,26 +75,25 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comment.FindAsync(id);
-            if (comment == null)
+            var subcomment = await _context.Subcomment.FindAsync(id);
+            if (subcomment == null)
             {
                 return NotFound();
             }
 
-            ViewBag.movieVB = new SelectList(_context.Movie, "id", "title");
+            ViewBag.commentVB = new SelectList(_context.Comment, "id", "content");
             ViewBag.userVB = new SelectList(_context.User, "Id", "UserName");
-
-            return View(comment);
+            return View(subcomment);
         }
 
-        // POST: Comments/Edit/5
+        // POST: Subcomments/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,movie_id,user_id,content,time,is_blocked")] Comment comment)
+        public async Task<IActionResult> Edit(int id, [Bind("id,comment_id,user_id,content,time,is_blocked")] Subcomment subcomment)
         {
-            if (id != comment.id)
+            if (id != subcomment.id)
             {
                 return NotFound();
             }
@@ -107,12 +102,12 @@ namespace MovieDatabase.Controllers
             {
                 try
                 {
-                    _context.Update(comment);
+                    _context.Update(subcomment);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CommentExists(comment.id))
+                    if (!SubcommentExists(subcomment.id))
                     {
                         return NotFound();
                     }
@@ -123,10 +118,10 @@ namespace MovieDatabase.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(comment);
+            return View(subcomment);
         }
 
-        // GET: Comments/Delete/5
+        // GET: Subcomments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,34 +129,34 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comment
+            var subcomment = await _context.Subcomment
                 .FirstOrDefaultAsync(m => m.id == id);
-            if (comment == null)
+            if (subcomment == null)
             {
                 return NotFound();
             }
 
-            return View(comment);
+            return View(subcomment);
         }
 
-        // POST: Comments/Delete/5
+        // POST: Subcomments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var comment = await _context.Comment.FindAsync(id);
-            if (comment != null)
+            var subcomment = await _context.Subcomment.FindAsync(id);
+            if (subcomment != null)
             {
-                _context.Comment.Remove(comment);
+                _context.Subcomment.Remove(subcomment);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CommentExists(int id)
+        private bool SubcommentExists(int id)
         {
-            return _context.Comment.Any(e => e.id == id);
+            return _context.Subcomment.Any(e => e.id == id);
         }
     }
 }
