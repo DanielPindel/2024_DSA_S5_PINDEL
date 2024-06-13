@@ -33,9 +33,9 @@
     </div>
     <div class="buttons-header">My movies</div>
     <div class="profile-buttons">
-        <button class="profile-button">Want to watch</button>
-        <button class="profile-button">Ratings and reviews</button>
-        <button class="profile-button">Favorite films</button>
+        <button class="profile-button" onclick="window.location.href='@Url.Action("Index", "Watchlist")'">Want to watch</button>
+        <button class="profile-button" onclick="window.location.href='@Url.Action("Index", "RatingsAndReviews")'">Ratings and reviews</button>
+        <button class="profile-button" onclick="window.location.href='@Url.Action("Index", "Favorites")'">Favorite films</button>
     </div>
 </div>
 

@@ -1,0 +1,42 @@
+﻿body {
+    background-color: #202020;
+}
+
+.favorites-title {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: left;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.grid-container-favorites {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding-bottom: 20px;
+}
+
+.favorite-movie {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.favorite-movie-poster img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.favorite-movie-title {
+    font-size: 1.2em;
+    margin-top: 10px;
+}
+
+.favorite-movie-year {
+    color: #666;
+    font-size: 1em;
+    margin-top: 5px;
+}

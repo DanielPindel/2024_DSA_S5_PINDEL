@@ -1,0 +1,42 @@
+﻿body {
+    background-color: #202020;
+}
+
+.watchlist-title {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: left;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.grid-container-watchlist {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding-bottom: 20px;
+}
+
+.watchlist-movie {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.watchlist-movie-poster img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.watchlist-movie-title {
+    font-size: 1.2em;
+    margin-top: 10px;
+}
+
+.watchlist-movie-year {
+    color: #666;
+    font-size: 1em;
+    margin-top: 5px;
+}

@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Favorites";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/FavoritesStyleSheet.css" />
+</head>
+
+<body>
+    <div class="favorites-title">Favorite movies</div>
+    <div class="grid-container-favorites">
+        <!-- foreach (var item in Model) -->
+        @for (int i = 0; i < 3; i++)
+        {
+            <div class="favorite-movie">
+                <div class="favorite-movie-poster">
+                    <!-- Display movie poster -->
+                    <!-- <img class="poster" src="~/images/item.posterImagePath" alt="item.title Poster" /> -->
+                    <img class="poster" src="~/images/2bf4c253-4d55-42dc-97c5-235b52d92f3a_bladerunner.jpg" alt="Placeholder Poster" />
+                </div>
+                <div class="favorite-movie-title">
+                    <!-- Display movie title -->
+                    <!-- Html.DisplayFor(modelItem => item.title) -->
+                    <span>Favorite</span>
+                </div>
+                <div class="favorite-movie-year">
+                    <!-- Display movie year -->
+                    <!-- Html.DisplayFor(modelItem => item.year) -->
+                    <span>2022</span>
+                </div>
+            </div>
+        }
+    </div>
+</body>
