@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MovieDatabase.Models.Movie>
+﻿@model MovieDatabase.Models.Movie
 
 @{
     ViewData["Title"] = "MovieScene";
@@ -6,29 +6,34 @@
 
 <head>
     <link rel="stylesheet" href="~/css/HomePageSheet.css?t=<%= DateTime.Now.Ticks %>" />
+    
 </head>
 <body>
-    
+    @{
+        var path = Model.posterImagePath;
+    }
     <div class="grid-container-main-page">
-        @foreach (var item in Model)
-
-        @if(item.id == ViewBag.id)
-        {
+        
+        
             <div class="main-page-movie">
                 <div class="main-page-movie-poster">
-                    <img class="main-poster" src="~/images/@item.posterImagePath" alt="@item.title Poster" />
+                <img class="main-poster" src="~/images/@path" alt="model.title Poster" />
                 </div>
                 <div class="main-page-movie-title">
-                    <h2>@item.title</h2>
+                    <h2>@Html.DisplayFor(model => model.description)</h2>
                 </div>
-                <div>
-                        <h3>@item.director_id</h3>
+                    <div>
+                        <h3>@Html.DisplayFor(model => model.title)</h3>
                     </div>
                     <div>
-                        <h4>@item.actors</h4>
+                        @foreach (var a in ViewBag.actorsVB)
+                        
+                            @Html.Raw(a.nameSurnameLabel + ", ")
+                        
                     </div>
+
             </div>
-        }
+        
     </div>
         
 </body>
