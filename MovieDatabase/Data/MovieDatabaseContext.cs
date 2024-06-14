@@ -28,6 +28,7 @@ namespace MovieDatabase.Data
         public DbSet<MovieDatabase.Models.Genre> Genre { get; set; } = default!;
         public DbSet<MovieDatabase.Models.Comment> Comment { get; set; } = default!;
         public DbSet<MovieDatabase.Models.Subcomment> Subcomment { get; set; } = default!;
+        public DbSet<MovieDatabase.Models.Rating> Rating { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -73,6 +74,18 @@ namespace MovieDatabase.Data
                 .WithMany(c => c.subcomments)
                 .HasForeignKey(s => s.comment_id)
                 .IsRequired();
+
+            modelBuilder.Entity<Rating>()
+               .HasOne<Movie>()
+               .WithMany(m => m.ratings)
+               .HasForeignKey(r => r.movie_id)
+               .IsRequired();
+
+            modelBuilder.Entity<Rating>()
+              .HasOne<User>()
+              .WithMany(u => u.ratings)
+              .HasForeignKey(r => r.user_id)
+              .IsRequired();
 
         }
     }

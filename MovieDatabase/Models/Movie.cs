@@ -11,12 +11,15 @@ namespace MovieDatabase.Models
         public string posterImagePath { get; set; }
         public string? description { get; set; }
         public string? trailer_link {  get; set; }
+        public int? rate { get; set; }
 
         public ICollection<Actor> actors { get; set;  } = [];
         public ICollection<UserMovie> usermovies { get; set; } = [];
         public ICollection<User> users { get; set; } = [];
         public ICollection<Genre> genres { get; set; } = [];
         public ICollection<Comment> comments { get; set; } = [];
+        public ICollection<Rating> ratings { get; set; } = [];
+
 
         public Movie()
         {
@@ -25,6 +28,7 @@ namespace MovieDatabase.Models
             this.actors = new HashSet<Actor>();
             this.genres = new HashSet<Genre>();
             this.comments = new HashSet<Comment>();
+            this.ratings = new HashSet<Rating>();
         }
     }
 }

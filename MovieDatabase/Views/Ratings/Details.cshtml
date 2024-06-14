@@ -1,0 +1,54 @@
+﻿@model MovieDatabase.Models.Rating
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Rating</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.Raw("movie")
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (Movie m in ViewBag.movieVB)
+            {
+                @Html.Raw(m.title)
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.Raw("posted by user")
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (User u in ViewBag.userVB)
+            {
+                @Html.Raw(u.UserName)
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.rate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.rate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.review)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.review)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.time)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.time)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
