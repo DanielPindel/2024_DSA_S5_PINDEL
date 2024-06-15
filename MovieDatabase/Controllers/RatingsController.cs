@@ -9,7 +9,7 @@ using MovieDatabase.Data;
 using MovieDatabase.Models;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
-namespace MovieDatabase
+namespace MovieDatabase.Controllers
 {
     public class RatingsController : Controller
     {

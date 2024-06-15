@@ -1,4 +1,7 @@
-﻿@{
+﻿@model MovieDatabase.Models.User
+
+
+@{
     ViewData["Title"] = "Watchlist";
 }
 
@@ -10,18 +13,19 @@
     <div class="watchlist-title">My watchlist</div>
     <div class="grid-container-watchlist">
         <!-- foreach (var item in Model) -->
-        @for (int i = 0; i < 20; i++)
+        @foreach (Movie movie in ViewBag.moviesVB)
         {
+            var path = movie.posterImagePath;
             <div class="watchlist-movie">
                 <div class="watchlist-movie-poster">
                     <!-- Display movie poster -->
 					<!-- <img class="poster" src="~/images/item.posterImagePath" alt="item.title Poster" /> -->
-                <img class="poster" src="~/images/2bf4c253-4d55-42dc-97c5-235b52d92f3a_bladerunner.jpg" alt="Placeholder Poster" />
+                <img class="poster" src="~/images/@path" alt="Placeholder Poster" />
                 </div>
                 <div class="watchlist-movie-title">
                     <!-- Display movie title -->
 					<!-- Html.DisplayFor(modelItem => item.title) -->
-                    <span>Movie Title Placeholder</span>
+                    <h3>@Html.Raw(movie.title)</h3>
 				</div>
                 <div class="watchlist-movie-year">
                     <!-- Display movie year -->
