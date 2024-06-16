@@ -1,6 +1,5 @@
 ﻿@model MovieDatabase.Models.User
 
-
 @{
     ViewData["Title"] = "Watchlist";
 }
@@ -12,27 +11,45 @@
 <body>
     <div class="watchlist-title">My watchlist</div>
     <div class="grid-container-watchlist">
-        <!-- foreach (var item in Model) -->
         @foreach (Movie movie in ViewBag.moviesVB)
         {
             var path = movie.posterImagePath;
             <div class="watchlist-movie">
                 <div class="watchlist-movie-poster">
                     <!-- Display movie poster -->
-					<!-- <img class="poster" src="~/images/item.posterImagePath" alt="item.title Poster" /> -->
-                <img class="poster" src="~/images/@path" alt="Placeholder Poster" />
+                    <img class="poster" src="~/images/@path" alt="Placeholder Poster" />
                 </div>
                 <div class="watchlist-movie-title">
                     <!-- Display movie title -->
-					<!-- Html.DisplayFor(modelItem => item.title) -->
                     <h3>@Html.Raw(movie.title)</h3>
-				</div>
+                </div>
                 <div class="watchlist-movie-year">
                     <!-- Display movie year -->
-					<!-- Html.DisplayFor(modelItem => item.year) -->
-                    <span>@movie.year</span>
-				</div>
+                    <span>@Html.DisplayFor(modelItem => movie.year)</span>
+                </div>
+                <div class="movie-overlay">
+                    <button class="remove-button" onclick="removeFromWatchlist(@movie.id)">
+                        <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                    </button>
+                </div>
             </div>
         }
     </div>
 </body>
+
+<script>
+    async function removeFromWatchlist(movieId) {
+        const response = await fetch(`/Watchlist/Remove/${movieId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            document.getElementById(`movie-${movieId}`).remove();
+        } else {
+            alert('Failed to remove movie from watchlist.');
+        }
+    }
+</script>

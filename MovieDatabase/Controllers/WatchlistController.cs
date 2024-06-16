@@ -57,5 +57,27 @@ namespace MovieDatabase.Controllers
 
             return View(user);
         }
+
+        public async Task<IActionResult> Remove(int id)
+        {
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return NotFound();
+            }
+
+            var userMovie = await _context.UserMovie
+                .FirstOrDefaultAsync(um => um.user_id == userId && um.movie_id == id && um.context_id == 1);
+
+            if (userMovie == null)
+            {
+                return NotFound();
+            }
+
+            _context.UserMovie.Remove(userMovie);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

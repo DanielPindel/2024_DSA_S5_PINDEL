@@ -30,6 +30,10 @@
     border-radius: 8px;
 }
 
+.favorite-movie:hover {
+    transform: translateY(-10px); /* Move the image up slightly */
+}
+
 .favorite-movie-title {
     font-size: 1.2em;
     margin-top: 10px;
@@ -39,4 +43,39 @@
     color: #666;
     font-size: 1em;
     margin-top: 5px;
+}
+
+.movie-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    flex-direction: column;
+    transition: opacity 0.3s ease;
+    border-radius: 8px;
+}
+
+/* Show overlay on hover */
+.favorite-movie:hover .movie-overlay {
+    height: 100%;
+    opacity: 1;
+}
+
+.favorite-movie:hover {
+    transform: translateY(-10px); /* Move the image up slightly */
+}
+
+.remove-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 2em;
+    color: white;
+    outline: none;
 }

@@ -9,26 +9,45 @@
 <body>
     <div class="favorites-title">Favorite movies</div>
     <div class="grid-container-favorites">
-        <!-- foreach (var item in Model) -->
-        @for (int i = 0; i < 3; i++)
+        @foreach (Movie movie in ViewBag.moviesVB)
         {
+            var path = movie.posterImagePath;
             <div class="favorite-movie">
                 <div class="favorite-movie-poster">
                     <!-- Display movie poster -->
-                    <!-- <img class="poster" src="~/images/item.posterImagePath" alt="item.title Poster" /> -->
-                    <img class="poster" src="~/images/2bf4c253-4d55-42dc-97c5-235b52d92f3a_bladerunner.jpg" alt="Placeholder Poster" />
+                    <img class="poster" src="~/images/@path" alt="Placeholder Poster" />
                 </div>
                 <div class="favorite-movie-title">
                     <!-- Display movie title -->
-                    <!-- Html.DisplayFor(modelItem => item.title) -->
-                    <span>Favorite</span>
+                    <h3>@Html.Raw(movie.title)</h3>
                 </div>
                 <div class="favorite-movie-year">
                     <!-- Display movie year -->
-                    <!-- Html.DisplayFor(modelItem => item.year) -->
-                    <span>2022</span>
+                    <span>@movie.year</span>
+                </div>
+                <div class="movie-overlay">
+                    <button class="remove-button" onclick="removeFromFavorites(@movie.id)">
+                        <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                    </button>
                 </div>
             </div>
         }
     </div>
 </body>
+
+<script>
+    async function removeFromFavorites(movieId) {
+        const response = await fetch(`/Favorites/Remove/${movieId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            document.getElementById(`movie-${movieId}`).remove();
+        } else {
+            alert('Failed to remove movie from favorites.');
+        }
+    }
+</script>
