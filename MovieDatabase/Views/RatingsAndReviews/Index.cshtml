@@ -1,4 +1,6 @@
-﻿@{
+﻿@model MovieDatabase.Models.User
+
+@{
     ViewData["Title"] = "RatingsAndReviews";
 }
 
@@ -9,22 +11,25 @@
 <body>
     <div class="ratings-title">My ratings and reviews</div>
     <div class="rating-container">
-        @for (int i = 0; i < 10; i++)
+        @foreach (Rating rating in ViewBag.ratingsVB)
         {
+            List<Movie> movies = ViewBag.moviesVB;
+            Movie movie = movies.FirstOrDefault(m => m.id == rating.movie_id);
+            var path = movie.posterImagePath;
             <div class="rating-item">
-                <div class="rating-date">Reviewed on: 2024-05-29</div>
+                <div class="rating-date">Reviewed on: @rating.time</div>
                 <div class="stars">
-                    @for (int j = 1; j <= 10; j++)
+                    @for (int j = 1; j <= rating.rate; j++)
                     {
                         <span class="star" data-value="@j">&#9733;</span>
                     }
                 </div>
                 <div class="rating-poster">
-                    <img src="~/images/2bf4c253-4d55-42dc-97c5-235b52d92f3a_bladerunner.jpg" alt="Placeholder Poster" />
+                    <img src="~/images/@path" alt="Placeholder Poster" />
                 </div>
-                <div class="rating-title">Movie Title Placeholder</div>
-                <div class="rating-year">2024</div>
-                <div class="rating-review">This is a placeholder review text.</div>
+                <div class="rating-title">@movie.title</div>
+                <div class="rating-year">@movie.year</div>
+                <div class="rating-review">@rating.review</div>
             </div>
         }
     </div>

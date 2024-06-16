@@ -14,7 +14,6 @@ namespace MovieDatabase.Controllers
     {
         // Declaration of context as a class member
         private readonly MovieDatabaseContext _context;
-        private readonly ILogger<WatchlistController> _logger;
 
         // Watchlist constructor that assigns our context to the class
         public WatchlistController(MovieDatabaseContext context)
