@@ -16,6 +16,15 @@
             <div class="main-page-movie-poster">
                 <img class="main-poster" src="~/images/@path" alt="@Model.title Poster" />
             </div>
+            <div class="stars">
+                @{
+                    Movie movie = Model;
+                }
+                    @for (int j = 1; j <= movie.rate; j++)
+                    {
+                        <span class="star" data-value="@j">&#9733;</span>
+                    }
+                </div>
             <div class="main-page-movie-info">
                 <div class="main-page-movie-title">
                     <h3>@Html.DisplayFor(model => model.title)</h3>
@@ -45,45 +54,34 @@
                 <h3>Comments</h3>
                 @foreach (var comment in ViewBag.commentsVB)
                 {
-<<<<<<< HEAD
-                    <div class="comment">
-                        <p>@comment.content</p>
-                    </div>
-                    
-                }
-                <div>
-                    @{
-                        Comment comment1 = new Comment();
-                    }
-                   
-                        <div class="form-group">
-                        <a href="/MovieScene/Create">
-                            <button>Write a comment</button>
-                            </a>
-                        </div>
-                        
-
-                </div>
-                
-=======
                     List<User> users = [];
-                    foreach(User u in ViewBag.usersVB)
+                    foreach (User u in ViewBag.usersVB)
                     {
-                        if(comment.user_id == u.Id)
+                        if (comment.user_id == u.Id)
                         {
                             users.Add(u);
                             break;
                         }
                     }
->>>>>>> dd7796a54c30182fefaa3ecdcac52290565ca293
 
                     {
                         <div class="comment">
                             <p>@users[0]</p>
                             <p>@comment.content</p>
                         </div>
-                    }
+                    }                   
                 }
+                @{
+                    Comment comment1 = new Comment();
+                }
+
+                <div class="form-group">
+                    <a href="/MovieScene/Create">
+                        <button>Write a comment</button>
+                    </a>
+                </div>
+                <div>
+                </div>
             </div>
         </div>
     </div>
