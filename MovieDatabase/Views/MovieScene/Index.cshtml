@@ -40,6 +40,18 @@
                     <iframe src="@Model.trailer_link" allowfullscreen></iframe>
                 </div>
             </div>
+
+            <div class="comments-section">
+                <h3>Comments</h3>
+                @foreach (var comment in ViewBag.commentsVB)
+
+                {
+                    <div class="comment">
+                        <p>@comment.content</p>
+                    </div>
+                }
+
+            </div>
         </div>
     </div>
 </body>

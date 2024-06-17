@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MovieDatabase.Data;
 using MovieDatabase.Models;
@@ -60,7 +61,28 @@ namespace MovieDatabase.Controllers
             return View(movie);
         }
 
-        
+        public IActionResult Create()
+        {
+            ViewBag.movieVB = new SelectList(_context.Movie, "id", "title");
+            ViewBag.userVB = new SelectList(_context.User, "Id", "UserName");
+            return View();
+        }
+
+        // POST: Comments/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("id,movie_id,user_id,content,time,is_blocked")] Comment comment)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(comment);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(comment);
+        }
 
 
     }
