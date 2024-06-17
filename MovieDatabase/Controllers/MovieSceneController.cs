@@ -51,6 +51,8 @@ namespace MovieDatabase.Controllers
                         .Where(c => c.movie_id == id)
                         .ToList();
 
+            ViewBag.usersVB = await _context.Users.ToListAsync();
+
 
             //Not sure why, but after the previous query ViewBag has all the actors available, but movie.actors
             //has only the ones added to it, that's why this line has to be here.

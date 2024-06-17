@@ -1,5 +1,7 @@
 ﻿body {
     background-color: #202020;
+    color: #fff;
+    font-family: Arial, sans-serif;
 }
 
 .favorites-title {
@@ -18,16 +20,24 @@
 }
 
 .favorite-movie {
+    position: relative;
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 8px;
     text-align: center;
+    overflow: hidden;
+}
+
+.favorite-movie-poster {
+    position: relative;
+    overflow: hidden;
 }
 
 .favorite-movie-poster img {
     width: 100%;
     height: auto;
     border-radius: 8px;
+    transition: transform 0.3s ease;
 }
 
 .favorite-movie:hover {
