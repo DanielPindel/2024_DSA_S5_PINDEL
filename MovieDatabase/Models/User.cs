@@ -7,6 +7,7 @@ namespace MovieDatabase.Models
     {
         private MovieDatabaseContext context;
         public int related_account_id { get; set; }
+        public string? avatar_path { get; set; }
 
         public ICollection<UserMovie> usermovies { get; set; } = [];
         public ICollection<Movie> movies { get; set; } = [];
