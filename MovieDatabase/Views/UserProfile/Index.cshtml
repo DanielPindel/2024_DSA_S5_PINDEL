@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="~/css/ProfileStyleSheet.css" />
 </head>
 
+@{
+    int watchlistNo = ViewBag.watchlistNoVB;
+    int ratedNo = ViewBag.ratedNoVB;
+    int favNo = ViewBag.favNoVB;
+}
+
 <div class="profile-container">
     <div class="profile-photo">
         <div class="photo-placeholder">
@@ -23,13 +29,13 @@
         <div class="statistics-header">Statistics</div>
         <div class="user-stats">
             <div class="stats-item">
-                <span class="stats-text">Watchlist <span class="stats-number">0</span></span>
+                <span class="stats-text">Watchlists: <span class="stats-number">@watchlistNo</span></span>
             </div>
             <div class="stats-item">
-                <span class="stats-text">Rated <span class="stats-number">0</span></span>
+                <span class="stats-text">Rated: <span class="stats-number">@ratedNo</span></span>
             </div>
             <div class="stats-item">
-                <span class="stats-text">Favorites <span class="stats-number">0</span></span>
+                <span class="stats-text">Favorites: <span class="stats-number">@favNo</span></span>
             </div>
         </div>
     </div>
