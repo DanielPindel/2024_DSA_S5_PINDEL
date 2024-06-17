@@ -5,35 +5,41 @@
 }
 
 <head>
-    <link rel="stylesheet" href="~/css/HomePageSheet.css?t=<%= DateTime.Now.Ticks %>" />
-    
+    <link rel="stylesheet" href="~/css/movie-scene.css?t=<%= DateTime.Now.Ticks %>" />
 </head>
 <body>
     @{
         var path = Model.posterImagePath;
     }
     <div class="grid-container-main-page">
-        
-        
-            <div class="main-page-movie">
-                <div class="main-page-movie-poster">
-                <img class="main-poster" src="~/images/@path" alt="model.title Poster" />
-                </div>
+        <div class="main-page-movie">
+            <div class="main-page-movie-poster">
+                <img class="main-poster" src="~/images/@path" alt="@Model.title Poster" />
+            </div>
+            <div class="main-page-movie-info">
                 <div class="main-page-movie-title">
+                    <h3>@Html.DisplayFor(model => model.title)</h3>
                     <h2>@Html.DisplayFor(model => model.description)</h2>
                 </div>
-                    <div>
-                        <h3>@Html.DisplayFor(model => model.title)</h3>
-                    </div>
-                    <div>
-                        @foreach (var a in ViewBag.actorsVB)
-                        
-                            @Html.Raw(a.nameSurnameLabel + ", ")
-                        
-                    </div>
-
+                <div class="actor-info">
+                    <h4>Actors:</h4>
+                    @foreach (var a in ViewBag.actorsVB)
+                    {
+                        <h5>@Html.Raw(a.nameSurnameLabel)</h5>
+                    }
+                </div>
+                <div class="director-info">
+                    <h4>Director:</h4>
+                    @foreach (var d in ViewBag.directorVB)
+                    {
+                        <h5>@Html.Raw(d.nameSurnameLabel)</h5>
+                    }
+                </div>
+                <div class="trailer-info">
+                    <h4>Trailer:</h4>
+                    <iframe src="@Model.trailer_link" allowfullscreen></iframe>
+                </div>
             </div>
-        
+        </div>
     </div>
-        
 </body>

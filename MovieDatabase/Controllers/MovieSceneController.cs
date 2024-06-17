@@ -50,6 +50,7 @@ namespace MovieDatabase.Controllers
                         .Where(c => c.movie_id == id)
                         .ToList();
 
+
             //Not sure why, but after the previous query ViewBag has all the actors available, but movie.actors
             //has only the ones added to it, that's why this line has to be here.
             ViewBag.actorsVB = movie.actors;
