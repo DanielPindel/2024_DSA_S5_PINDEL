@@ -40,6 +40,29 @@
                     <iframe src="@Model.trailer_link" allowfullscreen></iframe>
                 </div>
             </div>
+
+            <div class="comments-section">
+                <h3>Comments</h3>
+                @foreach (var comment in ViewBag.commentsVB)
+                {
+                    List<User> users = [];
+                    foreach(User u in ViewBag.usersVB)
+                    {
+                        if(comment.user_id == u.Id)
+                        {
+                            users.Add(u);
+                            break;
+                        }
+                    }
+
+                    {
+                        <div class="comment">
+                            <p>@users[0]</p>
+                            <p>@comment.content</p>
+                        </div>
+                    }
+                }
+            </div>
         </div>
     </div>
 </body>

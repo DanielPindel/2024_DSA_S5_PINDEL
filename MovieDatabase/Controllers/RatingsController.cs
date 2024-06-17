@@ -73,6 +73,25 @@ namespace MovieDatabase.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Calculating movie average rating
+                var movie = await _context.Movie.FirstOrDefaultAsync(m => m.id == rating.movie_id);
+
+                if (movie.rate == 0)
+                {
+                    movie.rate = rating.rate;
+                }
+                else
+                {
+                    var ratings = _context.Rating
+                        .Where(r => r.movie_id == movie.id)
+                        .ToList();
+                    var count = movie.ratings.Count();
+                    movie.rate = (count * movie.rate + rating.rate) / (count + 1);
+                }
+
+                _context.Update(movie);
+                // ---
+
                 _context.Add(rating);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -117,7 +136,30 @@ namespace MovieDatabase.Controllers
                 try
                 {
                     _context.Update(rating);
+
                     await _context.SaveChangesAsync();
+
+                    // Calculating movie average rating
+                    var movie = await _context.Movie.FirstOrDefaultAsync(m => m.id == rating.movie_id);
+
+                    var ratings = _context.Rating
+                        .Where(r => r.movie_id == movie.id)
+                        .ToList();
+                    var count = movie.ratings.Count();
+                    var rating_sum = 0;
+                    foreach(Rating r in ratings)
+                    {
+                        rating_sum += r.rate;
+                    }
+                    movie.rate = (rating_sum) / (count);
+
+                    _context.Update(movie);
+
+                    // ---
+
+                    await _context.SaveChangesAsync();
+                    
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -161,6 +203,26 @@ namespace MovieDatabase.Controllers
             var rating = await _context.Rating.FindAsync(id);
             if (rating != null)
             {
+                // Calculating movie average rating
+                var movie = await _context.Movie.FirstOrDefaultAsync(m => m.id == rating.movie_id);
+
+                var ratings = _context.Rating
+                    .Where(r => r.movie_id == movie.id)
+                    .ToList();
+
+                var count = movie.ratings.Count();
+                if(count == 1)
+                {
+                    movie.rate = 0;
+                }
+                else
+                {
+                    movie.rate = (count * movie.rate - rating.rate) / (count - 1);
+                }
+
+                _context.Update(movie);
+                // ---
+
                 _context.Rating.Remove(rating);
             }
 
