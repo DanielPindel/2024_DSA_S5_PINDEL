@@ -13,7 +13,7 @@
         <div class="photo-placeholder">
             <input type="file" id="profile-image-input" accept="image/*" style="display: none;">
             <label for="profile-image-input">
-                <i class="fa-solid fa-camera" style="color: black;"></i>
+                <i class="fa-solid fa-pen" style="color: white;"></i>
             </label>
             <img id="profile-image-preview" src="#" alt="Preview" style="display: none;">
         </div>
@@ -23,10 +23,10 @@
         <div class="statistics-header">Statistics</div>
         <div class="user-stats">
             <div class="stats-item">
-                <span class="stats-text">Movies <span class="stats-number">0</span></span>
+                <span class="stats-text">Watchlist <span class="stats-number">0</span></span>
             </div>
             <div class="stats-item">
-                <span class="stats-text">Watchlist <span class="stats-number">0</span></span>
+                <span class="stats-text">Rated <span class="stats-number">0</span></span>
             </div>
             <div class="stats-item">
                 <span class="stats-text">Favorites <span class="stats-number">0</span></span>
@@ -42,7 +42,6 @@
 </div>
 
 <script>
-
     const profileImageInput = document.getElementById('profile-image-input');
     const profileImagePreview = document.getElementById('profile-image-preview');
     const chooseProfileImageLabel = document.querySelector('label[for="profile-image-input"]');
@@ -57,8 +56,7 @@
             };
 
             reader.readAsDataURL(profileImageInput.files[0]);
-
-            chooseProfileImageLabel.style.display = 'none';
         }
     });
+
 </script>

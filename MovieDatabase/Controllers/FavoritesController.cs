@@ -44,7 +44,7 @@ namespace MovieDatabase.Controllers
 
             foreach (var userMovie in userMovies)
             {
-                if (userMovie.context_id == 3)
+                if (userMovie.context_id == 2)
                 {
                     var movie = _context.Movie.FirstOrDefault(m => m.id == userMovie.movie_id);
                     movies.Add(movie);
@@ -67,7 +67,7 @@ namespace MovieDatabase.Controllers
             }
 
             var userMovie = await _context.UserMovie
-                .FirstOrDefaultAsync(um => um.user_id == userId && um.movie_id == id && um.context_id == 3);
+                .FirstOrDefaultAsync(um => um.user_id == userId && um.movie_id == id && um.context_id == 2);
 
             if (userMovie == null)
             {
