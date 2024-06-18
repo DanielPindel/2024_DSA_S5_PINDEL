@@ -27,9 +27,11 @@
     max-width: 1200px;
     width: 100%;
     box-sizing: border-box;
+    position: relative;
 }
 
 .main-page-movie-poster {
+    grid-column: 1 / 2;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,10 +43,8 @@
 }
 
 .main-page-movie-title {
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    grid-column: 2 / 3;
+    text-align: left;
 }
 
 h2 {
@@ -66,11 +66,55 @@ h4, h5 {
 }
 
 .main-page-movie-info {
+    grid-column: 2 / 3;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.director-info, .actor-info, .trailer-info {
+.director-info, .actor-info {
     margin-top: 20px;
 }
+
+.trailer-info {
+    grid-column: 2 / 3;
+    margin-top: 20px;
+}
+
+.stars {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    grid-column: 2 / 3;
+}
+
+.comments-section {
+    background-color: white;
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    grid-column: 1 / 3;
+}
+
+.comment {
+    margin-bottom: 10px;
+}
+
+.form-group {
+    margin-top: 20px;
+    text-align: center;
+}
+
+button {
+    background-color: #444444;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    button:hover {
+        background-color: #555555;
+    }
