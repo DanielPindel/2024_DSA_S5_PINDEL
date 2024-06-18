@@ -12,18 +12,24 @@
     int watchlistNo = ViewBag.watchlistNoVB;
     int ratedNo = ViewBag.ratedNoVB;
     int favNo = ViewBag.favNoVB;
+
+    string avatar_path = ViewBag.avatarPathVB;
 }
 
 <div class="profile-container">
+    <form asp-action="Index" enctype="multipart/form-data">
     <div class="profile-photo">
         <div class="photo-placeholder">
-            <input type="file" id="profile-image-input" accept="image/*" style="display: none;">
+            <input type="file" id="profile-image-input" name="avatarImagePath" accept="images/*" style="display: none;">
             <label for="profile-image-input">
                 <i class="fa-solid fa-pen" style="color: white;"></i>
             </label>
-            <img id="profile-image-preview" src="#" alt="Preview" style="display: none;">
+                <img id="profile-image-preview" src="#" alt="Preview" style="display: none;">
+                <img class="profile-image" src="~/images/@avatar_path" alt="No picture selected" />
         </div>
     </div>
+    <input type="submit" value="Save Profile Picture" class="btn btn-primary" />
+    </form>
     <div class="profile-info">
         <div class="name-placeholder">@User.Identity.Name</div>
         <div class="statistics-header">Statistics</div>

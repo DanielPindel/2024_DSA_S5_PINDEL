@@ -64,7 +64,7 @@ namespace MovieDatabase.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,username,email,password,related_account_id,avatar_path")] User user)
+        public async Task<IActionResult> Create([Bind("id,username,email,password,related_account_id,avatar_path,is_admin")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace MovieDatabase.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("id,username,email,password,related_account_id,avatar_path")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("id,username,email,password,related_account_id,avatar_path,is_admin")] User user)
         {
             if (id != user.Id)
             {

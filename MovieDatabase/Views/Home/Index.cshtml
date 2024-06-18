@@ -9,6 +9,18 @@
 </head>
 <body>
     <div class="grid-container-main-page">
+        @{
+            var is_admin = ViewBag.isAdminVB;
+        }
+        @if (is_admin)
+        {
+            <div class="form-group">
+                <a href="/Movies/Create">
+                    <button>Add a movie</button>
+                </a>
+            </div>
+        }
+
         @foreach (var item in Model)
         {
             <div class="main-page-movie">
