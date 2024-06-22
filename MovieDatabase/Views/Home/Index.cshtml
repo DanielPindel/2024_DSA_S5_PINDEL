@@ -35,8 +35,15 @@
                 <div class="main-page-star">
                     &#9733;
                 </div>
+                @{
+                    decimal r = 0;
+                    if(item.rate != null)
+                    {
+                        r = Convert.ToDecimal(item.rate);
+                    }
+                }
                 <div class="main-page-movie-rating">
-                    10
+                    @Math.Round(r, 1)
                 </div>
             </div>
         }
