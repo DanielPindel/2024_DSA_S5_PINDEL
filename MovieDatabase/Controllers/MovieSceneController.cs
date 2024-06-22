@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MovieDatabase.Data;
 using MovieDatabase.Models;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace MovieDatabase.Controllers
 {
@@ -12,6 +14,7 @@ namespace MovieDatabase.Controllers
         private readonly ILogger<MovieSceneController> _logger;
         private readonly IMovieService _movieService;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private static Movie currentMovie = new Movie();
 
         public MovieSceneController(ILogger<MovieSceneController> logger, IMovieService movieService, MovieDatabaseContext context, IWebHostEnvironment webHostEnvironment)
         {
@@ -34,6 +37,9 @@ namespace MovieDatabase.Controllers
             {
                 return NotFound();
             }
+            currentMovie = movie;
+
+
             ViewBag.directorVB = _context.Director
                         .Where(d => d.id == movie.director_id)
                         .ToList();
@@ -54,6 +60,22 @@ namespace MovieDatabase.Controllers
             ViewBag.usersVB = await _context.Users.ToListAsync();
 
 
+
+            // Some stuff to get the user
+            string? u_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (u_id == null)
+            {
+                ViewBag.currentUserVB = null;
+            }
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == u_id);
+            if (user == null)
+            {
+                ViewBag.currentUserVB = null;
+            }
+
+            ViewBag.currentUserVB = user;
+
+
             //Not sure why, but after the previous query ViewBag has all the actors available, but movie.actors
             //has only the ones added to it, that's why this line has to be here.
             ViewBag.actorsVB = movie.actors;
@@ -63,10 +85,9 @@ namespace MovieDatabase.Controllers
             return View(movie);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewBag.movieVB = new SelectList(_context.Movie, "id", "title");
-            ViewBag.userVB = new SelectList(_context.User, "Id", "UserName");
+            ViewBag.movieVB = currentMovie;
             return View();
         }
 
@@ -77,15 +98,46 @@ namespace MovieDatabase.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,movie_id,user_id,content,time,is_blocked")] Comment comment)
         {
-            if (ModelState.IsValid)
+            string? u_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (u_id == null)
             {
-                _context.Add(comment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            return View(comment);
-        }
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == u_id);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
+            ViewBag.currentUserVB = user;
+            comment.user_id = user.Id;
+
+            DateTime datetime = DateTime.Now;
+            comment.time = datetime;
+
+            comment.movie_id = currentMovie.id;
+
+            Console.WriteLine("--------> comment.movie_id:" + comment.movie_id);
+
+
+
+            var context = new ValidationContext(comment, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            ModelState.ClearValidationState(nameof(comment));
+            if (!Validator.TryValidateObject(comment, context, validationResults, true))
+            {
+                return NotFound();
+            }
+
+
+            _context.Add(comment);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index), new { id = comment.movie_id });
+
+        }
+        
+
+        public IActionResult Nope() { return View(); }
 
     }
 }

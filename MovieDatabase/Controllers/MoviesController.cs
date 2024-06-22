@@ -21,6 +21,7 @@ namespace MovieDatabase.Controllers
 
         private readonly MovieDatabaseContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private static IEnumerable<int> chosenActorsId = new HashSet<int>();
 
         public MoviesController(MovieDatabaseContext context, IWebHostEnvironment webHostEnvironment)
         {
@@ -75,14 +76,56 @@ namespace MovieDatabase.Controllers
         }
 
         // GET: Movies/Create
-        public IActionResult Create()
+        public IActionResult Create(string searchString, int[] actors)
         {
             ViewBag.directorVB = new SelectList(_context.Director, "id", "nameSurnameLabel");
-            ViewBag.actors = new MultiSelectList(_context.Actor, "id", "nameSurnameLabel");
+            //ViewBag.actors = new MultiSelectList(_context.Actor, "id", "nameSurnameLabel");
             ViewBag.genres = new MultiSelectList(_context.Genre, "id", "tag");
+
+            Console.Write("-------->chosenActorsId before:  ");
+            foreach (int i in chosenActorsId)
+            {
+                Console.Write(i + " ");
+            }
+            Console.WriteLine();
+
+
+
+            chosenActorsId = chosenActorsId.Union(actors);
+
+
+
+            Console.Write("-------->chosenActorsId after:  ");
+            foreach (int i in chosenActorsId)
+            {
+                Console.Write(i + " ");
+            }
+            Console.WriteLine();
+
+
+
+
+            var actorsList = from a in _context.Actor select a;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                actorsList = actorsList.Where(s => s.name.Contains(searchString));
+            }
+
+            var multiList = new MultiSelectList(actorsList.ToList(), "id", "nameSurnameLabel", new[] { 3 });
+
+            Console.Write("-------->Selected values: ");
+            for(int i = 0; i < multiList.Count(); i++)
+            {
+                Console.Write(multiList.SelectedValues + " ||| ");
+            }
+            Console.WriteLine("\n");
+
+            ViewBag.actors = multiList;
 
             return View();
         }
+
 
         // POST: Movies/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.

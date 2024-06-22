@@ -10,6 +10,8 @@
 <body>
     @{
         var path = Model.posterImagePath;
+        var users = ViewBag.usersVB;
+        var currentUser = ViewBag.currentUserVB;
     }
     <div class="grid-container-main-page">
         <div class="main-page-movie">
@@ -54,19 +56,19 @@
                 <h3>Comments</h3>
                 @foreach (var comment in ViewBag.commentsVB)
                 {
-                    List<User> users = [];
-                    foreach (User u in ViewBag.usersVB)
+                    List<User> usersCommenting = [];
+                    foreach (User u in users)
                     {
                         if (comment.user_id == u.Id)
                         {
-                            users.Add(u);
+                            usersCommenting.Add(u);
                             break;
                         }
                     }
 
                     {
                         <div class="comment">
-                            <p>@users[0]</p>
+                            <p>@usersCommenting[0]</p>
                             <p>@comment.content</p>
                         </div>
                     }                   
@@ -76,9 +78,18 @@
                 }
 
                 <div class="form-group">
-                    <a href="/MovieScene/Create">
-                        <button>Write a comment</button>
-                    </a>
+                    @if(currentUser == null)
+                    {
+                        <a href="/MovieScene/Nope">
+                            <button>Write a comment</button>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="/MovieScene/Create">
+                            <button>Write a comment</button>
+                        </a>
+                    }
                 </div>
                 <div>
                 </div>

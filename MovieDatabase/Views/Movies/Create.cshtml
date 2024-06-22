@@ -2,6 +2,9 @@
 
 @{
     ViewData["Title"] = "Create";
+    var actorsVB = ViewBag.actors;
+    List<Actor> chosenActors;
+
 }
 
 <h1>Create</h1>
@@ -10,8 +13,27 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        <form asp-action="Create" method="get">
+            <div class="form-actions no-color">
+                <p>
+                    <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" />
+                    <input type="submit" value="Filter actors" class="btn btn-light btn-sm"/>
+                </p>
+            </div>
+            <div class="form-group">
+                <label for="actors">actors</label>
+                <select asp-for="actors" class="form-control" asp-items="actorsVB"></select>
+            </div>
+        </form>
+
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label for="actors">actors</label>
+                <select asp-for="actors" class="form-control" asp-items="actorsVB"></select>
+            </div>
+
             <div class="form-group">
                 <label asp-for="title" class="control-label"></label>
                 <input asp-for="title" class="form-control" />
@@ -30,10 +52,8 @@
                 <label for="genres">genres</label>
                 <select asp-for="genres" class="form-control" asp-items="ViewBag.genres"></select>
             </div>
-            <div class="form-group">
-                <label for="actors">actors</label>
-                <select asp-for="actors" class="form-control" asp-items="ViewBag.actors"></select>
-            </div>
+           <p> </p>
+
             <div class="form-group">
                 <label for="posterImagePath" class="control-label">Upload Poster Image</label>
                 <input type="file" id="posterImagePath" name="posterImagePath" class="form-control" />
@@ -41,7 +61,10 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+
         </form>
+
+        
     </div>
 </div>
 
@@ -49,6 +72,9 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+
+
 @section Scripts {
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
