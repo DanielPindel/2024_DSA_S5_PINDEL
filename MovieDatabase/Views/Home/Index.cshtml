@@ -6,6 +6,13 @@
 
 <head>
     <link rel="stylesheet" href="~/css/HomePageSheet.css?t=<%= DateTime.Now.Ticks %>" />
+    <script>
+        function redirectToComments(event, movieId) 
+        {
+            event.preventDefault();
+            window.location.href = '/MovieScene/Index/' + movieId + '#comments';
+        }
+    </script>
 </head>
 <body>
     <div class="grid-container-main-page">
@@ -23,29 +30,29 @@
 
         @foreach (var item in Model)
         {
-            <div class="main-page-movie">
-                <div class="main-page-movie-poster">
-                    <a href="@Url.Action("Index", "MovieScene", new { id = item.id })">
+            <a href="@Url.Action("Index", "MovieScene", new { id = item.id })">
+                <div class="main-page-movie">
+                    <div class="main-page-movie-poster">
                         <img class="main-poster" src="~/images/@item.posterImagePath" alt="@item.title Poster" />
-                    </a>
-                </div>
-                <div class="main-page-movie-title">
-                    @Html.ActionLink(item.title, "Index", "MovieScene", new { id = item.id })
-                </div>
-                <div class="main-page-star">
-                    &#9733;
-                </div>
-                @{
-                    decimal r = 0;
-                    if(item.rate != null)
-                    {
-                        r = Convert.ToDecimal(item.rate);
+                    </div>
+                    <div class="main-page-movie-title">
+                        @Html.DisplayFor(modelItem => item.title)
+                    </div>
+                    <div class="main-page-star" onclick="redirectToComments(event, '@item.id')">
+                        &#9733;
+                    </div>
+                    @{
+                        decimal r = 0;
+                        if (item.rate != null)
+                        {
+                            r = Convert.ToDecimal(item.rate);
+                        }
                     }
-                }
-                <div class="main-page-movie-rating">
-                    @Math.Round(r, 1)
+                    <div class="main-page-movie-rating">
+                        @Math.Round(r, 1)
+                    </div>
                 </div>
-            </div>
+            </a>
         }
     </div>
 </body>

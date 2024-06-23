@@ -82,7 +82,15 @@
     padding: 0;
     margin: 0;
     padding-left: 50%;
+    /*perspective: 1000px;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;*/
 }
+
+    /*.main-page-star:hover
+    {
+        transform: rotateY(180deg);
+    }*/
 
 .main-page-movie-rating
 {
@@ -101,4 +109,9 @@
 .main-page-movie:last-child
 {
     margin-bottom: 2%;
+}
+
+a
+{
+    text-decoration: none;
 }

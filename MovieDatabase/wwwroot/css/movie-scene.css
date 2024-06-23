@@ -37,10 +37,18 @@
     align-items: center;
 }
 
-.main-poster {
+.main-poster
+{
     max-width: 100%;
     border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+    .main-poster:hover
+    {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
 
 .main-page-movie-title {
     grid-column: 2 / 3;
@@ -80,6 +88,16 @@ h4, h5 {
     grid-column: 2 / 3;
     margin-top: 20px;
 }
+
+    .trailer-info iframe
+    {
+        transition: box-shadow 0.3s ease;
+    }
+
+        .trailer-info iframe:hover
+        {
+            box-shadow: 0 0 20px gray;
+        }
 
 .stars {
     position: absolute;
