@@ -15,6 +15,7 @@ namespace MovieDatabase.Controllers
         private readonly IMovieService _movieService;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private static Movie currentMovie = new Movie();
+        private static Comment currentComment = new Comment();
 
         public MovieSceneController(ILogger<MovieSceneController> logger, IMovieService movieService, MovieDatabaseContext context, IWebHostEnvironment webHostEnvironment)
         {
@@ -53,9 +54,23 @@ namespace MovieDatabase.Controllers
                         .Include(g => g.movies.Where(m => m.id == movie.id))
                         .ToList();
 
-            ViewBag.commentsVB = _context.Comment
+            var comments = _context.Comment
                         .Where(c => c.movie_id == id)
                         .ToList();
+
+            ViewBag.commentsVB = comments;
+
+            var all_subcomments = await _context.Subcomment.ToListAsync();
+            List<Subcomment> subcomments = new List<Subcomment>();
+
+
+            foreach(Comment comment in comments)
+            {
+                var subcoms = _context.Subcomment.Where(sc => sc.comment_id == comment.id).ToList();
+                subcomments.AddRange(subcoms);
+            }
+
+            ViewBag.subcommentsVB = subcomments;
 
             ViewBag.usersVB = await _context.Users.ToListAsync();
 
@@ -85,7 +100,7 @@ namespace MovieDatabase.Controllers
             return View(movie);
         }
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> CreateComment()
         {
             ViewBag.movieVB = currentMovie;
             return View();
@@ -96,7 +111,7 @@ namespace MovieDatabase.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,movie_id,user_id,content,time,is_blocked")] Comment comment)
+        public async Task<IActionResult> CreateComment([Bind("id,movie_id,user_id,content,time,is_blocked")] Comment comment)
         {
             string? u_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (u_id == null)
@@ -135,7 +150,74 @@ namespace MovieDatabase.Controllers
             return RedirectToAction(nameof(Index), new { id = comment.movie_id });
 
         }
-        
+
+
+        public async Task<IActionResult> CreateSubcomment(int? com_id)
+        {
+            if (com_id == null)
+            {
+                return NotFound();
+            }
+
+            var comment = await _context.Comment.FirstOrDefaultAsync(c => c.id == com_id);
+
+            currentComment = comment;
+
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == comment.user_id);
+            if (user == null || comment == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.replyToUserVB = user;
+            ViewBag.replyToCommentVB = comment;
+
+
+            return View();
+        }
+
+        // POST: Comments/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateSubcomment([Bind("id,comment_id,user_id,content,time,is_blocked")] Subcomment subcomment)
+        {
+            string? u_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (u_id == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == u_id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            subcomment.user_id = user.Id;
+
+            subcomment.comment_id = currentComment.id;
+
+            DateTime datetime = DateTime.Now;
+            subcomment.time = datetime;
+
+
+
+            var context = new ValidationContext(subcomment, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            ModelState.ClearValidationState(nameof(subcomment));
+            if (!Validator.TryValidateObject(subcomment, context, validationResults, true))
+            {
+                return NotFound();
+            }
+
+
+            _context.Add(subcomment);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index), new { id = currentMovie.id});
+
+        }
+
 
         public IActionResult Nope() { return View(); }
 

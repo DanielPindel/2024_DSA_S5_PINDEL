@@ -12,6 +12,7 @@
         var path = Model.posterImagePath;
         var users = ViewBag.usersVB;
         var currentUser = ViewBag.currentUserVB;
+        var subcomments = ViewBag.subcommentsVB;
     }
     <div class="grid-container-main-page">
         <div class="main-page-movie">
@@ -51,6 +52,15 @@
                     <iframe src="@Model.trailer_link" allowfullscreen></iframe>
                 </div>
             </div>
+            @{
+                string subComRef = "/MovieScene/CreateSubcomment";
+                string comRefStr = "/MovieScene/CreateComment";
+                if (currentUser == null)
+                {
+                    subComRef = "/MovieScene/Nope";
+                    comRefStr = "/MovieScene/Nope";
+                }
+            }
 
             <div class="comments-section" id="comments">
                 <h3>Comments</h3>
@@ -67,9 +77,29 @@
                     }
 
                     {
+
                         <div class="comment">
-                            <p>@usersCommenting[0]</p>
-                            <p>@comment.content</p>
+                            <b>@usersCommenting[0]</b>
+                            <p><small>@comment.content</small><br>
+                                <a href="@Url.Action("CreateSubcomment", "MovieScene", new { com_id = comment.id })">Reply</a>
+                            </p>
+                            @foreach(var subcomment in subcomments)
+                            {
+                                if(subcomment.comment_id == comment.id)
+                                {
+                                    User userSubcommenting = new User();
+                                    foreach (User u in users)
+                                    {
+                                        if (subcomment.user_id == u.Id)
+                                        {
+                                            userSubcommenting = u;
+                                            break;
+                                        }
+                                    }
+
+                                    <p style="margin-left: 25px;"><b>@userSubcommenting.UserName</b><br><small>@subcomment.content</small></p>
+                                }
+                            }
                         </div>
                     }                   
                 }
@@ -78,18 +108,9 @@
                 }
 
                 <div class="form-group">
-                    @if(currentUser == null)
-                    {
-                        <a href="/MovieScene/Nope">
-                            <button>Write a comment</button>
-                        </a>
-                    }
-                    else
-                    {
-                        <a href="/MovieScene/Create">
-                            <button>Write a comment</button>
-                        </a>
-                    }
+                    <a href="@comRefStr">
+                        <button>Write a comment</button>
+                    </a>
                 </div>
                 <div>
                 </div>
