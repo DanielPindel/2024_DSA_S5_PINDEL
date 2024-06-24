@@ -106,18 +106,83 @@ h4, h5 {
     grid-column: 2 / 3;
 }
 
-.comments-section {
-    background-color: white;
-    color: black;
+.comments-section
+{
+    background-color: #444444;
+    color: white;
     padding: 20px;
     border-radius: 10px;
     margin-top: 20px;
     grid-column: 1 / 3;
+    width: 100%;
+    box-sizing: border-box;
+    animation: fadeIn 1s ease-in-out;
 }
 
-.comment {
-    margin-bottom: 10px;
+@keyframes fadeIn
+{
+    from
+    {
+        opacity: 0;
+    }
+
+    to
+    {
+        opacity: 1;
+    }
 }
+
+.comment, .subcomment
+{
+    background-color: #555555;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.subcomment
+{
+    margin-left: 25px;
+}
+
+    .comment:hover, .subcomment:hover
+    {
+        transform: scale(1.02);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+.comment-header, .subcomment-header
+{
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.comment-body, .subcomment-body
+{
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+.comment-footer
+{
+    text-align: right;
+}
+
+    .comment-footer a
+    {
+        color: #bbbbbb;
+        text-decoration: none;
+        font-size: 0.8em;
+        transition: color 0.3s ease;
+    }
+
+        .comment-footer a:hover
+        {
+            color: #ffffff;
+            text-decoration: underline;
+        }
 
 .form-group {
     margin-top: 20px;
@@ -133,6 +198,8 @@ button {
     cursor: pointer;
 }
 
-    button:hover {
-        background-color: #555555;
+    button:hover
+    {
+        background-color: #777777;
+        transform: scale(1.05);
     }
