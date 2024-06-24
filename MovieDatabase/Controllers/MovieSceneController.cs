@@ -171,6 +171,7 @@ namespace MovieDatabase.Controllers
 
             ViewBag.replyToUserVB = user;
             ViewBag.replyToCommentVB = comment;
+            ViewBag.movieVB = currentMovie;
 
 
             return View();

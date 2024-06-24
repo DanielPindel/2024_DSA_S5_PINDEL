@@ -10,7 +10,7 @@
     var movie = ViewBag.movieVB;
 }
 
-<h3>Write a reply to "@currentComment.content" from user @user.UserName </h3>
+<h3>Write a reply to "@currentComment.content" from user @user.UserName under movie "@movie.title"</h3>
 
 <hr />
 <div class="row">
@@ -31,7 +31,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a href="@Url.Action("Index", "MovieScene", new { id = movie.id })">Back to Movie</a>
 </div>
 
 @section Scripts {

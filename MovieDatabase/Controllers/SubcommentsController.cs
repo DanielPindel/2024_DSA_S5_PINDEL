@@ -22,6 +22,7 @@ namespace MovieDatabase.Controllers
         // GET: Subcomments
         public async Task<IActionResult> Index()
         {
+
             return View(await _context.Subcomment.ToListAsync());
         }
 
