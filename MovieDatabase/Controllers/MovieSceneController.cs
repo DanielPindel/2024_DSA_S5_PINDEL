@@ -38,6 +38,38 @@ namespace MovieDatabase.Controllers
             {
                 return NotFound();
             }
+
+
+            // Calculating movie average rating
+            var ratings = _context.Rating
+                    .Where(r => r.movie_id == movie.id)
+                    .ToList();
+            var count = ratings.Count();
+            float sum = 0;
+            foreach (Rating rating in ratings)
+            {
+                sum = sum + rating.rate;
+            }
+
+            if (count != 0)
+            {
+                if (movie.rate != sum / count)
+                {
+                    movie.rate = sum / count;
+                    _context.Update(movie);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            else
+            {
+                movie.rate = sum;
+            }
+            // ---
+
+
+
+
+
             currentMovie = movie;
 
 
@@ -217,6 +249,118 @@ namespace MovieDatabase.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index), new { id = currentMovie.id});
 
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddToFavorites()
+        {
+            string? u_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (u_id == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == u_id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            UserMovie userMovie = new UserMovie();
+            userMovie.context_id = 2;
+            userMovie.user_id = user.Id;
+            userMovie.movie_id = currentMovie.id;
+
+            var context = new ValidationContext(userMovie, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(userMovie, context, validationResults, true))
+            {
+                return NotFound();
+            }
+
+
+            _context.Add(userMovie);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index), new { id = currentMovie.id });
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddToWatchlist()
+        {
+            string? u_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (u_id == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == u_id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            UserMovie userMovie = new UserMovie();
+            userMovie.context_id = 1;
+            userMovie.user_id = user.Id;
+            userMovie.movie_id = currentMovie.id;
+
+            var context = new ValidationContext(userMovie, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(userMovie, context, validationResults, true))
+            {
+                return NotFound();
+            }
+
+
+            _context.Add(userMovie);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index), new { id = currentMovie.id });
+        }
+
+
+        public IActionResult AddRating()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddRating([Bind("id,movie_id,user_id,rate,review,time")] Rating rating)
+        {
+            string? u_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (u_id == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == u_id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            rating.time = DateTime.Now;
+            rating.movie_id = currentMovie.id;
+            rating.user_id = user.Id;
+
+            var context = new ValidationContext(rating, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(rating, context, validationResults, true))
+            {
+                return NotFound();
+            }
+
+            _context.Add(rating);
+            await _context.SaveChangesAsync();
+
+
+
+            return RedirectToAction(nameof(Index), new { id = currentMovie.id });
         }
 
 

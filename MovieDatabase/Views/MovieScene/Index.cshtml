@@ -22,10 +22,18 @@
             <div class="stars">
                 @{
                     Movie movie = Model;
-                }
-                @for (int j = 1; j <= movie.rate; j++)
-                {
-                    <span class="star" data-value="@j">&#9733;</span>
+                    decimal r = 0;
+                    if (movie.rate != null)
+                    {
+                        r = Convert.ToDecimal(movie.rate);
+                    }
+
+                    <b>@Math.Round(r, 1)</b>
+
+                    for (int j = 1; j <= movie.rate; j++)
+                    {
+                        <span class="star" data-value="@j">&#9733;</span>
+                    }
                 }
             </div>
             <div class="main-page-movie-info">
@@ -52,6 +60,36 @@
                     <iframe src="@Model.trailer_link" allowfullscreen></iframe>
                 </div>
             </div>
+
+            @{
+                string actionFavorites = "AddToFavorites";
+                string actionWatchlist = "AddToWatchlist";
+                string refAddRating = "/MovieScene/AddRating";
+                if (currentUser == null)
+                {
+                    actionFavorites = "Nope";
+                    actionWatchlist = "Nope";
+                    refAddRating = "/MovieScene/Nope";
+                }
+            }
+
+            <form asp-action="@actionFavorites">
+                <div class="form-group">
+                    <input type="submit" value="Add to favorites" class="btn btn-primary" />
+                </div>
+            </form>
+            <form asp-action="@actionWatchlist">
+                <div class="form-group">
+                    <input type="submit" value="Add to watchilist" class="btn btn-primary" />
+                </div>
+            </form>
+
+            <div class="form-group">
+                <a href="@refAddRating">
+                    <button>Rate movie</button>
+                </a>
+            </div>
+
             @{
                 string subComRef = "/MovieScene/CreateSubcomment";
                 string comRefStr = "/MovieScene/CreateComment";
