@@ -86,6 +86,17 @@ namespace MovieDatabase.Controllers
                         .Include(g => g.movies.Where(m => m.id == movie.id))
                         .ToList();
 
+
+
+            var reviews = _context.Rating
+                       .Where(c => c.movie_id == id)
+                       .ToList();
+
+            ViewBag.reviewsVB = reviews;
+
+
+
+
             var comments = _context.Comment
                         .Where(c => c.movie_id == id)
                         .ToList();

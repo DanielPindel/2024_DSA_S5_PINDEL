@@ -90,6 +90,32 @@
                 </a>
             </div>
 
+
+            <div class="review-section" id="reviews">
+                <h3>Reviews</h3>
+                @foreach (var review in ViewBag.reviewsVB)
+                {
+                    List<User> usersReviewing = [];
+                    foreach (User u in users)
+                    {
+                        if (review.user_id == u.Id)
+                        {
+                            usersReviewing.Add(u);
+                            break;
+                        }
+                    }
+                    <div class="comment">
+                        <div class="comment-header">
+                            <b>@usersReviewing[0].UserName</b>
+                        </div>
+                        <div class="comment-body">
+                            <p>@review.review</p>
+                        </div>
+
+                    </div>
+                }
+            </div>
+
             @{
                 string subComRef = "/MovieScene/CreateSubcomment";
                 string comRefStr = "/MovieScene/CreateComment";
