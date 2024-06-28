@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,6 +16,7 @@ namespace MovieDatabase.Controllers
     public class RatingsController : Controller
     {
         private readonly MovieDatabaseContext _context;
+        private static Movie currentMovie = new Movie();
 
         public RatingsController(MovieDatabaseContext context)
         {
@@ -57,10 +60,21 @@ namespace MovieDatabase.Controllers
         }
 
         // GET: Ratings/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int? movie_id)
         {
-            ViewBag.movieVB = new SelectList(_context.Movie, "id", "title");
-            ViewBag.userVB = new SelectList(_context.User, "Id", "UserName");
+            if (movie_id == null)
+            {
+                return NotFound();
+            }
+
+            var movie = await _context.Movie
+                .FirstOrDefaultAsync(m => m.id == movie_id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            currentMovie = movie;
             return View();
         }
 
@@ -71,36 +85,37 @@ namespace MovieDatabase.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,movie_id,user_id,rate,review,time")] Rating rating)
         {
-            if (ModelState.IsValid)
+            string? u_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (u_id == null)
             {
-                // Calculating movie average rating
-                var movie = await _context.Movie.FirstOrDefaultAsync(m => m.id == rating.movie_id);
-
-                if (movie.rate == 0)
-                {
-                    movie.rate = rating.rate;
-                }
-                else
-                {
-                    var ratings = _context.Rating
-                        .Where(r => r.movie_id == movie.id)
-                        .ToList();
-                    var count = movie.ratings.Count();
-                    movie.rate = (count * movie.rate + rating.rate) / (count + 1);
-                }
-
-                _context.Update(movie);
-                // ---
-
-                _context.Add(rating);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            return View(rating);
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == u_id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            rating.time = DateTime.Now;
+            rating.movie_id = currentMovie.id;
+            rating.user_id = user.Id;
+
+            var context = new ValidationContext(rating, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(rating, context, validationResults, true))
+            {
+                return NotFound();
+            }
+
+            _context.Add(rating);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index), "MovieScene", new { id = currentMovie.id });
         }
+    
 
         // GET: Ratings/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int? movie_id)
         {
             if (id == null)
             {
@@ -113,8 +128,20 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
-            ViewBag.movieVB = new SelectList(_context.Movie, "id", "title");
-            ViewBag.userVB = new SelectList(_context.User, "Id", "UserName");
+            if (movie_id == null)
+            {
+                return NotFound();
+            }
+
+            var movie = await _context.Movie
+                .FirstOrDefaultAsync(m => m.id == movie_id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            currentMovie = movie;
+            ViewBag.movieVB = movie;
 
             return View(rating);
         }
@@ -131,54 +158,80 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            string? u_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (u_id == null)
             {
-                try
-                {
-                    _context.Update(rating);
-
-                    await _context.SaveChangesAsync();
-
-                    // Calculating movie average rating
-                    var movie = await _context.Movie.FirstOrDefaultAsync(m => m.id == rating.movie_id);
-
-                    var ratings = _context.Rating
-                        .Where(r => r.movie_id == movie.id)
-                        .ToList();
-                    var count = movie.ratings.Count();
-                    var rating_sum = 0;
-                    foreach(Rating r in ratings)
-                    {
-                        rating_sum += r.rate;
-                    }
-                    movie.rate = (rating_sum) / (count);
-
-                    _context.Update(movie);
-
-                    // ---
-
-                    await _context.SaveChangesAsync();
-                    
-
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RatingExists(rating.id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            return View(rating);
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == u_id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            rating.time = DateTime.Now;
+            rating.movie_id = currentMovie.id;
+            rating.user_id = user.Id;
+
+            var context = new ValidationContext(rating, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(rating, context, validationResults, true))
+            {
+                return NotFound();
+            }
+
+
+            try
+            {
+
+                _context.Update(rating);
+
+                await _context.SaveChangesAsync();
+
+
+                // Calculating movie average rating
+                var movie = await _context.Movie.FirstOrDefaultAsync(m => m.id == rating.movie_id);
+
+                var ratings = _context.Rating
+                    .Where(r => r.movie_id == movie.id)
+                    .ToList();
+                var count = movie.ratings.Count();
+                var rating_sum = 0;
+                foreach (Rating r in ratings)
+                {
+                    rating_sum += r.rate;
+                }
+                movie.rate = (rating_sum) / (count);
+
+                _context.Update(movie);
+
+                // ---
+
+                await _context.SaveChangesAsync();
+
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RatingExists(rating.id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            
+
+
+            
+            return RedirectToAction(nameof(Index), "MovieScene", new { id = currentMovie.id });
+            
         }
 
         // GET: Ratings/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, int? movie_id)
         {
             if (id == null)
             {
@@ -191,6 +244,16 @@ namespace MovieDatabase.Controllers
             {
                 return NotFound();
             }
+
+            var movie = await _context.Movie
+                .FirstOrDefaultAsync(m => m.id == movie_id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            currentMovie = movie;
+            ViewBag.movieVB = movie;
 
             return View(rating);
         }
@@ -227,12 +290,15 @@ namespace MovieDatabase.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), "MovieScene", new { id = currentMovie.id });
         }
 
         private bool RatingExists(int id)
         {
             return _context.Rating.Any(e => e.id == id);
         }
+
+
+        public IActionResult Nope() { return View(); }
     }
 }

@@ -4,9 +4,14 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+@{
+    var currentComment = ViewBag.replyToCommentVB;
+    var user = ViewBag.replyToUserVB;
+    var movie = ViewBag.movieVB;
+}
 
-<h4>Subcomment</h4>
+<h3>Edit your reply to "@currentComment.content" from user @user.UserName under movie "@movie.title"</h3>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,29 +19,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="id" />
             <div class="form-group">
-                <label asp-for="comment_id" class="control-label"></label>
-                <select asp-for="comment_id" class="form-control" asp-items="ViewBag.commentVB"></select>
-                <span asp-validation-for="comment_id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="user_id" class="control-label"></label>
-                <select asp-for="user_id" class="form-control" asp-items="ViewBag.userVB"></select>
-                <span asp-validation-for="user_id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="content" class="control-label"></label>
                 <input asp-for="content" class="form-control" />
                 <span asp-validation-for="content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="time" class="control-label"></label>
-                <input asp-for="time" class="form-control" />
-                <span asp-validation-for="time" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="is_blocked" /> @Html.DisplayNameFor(model => model.is_blocked)
-                </label>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -46,9 +31,11 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a href="@Url.Action("Index", "MovieScene", new { id = movie.id })">Back to Movie</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

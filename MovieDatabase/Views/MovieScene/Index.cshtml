@@ -64,12 +64,11 @@
             @{
                 string actionFavorites = "AddToFavorites";
                 string actionWatchlist = "AddToWatchlist";
-                string refAddRating = "/MovieScene/AddRating";
+                Rating currentUserRating = new Rating();
                 if (currentUser == null)
                 {
                     actionFavorites = "Nope";
                     actionWatchlist = "Nope";
-                    refAddRating = "/MovieScene/Nope";
                 }
             }
 
@@ -85,9 +84,7 @@
             </form>
 
             <div class="form-group">
-                <a href="@refAddRating">
-                    <button>Rate movie</button>
-                </a>
+                <a href="@Url.Action("Create", "Ratings", new { movie_id = movie.id })">Rate movie</a>
             </div>
 
 
@@ -95,6 +92,11 @@
                 <h3>Reviews</h3>
                 @foreach (var review in ViewBag.reviewsVB)
                 {
+                    if (String.IsNullOrEmpty(review.review))
+                    {
+                        break;
+                    }
+
                     List<User> usersReviewing = [];
                     foreach (User u in users)
                     {
@@ -106,30 +108,44 @@
                     }
                     <div class="comment">
                         <div class="comment-header">
-                            <b>@usersReviewing[0].UserName</b>
+                            <b>@usersReviewing[0].UserName</b> @review.rate
                         </div>
                         <div class="comment-body">
                             <p>@review.review</p>
                         </div>
+
+                        @if (currentUser != null)
+                        {
+                            if (review.user_id == currentUser.Id)
+                            {
+                                <a href="@Url.Action("Edit", "Ratings", new { id = review.id, movie_id = movie.id })">Edit</a>
+                                <a href="@Url.Action("Delete", "Ratings", new { id = review.id, movie_id = movie.id })">Delete</a>
+                            }
+                        }
 
                     </div>
                 }
             </div>
 
             @{
-                string subComRef = "/MovieScene/CreateSubcomment";
-                string comRefStr = "/MovieScene/CreateComment";
+                string subcommentActionStr = "Create";
+                string commentActionStr = "Create";
                 if (currentUser == null)
                 {
-                    subComRef = "/MovieScene/Nope";
-                    comRefStr = "/MovieScene/Nope";
+                    subcommentActionStr = "Nope";
+                    commentActionStr = "Nope";
                 }
             }
 
             <div class="comments-section" id="comments">
                 <h3>Comments</h3>
-                @foreach (var comment in ViewBag.commentsVB)
+                @foreach (Comment comment in ViewBag.commentsVB)
                 {
+                    if (comment.is_blocked)
+                    {
+                        break;
+                    }
+
                     List<User> usersCommenting = [];
                     foreach (User u in users)
                     {
@@ -147,7 +163,21 @@
                             <p>@comment.content</p>
                         </div>
                         <div class="comment-footer">
-                            <a href="@Url.Action("CreateSubcomment", "MovieScene", new { com_id = comment.id })">Reply</a>
+
+                            @if (currentUser != null)
+                            {
+                                if (comment.user_id == currentUser.Id)
+                                {
+                                    <a href="@Url.Action("Edit", "Comments", new { id = comment.id, movie_id = movie.id })">Edit</a>
+                                    <a href="@Url.Action("Delete", "Comments", new { id = comment.id, movie_id = movie.id })">Delete</a>
+                                }
+                                if (currentUser.is_admin)
+                                {
+                                    <a href="@Url.Action("BlockComment", "Comments", new { com_id = comment.id, movie_id = movie.id  })">Block</a>
+                                }
+                            }
+                            <a href="@Url.Action(@subcommentActionStr, "Subcomments", new { com_id = comment.id, movie_id = movie.id })">Reply</a>
+
                         </div>
                         @foreach (var subcomment in subcomments)
                         {
@@ -170,6 +200,22 @@
                                     <div class="subcomment-body">
                                         <p>@subcomment.content</p>
                                     </div>
+                                    <div class="subcomment-footer">
+
+                                        @if (currentUser != null)
+                                        {
+                                            if (subcomment.user_id == currentUser.Id)
+                                            {
+                                                <a href="@Url.Action("Edit", "Subcomments", new { id = subcomment.id, com_id = comment.id, movie_id = movie.id })">Edit</a>
+                                                <a href="@Url.Action("Delete", "Subcomments", new { id = subcomment.id, com_id = comment.id, movie_id = movie.id})">Delete</a>
+                                            }
+                                            if (currentUser.is_admin)
+                                            {
+                                                <a href="@Url.Action("BlockSubcomment", "Subomments", new { id = subcomment.id, com_id = comment.id, movie_id = movie.id  })">Block</a>
+                                            }
+                                        }
+
+                                    </div>
                                 </div>
                             }
                         }
@@ -180,7 +226,7 @@
                 }
 
                 <div class="form-group">
-                    <a href="@comRefStr">
+                    <a href="@Url.Action(commentActionStr, "Comments", new { movie_id = movie.id })">
                         <button>Write a comment</button>
                     </a>
                 </div>

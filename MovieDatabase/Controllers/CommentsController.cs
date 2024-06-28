@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,6 +15,7 @@ namespace MovieDatabase.Controllers
     public class CommentsController : Controller
     {
         private readonly MovieDatabaseContext _context;
+        private static Movie currentMovie = new Movie();
 
         public CommentsController(MovieDatabaseContext context)
         {
@@ -47,11 +50,24 @@ namespace MovieDatabase.Controllers
             return View(comment);
         }
 
-        // GET: Comments/Create
-        public IActionResult Create()
+
+
+        public async Task<IActionResult> Create(int? movie_id)
         {
-            ViewBag.movieVB = new SelectList(_context.Movie, "id", "title");
-            ViewBag.userVB = new SelectList(_context.User, "Id", "UserName");
+            if (movie_id == null)
+            {
+                return NotFound();
+            }
+
+            var movie = await _context.Movie
+                .FirstOrDefaultAsync(m => m.id == movie_id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            currentMovie = movie;
+            ViewBag.movieVB = currentMovie;
             return View();
         }
 
@@ -62,17 +78,46 @@ namespace MovieDatabase.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,movie_id,user_id,content,time,is_blocked")] Comment comment)
         {
-            if (ModelState.IsValid)
+            string? u_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (u_id == null)
             {
-                _context.Add(comment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            return View(comment);
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == u_id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.currentUserVB = user;
+            comment.user_id = user.Id;
+
+            DateTime datetime = DateTime.Now;
+            comment.time = datetime;
+
+            comment.movie_id = currentMovie.id;
+
+            Console.WriteLine("--------> comment.movie_id:" + comment.movie_id);
+
+
+
+            var context = new ValidationContext(comment, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            ModelState.ClearValidationState(nameof(comment));
+            if (!Validator.TryValidateObject(comment, context, validationResults, true))
+            {
+                return NotFound();
+            }
+
+
+            _context.Add(comment);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index), "MovieScene", new { id = currentMovie.id });
+
         }
 
         // GET: Comments/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int? movie_id)
         {
             if (id == null)
             {
@@ -85,8 +130,20 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
-            ViewBag.movieVB = new SelectList(_context.Movie, "id", "title");
-            ViewBag.userVB = new SelectList(_context.User, "Id", "UserName");
+            if (movie_id == null)
+            {
+                return NotFound();
+            }
+
+            var movie = await _context.Movie
+                .FirstOrDefaultAsync(m => m.id == movie_id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            currentMovie = movie;
+            ViewBag.movieVB = movie;
 
             return View(comment);
         }
@@ -103,31 +160,58 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            string? u_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (u_id == null)
             {
-                try
-                {
-                    _context.Update(comment);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CommentExists(comment.id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            return View(comment);
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == u_id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            comment.time = DateTime.Now;
+            comment.movie_id = currentMovie.id;
+            comment.user_id = user.Id;
+
+            var context = new ValidationContext(comment, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(comment, context, validationResults, true))
+            {
+                return NotFound();
+            }
+
+
+            try
+            {
+
+                _context.Update(comment);
+
+                await _context.SaveChangesAsync();
+
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CommentExists(comment.id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+
+
+
+            return RedirectToAction(nameof(Index), "MovieScene", new { id = currentMovie.id });
         }
 
         // GET: Comments/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, int? movie_id)
         {
             if (id == null)
             {
@@ -140,6 +224,23 @@ namespace MovieDatabase.Controllers
             {
                 return NotFound();
             }
+
+
+            if (movie_id == null)
+            {
+                return NotFound();
+            }
+
+            var movie = await _context.Movie
+                .FirstOrDefaultAsync(m => m.id == movie_id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            currentMovie = movie;
+            ViewBag.movieVB = movie;
+
 
             return View(comment);
         }
@@ -156,12 +257,14 @@ namespace MovieDatabase.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), "MovieScene", new { id = currentMovie.id });
         }
 
         private bool CommentExists(int id)
         {
             return _context.Comment.Any(e => e.id == id);
         }
+
+        public IActionResult Nope() { return View(); }
     }
 }

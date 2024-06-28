@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,6 +15,8 @@ namespace MovieDatabase.Controllers
     public class SubcommentsController : Controller
     {
         private readonly MovieDatabaseContext _context;
+        private static Movie currentMovie = new Movie();
+        private static Comment currentComment = new Comment();
 
         public SubcommentsController(MovieDatabaseContext context)
         {
@@ -44,32 +48,90 @@ namespace MovieDatabase.Controllers
             return View(subcomment);
         }
 
-        // GET: Subcomments/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int? com_id, int? movie_id)
         {
-            ViewBag.commentVB = new SelectList(_context.Comment, "id", "content");
-            ViewBag.userVB = new SelectList(_context.User, "Id", "UserName");
+            if (com_id == null)
+            {
+                return NotFound();
+            }
+
+            var comment = await _context.Comment.FirstOrDefaultAsync(c => c.id == com_id);
+
+            currentComment = comment;
+
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == comment.user_id);
+            if (user == null || comment == null)
+            {
+                return NotFound();
+            }
+
+            if (movie_id == null)
+            {
+                return NotFound();
+            }
+
+            var movie = await _context.Movie
+                .FirstOrDefaultAsync(m => m.id == movie_id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            currentMovie = movie;
+
+            ViewBag.replyToUserVB = user;
+            ViewBag.replyToCommentVB = comment;
+            ViewBag.movieVB = currentMovie;
+
+
             return View();
         }
 
-        // POST: Subcomments/Create
+        // POST: Comments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,comment_id,user_id,content,time,is_blocked")] Subcomment subcomment)
         {
-            if (ModelState.IsValid)
+            string? u_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (u_id == null)
             {
-                _context.Add(subcomment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            return View(subcomment);
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == u_id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            subcomment.user_id = user.Id;
+
+            subcomment.comment_id = currentComment.id;
+
+            DateTime datetime = DateTime.Now;
+            subcomment.time = datetime;
+
+
+
+            var context = new ValidationContext(subcomment, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            ModelState.ClearValidationState(nameof(subcomment));
+            if (!Validator.TryValidateObject(subcomment, context, validationResults, true))
+            {
+                return NotFound();
+            }
+
+
+            _context.Add(subcomment);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index), "MovieScene", new { id = currentMovie.id });
+
         }
 
+
         // GET: Subcomments/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int? com_id, int? movie_id)
         {
             if (id == null)
             {
@@ -82,8 +144,40 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
-            ViewBag.commentVB = new SelectList(_context.Comment, "id", "content");
-            ViewBag.userVB = new SelectList(_context.User, "Id", "UserName");
+            if (com_id == null)
+            {
+                return NotFound();
+            }
+
+            var comment = await _context.Comment.FirstOrDefaultAsync(c => c.id == com_id);
+
+            currentComment = comment;
+
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == comment.user_id);
+            if (user == null || comment == null)
+            {
+                return NotFound();
+            }
+
+            if (movie_id == null)
+            {
+                return NotFound();
+            }
+
+            var movie = await _context.Movie
+                .FirstOrDefaultAsync(m => m.id == movie_id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            currentMovie = movie;
+
+            ViewBag.replyToUserVB = user;
+            ViewBag.replyToCommentVB = comment;
+            ViewBag.movieVB = movie;
+
+
             return View(subcomment);
         }
 
@@ -99,31 +193,58 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            string? u_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (u_id == null)
             {
-                try
-                {
-                    _context.Update(subcomment);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SubcommentExists(subcomment.id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            return View(subcomment);
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == u_id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            subcomment.time = DateTime.Now;
+            subcomment.comment_id = currentComment.id;
+            subcomment.user_id = user.Id;
+
+            var context = new ValidationContext(subcomment, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(subcomment, context, validationResults, true))
+            {
+                return NotFound();
+            }
+
+
+            try
+            {
+
+                _context.Update(subcomment);
+
+                await _context.SaveChangesAsync();
+
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!SubcommentExists(subcomment.id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+
+            return RedirectToAction(nameof(Index), "MovieScene", new { id = currentMovie.id });
         }
 
+
+
         // GET: Subcomments/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, int? com_id, int? movie_id)
         {
             if (id == null)
             {
@@ -136,6 +257,21 @@ namespace MovieDatabase.Controllers
             {
                 return NotFound();
             }
+
+            if (movie_id == null)
+            {
+                return NotFound();
+            }
+
+            var movie = await _context.Movie
+                .FirstOrDefaultAsync(m => m.id == movie_id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            currentMovie = movie;
+            ViewBag.movieVB = movie;
 
             return View(subcomment);
         }
@@ -152,12 +288,15 @@ namespace MovieDatabase.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return RedirectToAction(nameof(Index), "MovieScene", new { id = currentMovie.id });
         }
 
         private bool SubcommentExists(int id)
         {
             return _context.Subcomment.Any(e => e.id == id);
         }
+
+        public IActionResult Nope() { return View(); }
     }
 }

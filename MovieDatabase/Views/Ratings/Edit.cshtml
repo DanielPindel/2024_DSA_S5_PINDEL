@@ -4,9 +4,17 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+@{
+    var movie = ViewBag.movieVB;
+}
 
-<h4>Rating</h4>
+
+<h3>Edit your rating or review for movie @movie.title</h3>
+
+@{
+    List<int> items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    var ratings = new SelectList(items);
+}
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,29 +22,13 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="id" />
             <div class="form-group">
-                <label asp-for="movie_id" class="control-label"></label>
-                <input asp-for="movie_id" class="form-control" />
-                <span asp-validation-for="movie_id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="user_id" class="control-label"></label>
-                <input asp-for="user_id" class="form-control" />
-                <span asp-validation-for="user_id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="rate" class="control-label"></label>
-                <input asp-for="rate" class="form-control" />
-                <span asp-validation-for="rate" class="text-danger"></span>
+                <select asp-for="rate" class="form-control" asp-items="@ratings"></select>
             </div>
             <div class="form-group">
                 <label asp-for="review" class="control-label"></label>
                 <input asp-for="review" class="form-control" />
                 <span asp-validation-for="review" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="time" class="control-label"></label>
-                <input asp-for="time" class="form-control" />
-                <span asp-validation-for="time" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -45,9 +37,6 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
