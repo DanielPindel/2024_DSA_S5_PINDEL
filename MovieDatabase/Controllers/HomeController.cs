@@ -25,15 +25,7 @@ namespace MovieDatabase.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public IActionResult Search()
-        {
-            Console.WriteLine("-----------------> WORKED! :D");
-            return Json(new List<Movie>());
-        }
-
-
-        [HttpGet]
+        /*[HttpGet]
         public IActionResult SearchMovies(string searchString)
         {
             if (string.IsNullOrEmpty(searchString))
@@ -47,7 +39,7 @@ namespace MovieDatabase.Controllers
                 .ToList();
 
             return Json(movies);
-        }
+        }*/
 
         public async Task<IActionResult> Index(string searchString, string searchType)
         {

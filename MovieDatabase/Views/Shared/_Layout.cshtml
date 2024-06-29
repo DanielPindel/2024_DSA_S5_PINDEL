@@ -91,21 +91,6 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 
-<script type="text/javascript">
-    $(function () {
-        $("#searchTypeSelect").change(function () {
-            $.ajax
-                ({
-                    url: '@Url.Action("Search", "Home")',
-                    data: {  },
-                    success: function () {
-                        alert($(this).val());
-                    }
-                });
-        });
-    });
-</script>
-
 
 </html>
 
