@@ -9,10 +9,19 @@
 </head>
 <body>
     @{
+        Movie movie = Model;
         var path = Model.posterImagePath;
         var users = ViewBag.usersVB;
         var currentUser = ViewBag.currentUserVB;
         var subcomments = ViewBag.subcommentsVB;
+
+        bool is_admin = false;
+
+        if(currentUser != null)
+        {
+            is_admin = true;
+        }
+
     }
     <div class="grid-container-main-page">
         <div class="main-page-movie">
@@ -21,7 +30,6 @@
             </div>
             <div class="stars">
                 @{
-                    Movie movie = Model;
                     decimal r = 0;
                     if (movie.rate != null)
                     {
@@ -39,6 +47,10 @@
             <div class="main-page-movie-info">
                 <div class="main-page-movie-title">
                     <h3>@Html.DisplayFor(model => model.title)</h3>
+                    @if (is_admin)
+                    {
+                            <a href="@Url.Action("Edit", "Movies", new { id = movie.id })">Edit</a>
+                    }
                     <h2>@Html.DisplayFor(model => model.description)</h2>
                 </div>
                 <div class="actor-info">
@@ -64,11 +76,23 @@
             @{
                 string actionFavorites = "AddToFavorites";
                 string actionWatchlist = "AddToWatchlist";
+                bool alreadyRated = false;
                 Rating currentUserRating = new Rating();
                 if (currentUser == null)
                 {
                     actionFavorites = "Nope";
                     actionWatchlist = "Nope";
+                }
+                else
+                {
+                    @foreach (Rating rating in ViewBag.reviewsVB)
+                    {
+                        if(rating.user_id == currentUser.Id)
+                        {
+                            alreadyRated = true;
+                            currentUserRating = rating;
+                        }
+                    }
                 }
             }
 
@@ -84,7 +108,15 @@
             </form>
 
             <div class="form-group">
-                <a href="@Url.Action("Create", "Ratings", new { movie_id = movie.id })">Rate movie</a>
+                @if (alreadyRated)
+                {
+                    <a href="@Url.Action("Edit", "Ratings", new { id = currentUserRating.id, movie_id = movie.id })">Rate movie (Edit)</a>
+                }
+                else
+                {
+                    <a href="@Url.Action("Create", "Ratings", new { movie_id = movie.id })">Rate movie</a>
+                }
+
             </div>
 
 

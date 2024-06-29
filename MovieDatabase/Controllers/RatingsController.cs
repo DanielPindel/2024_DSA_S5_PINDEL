@@ -300,5 +300,7 @@ namespace MovieDatabase.Controllers
 
 
         public IActionResult Nope() { return View(); }
+
+
     }
 }
