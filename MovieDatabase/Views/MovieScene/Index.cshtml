@@ -53,6 +53,13 @@
                     }
                     <h2>@Html.DisplayFor(model => model.description)</h2>
                 </div>
+                <div class="genre-info">
+                    <h4>Genres:</h4>
+                    @foreach (var g in ViewBag.genresVB)
+                    {
+                        <h5>@Html.Raw(g.tag)</h5>
+                    }
+                </div>
                 <div class="actor-info">
                     <h4>Actors:</h4>
                     @foreach (var a in ViewBag.actorsVB)

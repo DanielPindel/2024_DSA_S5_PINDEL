@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Home Page";
+
 }
 
 <head>
@@ -23,10 +24,16 @@
         {
             <div class="form-group">
                 <a href="/Movies/Create">
-                    <button>Add a movie</button>
+                    <button class="btn btn-secondary">Add a movie</button>
                 </a>
             </div>
         }
+
+        @* <div class="form-group">
+            <label for="movieSearch">Movies</label>
+            <input type="text" id="movieSearch" class="form-control" placeholder="Type to search movies..." />
+            <ul id="movieResults" class="list-group"></ul>
+        </div> *@
 
         @foreach (var item in Model)
         {
@@ -37,6 +44,12 @@
                     </div>
                     <div class="main-page-movie-title">
                         @Html.DisplayFor(modelItem => item.title)
+                    </div>
+                    <div>
+                        @foreach (Genre genre in item.genres)
+                        {
+                            <h4 style="color:DarkGray;">@genre.tag</h4>
+                        }
                     </div>
                     <div class="main-page-star" onclick="redirectToComments(event, '@item.id')">
                         &#9733;
@@ -56,3 +69,31 @@
         }
     </div>
 </body>
+
+
+
+@* <script>
+    $(document).ready(function () {
+
+        $('#movieSearch').on('keyup', function () {
+            let query = $(this).val();
+            if (query.length >= 2) {
+                $.ajax
+                    ({
+                        url: '@Url.Action("SearchMovies", "Home")',
+                        data: { searchString: query },
+                        success: function (data) {
+                            $('#movieResults').empty();
+                            data.forEach(movie => {
+                                $('#movieResults').append(`<li class="list-group-item" data-id="${movie.id}">${movie.title}</li>`);
+                            });
+                        }
+                    });
+            }
+            else {
+                $('#movieResults').empty();
+            }
+        });
+
+    });
+</script> *@

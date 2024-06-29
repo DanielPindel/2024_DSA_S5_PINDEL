@@ -26,6 +26,7 @@ namespace MovieDatabase.Data
         public DbSet<MovieDatabase.Models.User> User { get; set; } = default!;
         public DbSet<MovieDatabase.Models.UserMovie> UserMovie { get; set; } = default!;
         public DbSet<MovieDatabase.Models.Genre> Genre { get; set; } = default!;
+        public DbSet<MovieDatabase.Models.GenreMovie> GenreMovie { get; set; } = default!;
         public DbSet<MovieDatabase.Models.Comment> Comment { get; set; } = default!;
         public DbSet<MovieDatabase.Models.Subcomment> Subcomment { get; set; } = default!;
         public DbSet<MovieDatabase.Models.Rating> Rating { get; set; } = default!;
@@ -50,6 +51,13 @@ namespace MovieDatabase.Data
                 .UsingEntity<UserMovie>(
                     l => l.HasOne<User>().WithMany(u => u.usermovies).HasForeignKey(um => um.user_id),
                     r => r.HasOne<Movie>().WithMany(m => m.usermovies).HasForeignKey(um => um.movie_id));
+
+            modelBuilder.Entity<Movie>()
+                .HasMany(m => m.genres)
+                .WithMany(g => g.movies)
+                .UsingEntity<GenreMovie>(
+                    l => l.HasOne<Genre>().WithMany(g => g.genreMovies).HasForeignKey(um => um.genresid),
+                    r => r.HasOne<Movie>().WithMany(m => m.genreMovies).HasForeignKey(um => um.moviesid));
 
             modelBuilder.Entity<Comment>()
                 .HasOne<Movie>()

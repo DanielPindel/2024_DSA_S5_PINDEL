@@ -1,4 +1,9 @@
 ﻿<!DOCTYPE html>
+
+@{
+    List<string> items = ["By title", "By genre", "By actor"];
+    var searchTypes = new SelectList(items);
+}
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -21,6 +26,15 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+
+                        <div class="search-form-container d-flex justify-content-left flex-grow-1">
+                            <form class="d-flex" asp-controller="Home" asp-action="Index">
+                                <input class="form-control me-2" type="search" name="SearchString" placeholder="Type to search movies..." aria-label="Search">
+                                <button class="btn btn-secondary" type="submit">Search</button>
+                                <select asp-items="@searchTypes" class="form-control-sm"></select>
+                            </form>
+                        </div>
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -38,15 +52,6 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Actors" asp-action="Index">Actors</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Comments" asp-action="Index">Comments</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Subcomments" asp-action="Index">Subcomments</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Ratings" asp-action="Index">Ratings</a>

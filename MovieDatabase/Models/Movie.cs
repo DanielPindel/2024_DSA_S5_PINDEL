@@ -19,6 +19,7 @@ namespace MovieDatabase.Models
         public ICollection<Genre> genres { get; set; } = [];
         public ICollection<Comment> comments { get; set; } = [];
         public ICollection<Rating> ratings { get; set; } = [];
+        public ICollection<GenreMovie> genreMovies { get; set; } = [];
 
 
         public Movie()
@@ -29,6 +30,7 @@ namespace MovieDatabase.Models
             this.genres = new HashSet<Genre>();
             this.comments = new HashSet<Comment>();
             this.ratings = new HashSet<Rating>();
+            this.genreMovies = new HashSet<GenreMovie>();
         }
     }
 }

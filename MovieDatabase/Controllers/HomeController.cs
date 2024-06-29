@@ -1,11 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal;
 using Microsoft.Identity.Client;
+using Microsoft.IdentityModel.Tokens;
 using MovieDatabase.Data;
 using MovieDatabase.Models;
 using SQLitePCL;
 using System.Diagnostics;
 using System.Security.Claims;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace MovieDatabase.Controllers
 {
@@ -22,9 +25,32 @@ namespace MovieDatabase.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public IActionResult SearchMovies(string searchString)
+        {
+            if (string.IsNullOrEmpty(searchString))
+            {
+                return Json(new List<Movie>());
+            }
+
+            var movies = _context.Movie
+                .Where(m => (m.title).Contains(searchString))
+                .Select(m => new { m.id, title = m.title })
+                .ToList();
+
+            return Json(movies);
+        }
+
+        public async Task<IActionResult> Index(string searchString)
         {
             var movies = await _movieService.GetAllMoviesAsync();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                movies = movies.Where(m => m.title!.Contains(searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
+            }
+
+
             ViewBag.isAdminVB = false;
 
             string? id = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -36,7 +62,15 @@ namespace MovieDatabase.Controllers
                     ViewBag.isAdminVB = user.is_admin;
                 }
             }
-            
+
+            ViewBag.genresVB = await _context.Genre.ToListAsync();
+
+            foreach (Movie mo in movies)
+            {
+                var genreMovies = _context.GenreMovie
+                       .Where(gm => gm.moviesid == mo.id)
+                       .ToList();
+            }
 
             return View(movies);
         }
