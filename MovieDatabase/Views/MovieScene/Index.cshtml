@@ -106,23 +106,26 @@
                             break;
                         }
                     }
-                    <div class="comment">
-                        <div class="comment-header">
-                            <b>@usersReviewing[0].UserName</b> @review.rate
+                    <div class="review">
+                        <div class="review-rating @((review.rate <= 5) ? "red" : "green")">
+                            @review.rate
                         </div>
-                        <div class="comment-body">
+                        <div class="review-header">
+                            <b>@usersReviewing[0].UserName</b>
+                        </div>
+                        <div class="review-body">
                             <p>@review.review</p>
                         </div>
-
-                        @if (currentUser != null)
-                        {
-                            if (review.user_id == currentUser.Id)
+                        <div class="review-footer">
+                            @if (currentUser != null)
                             {
-                                <a href="@Url.Action("Edit", "Ratings", new { id = review.id, movie_id = movie.id })">Edit</a>
-                                <a href="@Url.Action("Delete", "Ratings", new { id = review.id, movie_id = movie.id })">Delete</a>
+                                if (review.user_id == currentUser.Id)
+                                {
+                                    <a href="@Url.Action("Edit", "Ratings", new { id = review.id, movie_id = movie.id })">Edit</a>
+                                    <a href="@Url.Action("Delete", "Ratings", new { id = review.id, movie_id = movie.id })">Delete</a>
+                                }
                             }
-                        }
-
+                        </div>
                     </div>
                 }
             </div>
