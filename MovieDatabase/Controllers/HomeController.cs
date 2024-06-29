@@ -26,6 +26,14 @@ namespace MovieDatabase.Controllers
         }
 
         [HttpGet]
+        public IActionResult Search()
+        {
+            Console.WriteLine("-----------------> WORKED! :D");
+            return Json(new List<Movie>());
+        }
+
+
+        [HttpGet]
         public IActionResult SearchMovies(string searchString)
         {
             if (string.IsNullOrEmpty(searchString))
@@ -41,15 +49,47 @@ namespace MovieDatabase.Controllers
             return Json(movies);
         }
 
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, string searchType)
         {
             var movies = await _movieService.GetAllMoviesAsync();
 
+            Console.WriteLine("==================INDEX=======================");
+
             if (!String.IsNullOrEmpty(searchString))
             {
-                movies = movies.Where(m => m.title!.Contains(searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
-            }
+                if(searchType=="Title")
+                    movies = movies.Where(m => m.title!.Contains(searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
 
+                if(searchType == "Genre")
+                {
+                    foreach (Movie mo in movies)
+                    {
+                        var genreMovies = _context.GenreMovie
+                               .Where(gm => gm.moviesid == mo.id)
+                               .ToList();
+                    }
+                    var genres = _context.Genre.Where(g => g.tag.Contains(searchString)).ToList();
+                    movies = movies.Where(m => m.genres.Intersect(genres).Any()).ToList();
+                }
+
+                if (searchType == "Actor")
+                {
+
+                    var actors = await _context.Actor.ToListAsync();
+
+                    actors = actors.Where(g => g.nameSurnameLabel.Contains(searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
+
+                    //loop needed for updating movie.actors, otherwise it's empty for some reason
+                    foreach (Actor actor in actors)
+                    {
+                        var movie = _context.Movie
+                        .Include(m => m.actors.Where(m => m.id == actor.id))
+                        .ToList();
+                    }
+
+                    movies = movies.Where(m => m.actors.Intersect(actors).Any()).ToList();
+                }
+            }
 
             ViewBag.isAdminVB = false;
 

@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 
 @{
-    List<string> items = ["By title", "By genre", "By actor"];
+    List<string> items = ["Title", "Genre", "Actor"];
     var searchTypes = new SelectList(items);
 }
 <html lang="en">
@@ -29,9 +29,13 @@
 
                         <div class="search-form-container d-flex justify-content-left flex-grow-1">
                             <form class="d-flex" asp-controller="Home" asp-action="Index">
+                                
                                 <input class="form-control me-2" type="search" name="SearchString" placeholder="Type to search movies..." aria-label="Search">
+                                
+                                <select asp-items="@searchTypes" id="searchTypeSelect" name="SearchType" class="form-control-sm"></select>
+
                                 <button class="btn btn-secondary" type="submit">Search</button>
-                                <select asp-items="@searchTypes" class="form-control-sm"></select>
+
                             </form>
                         </div>
 
@@ -86,4 +90,23 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
+<script type="text/javascript">
+    $(function () {
+        $("#searchTypeSelect").change(function () {
+            $.ajax
+                ({
+                    url: '@Url.Action("Search", "Home")',
+                    data: {  },
+                    success: function () {
+                        alert($(this).val());
+                    }
+                });
+        });
+    });
+</script>
+
+
 </html>
+
+
