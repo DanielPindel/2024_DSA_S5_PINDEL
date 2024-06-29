@@ -76,53 +76,10 @@ namespace MovieDatabase.Controllers
         }
 
         // GET: Movies/Create
-        public IActionResult Create(string searchString, int[] actors)
+        public IActionResult Create()
         {
             ViewBag.directorVB = new SelectList(_context.Director, "id", "nameSurnameLabel");
-            //ViewBag.actors = new MultiSelectList(_context.Actor, "id", "nameSurnameLabel");
             ViewBag.genres = new MultiSelectList(_context.Genre, "id", "tag");
-
-            Console.Write("-------->chosenActorsId before:  ");
-            foreach (int i in chosenActorsId)
-            {
-                Console.Write(i + " ");
-            }
-            Console.WriteLine();
-
-
-
-            chosenActorsId = chosenActorsId.Union(actors);
-
-
-
-            Console.Write("-------->chosenActorsId after:  ");
-            foreach (int i in chosenActorsId)
-            {
-                Console.Write(i + " ");
-            }
-            Console.WriteLine();
-
-
-
-
-            var actorsList = from a in _context.Actor select a;
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                actorsList = actorsList.Where(s => s.name.Contains(searchString));
-            }
-
-            var multiList = new MultiSelectList(actorsList.ToList(), "id", "nameSurnameLabel", new[] { 3 });
-
-            Console.Write("-------->Selected values: ");
-            for(int i = 0; i < multiList.Count(); i++)
-            {
-                Console.Write(multiList.SelectedValues + " ||| ");
-            }
-            Console.WriteLine("\n");
-
-            ViewBag.actors = multiList;
-
             return View();
         }
 
@@ -132,7 +89,7 @@ namespace MovieDatabase.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,title,year,director_id,description,trailer_link,rate")] Movie movie, IFormFile posterImagePath, int[] actors, int[] genres)
+        public async Task<IActionResult> Create([Bind("id,title,year,director_id,description,trailer_link,rate")] Movie movie, IFormFile posterImagePath, string selectedActors, int[] genres)
         {
             if (posterImagePath != null && posterImagePath.Length > 0)
             {
@@ -150,34 +107,30 @@ namespace MovieDatabase.Controllers
 
             if (ModelState.IsValid)
             {
-                //int[] actors is the result of selected stuff from the list, and for some reason
-                //it also has to have the same name as the list from the object (Movie.actors), same with genres
-                if (actors != null)
+                var actorIds = selectedActors?.Split(',').Select(int.Parse).ToList();
+
+                if (actorIds != null)
                 {
-                    var a = new List<Actor>();
-                    foreach (var actor in actors)
-                    {
-                        var item = _context.Actor.Find(actor);
-                        a.Add(item);
-                    }
-                    movie.actors = a;
+                    var selectedActorsList = _context.Actor.Where(a => actorIds.Contains(a.id)).ToList();
+                    movie.actors = selectedActorsList;
                 }
 
                 if (genres != null)
                 {
-                    var g = new List<Genre>();
-                    foreach (var genre in genres)
-                    {
-                        var item = _context.Genre.Find(genre);
-                        g.Add(item);
-                    }
-                    movie.genres = g;
+                    var selectedGenresList = _context.Genre.Where(g => genres.Contains(g.id)).ToList();
+                    movie.genres = selectedGenresList;
                 }
 
-                _context.Add(movie);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(movie);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error saving movie: {ex.Message}");
+                }
             }
             else
             {
@@ -185,15 +138,32 @@ namespace MovieDatabase.Controllers
                 {
                     foreach (var error in modelState.Errors)
                     {
-                        Console.WriteLine(error.ErrorMessage);
+                        Console.WriteLine($"Model error: {error.ErrorMessage}");
                     }
                 }
             }
 
+            ViewBag.directorVB = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
+            ViewBag.genres = new MultiSelectList(_context.Genre, "id", "tag");
             return View(movie);
         }
 
 
+        [HttpGet]
+        public IActionResult SearchActors(string searchString)
+        {
+            if (string.IsNullOrEmpty(searchString))
+            {
+                return Json(new List<Actor>());
+            }
+
+            var actors = _context.Actor
+                .Where(a => (a.name + " " + a.surname).Contains(searchString))
+                .Select(a => new { a.id, nameSurnameLabel = a.name + " " + a.surname })
+                .ToList();
+
+            return Json(actors);
+        }
 
         // GET: Movies/Edit/5
         public async Task<IActionResult> Edit(int? id)
