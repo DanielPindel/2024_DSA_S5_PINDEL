@@ -11,25 +11,25 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.name)
+            @Html.Raw("Name")
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.surname)
+            @Html.Raw("Surname")
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.surname)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.date_of_birth)
+            @Html.Raw("Birthday")
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.date_of_birth)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.movies)
+            @Html.Raw("Movies")
         </dt>
         <dd class="col-sm-10">
             @foreach (Movie m in ViewBag.moviesVB)

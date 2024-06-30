@@ -46,11 +46,15 @@
             </div>
             <div class="main-page-movie-info">
                 <div class="main-page-movie-title">
-                    <h3>@Html.DisplayFor(model => model.title)</h3>
+                    <h3>
+                        @Html.DisplayFor(model => model.title)&ensp;
                     @if (is_admin)
                     {
-                            <a href="@Url.Action("Edit", "Movies", new { id = movie.id })">Edit</a>
+                            <a href="@Url.Action("Edit", "Movies", new { id = movie.id })">
+                            <button class="btn btn-secondary btn-sm">Edit</button>
+                            </a>
                     }
+                    </h3>
                     <h2>@Html.DisplayFor(model => model.description)</h2>
                     <br>
                 </div>
@@ -58,7 +62,11 @@
                     <h4>Genres:</h4>
                     @foreach (var g in ViewBag.genresVB)
                     {
-                        <h2>@Html.Raw(g.tag)</h2>
+                        <a href="@Url.Action("Details", "Genres", new { id = g.id })" style="text-decoration: none">
+                            <h2>
+                                @g.tag
+                            </h2>
+                        </a>
                     }
                 </div>
                 <div class="actor-info">

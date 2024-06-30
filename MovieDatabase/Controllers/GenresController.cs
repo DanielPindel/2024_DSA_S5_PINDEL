@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -24,6 +25,17 @@ namespace MovieDatabase.Controllers
         // GET: Genres
         public async Task<IActionResult> Index()
         {
+            ViewBag.isAdminVB = false;
+            string? user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (user_id != null)
+            {
+                var user = await _context.User.FirstOrDefaultAsync(u => u.Id == user_id);
+                if (user != null)
+                {
+                    ViewBag.isAdminVB = user.is_admin;
+                }
+            }
+
             return View(await _context.Genre.ToListAsync());
         }
 
@@ -49,6 +61,18 @@ namespace MovieDatabase.Controllers
             //Not sure why, but after the previous query ViewBag has all the movies available, but genre.movies
             //has only the ones added to it, that's why this line has to be here.
             ViewBag.moviesVB = genre.movies;
+
+
+            ViewBag.isAdminVB = false;
+            string? user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (user_id != null)
+            {
+                var user = await _context.User.FirstOrDefaultAsync(u => u.Id == user_id);
+                if (user != null)
+                {
+                    ViewBag.isAdminVB = user.is_admin;
+                }
+            }
 
 
             return View(genre);

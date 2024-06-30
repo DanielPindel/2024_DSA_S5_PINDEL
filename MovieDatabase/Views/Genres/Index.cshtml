@@ -4,16 +4,21 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Genres</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (ViewBag.isAdminVB)
+{
+    <p>
+        <a asp-action="Create" style="text-decoration: none">
+            <button class="btn btn-secondary btn-sm">Create New</button>
+        </a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.tag)
+                @Html.Raw("Genre name")
             </th>
             <th></th>
         </tr>
@@ -25,9 +30,18 @@
                 @Html.DisplayFor(modelItem => item.tag)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+                    <a asp-action="Details" asp-route-id="@item.id" style="text-decoration: none">
+                        <button class="btn btn-secondary btn-sm">Details</button>
+                    </a>
+                    @if (ViewBag.isAdminVB)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.id" style="text-decoration: none">
+                            <button class="btn btn-secondary btn-sm">Edit</button>
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.id" style="text-decoration: none">
+                            <button class="btn btn-secondary btn-sm">Delete</button>
+                        </a>
+                    }
             </td>
         </tr>
 }

@@ -84,6 +84,18 @@ namespace MovieDatabase.Controllers
             ViewBag.actorsVB = movie.actors;
             ViewBag.genresVB = movie.genres;
 
+
+            ViewBag.isAdminVB = false;
+            string? user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (user_id != null)
+            {
+                var user = await _context.User.FirstOrDefaultAsync(u => u.Id == user_id);
+                if (user != null)
+                {
+                    ViewBag.isAdminVB = user.is_admin;
+                }
+            }
+
             return View(movie);
         }
 
