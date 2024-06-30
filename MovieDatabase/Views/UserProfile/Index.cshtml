@@ -51,17 +51,20 @@
         <button class="profile-button" onclick="window.location.href='@Url.Action("Index", "RatingsAndReviews")'">Ratings and reviews</button>
         <button class="profile-button" onclick="window.location.href='@Url.Action("Index", "Favorites")'">Favorite films</button>
     </div>
-    <div class="buttons-header">Administrator options</div>
-    <div class="profile-buttons">
-        <button class="btn btn-secondary" onclick="window.location.href='@Url.Action("Index", "Movies")'">Movies</button>
-        <button class="btn btn-secondary" onclick="window.location.href='@Url.Action("Index", "Actors")'">Actors</button>
-        <button class="btn btn-secondary" onclick="window.location.href='@Url.Action("Index", "Directors")'">Directors</button>
-        <button class="btn btn-secondary" onclick="window.location.href='@Url.Action("Index", "Genres")'">Genres</button>
-    </div>
-    <div class="profile-buttons">
-        <button class="btn btn-secondary" onclick="window.location.href='@Url.Action("Blocked", "Comments")'">Blocked comments</button>
-        <button class="btn btn-secondary" onclick="window.location.href='@Url.Action("Blocked", "Subcomments")'">Blocked replies</button>
-    </div>
+    @if (ViewBag.isAdminVB)
+    {
+        <div class="buttons-header">Administrator options</div>
+        <div class="profile-buttons">
+            <button class="btn btn-secondary" onclick="window.location.href='@Url.Action("Index", "Movies")'">Movies</button>
+            <button class="btn btn-secondary" onclick="window.location.href='@Url.Action("Index", "Actors")'">Actors</button>
+            <button class="btn btn-secondary" onclick="window.location.href='@Url.Action("Index", "Directors")'">Directors</button>
+            <button class="btn btn-secondary" onclick="window.location.href='@Url.Action("Index", "Genres")'">Genres</button>
+        </div>
+        <div class="profile-buttons">
+            <button class="btn btn-secondary" onclick="window.location.href='@Url.Action("Blocked", "Comments")'">Blocked comments</button>
+            <button class="btn btn-secondary" onclick="window.location.href='@Url.Action("Blocked", "Subcomments")'">Blocked replies</button>
+        </div>
+    }
     <br>
     
 </div>

@@ -38,6 +38,7 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
+            ViewBag.isAdminVB = user.is_admin;
 
             var userMovies = _context.UserMovie
                        .Where(um => um.user_id == id)
