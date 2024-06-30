@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="id" />
 
@@ -33,14 +33,19 @@
                 <label for="actorSearch">Actors</label>
                 <input type="text" id="actorSearch" class="form-control" placeholder="Type to search actors..." />
                 <ul id="actorResults" class="list-group"></ul>
-                <input type="hidden" asp-for="actors" id="selectedActors" name="selectedActors" />
+                <input type="hidden" id="selectedActors" name="selectedActors" />
             </div>
             <div class="form-group">
-                <ul id="chosenActors" class="list-group"></ul>
+                <ul id="chosenActors" class="list-group">
+                    @foreach (var actor in ViewBag.actorsVB)
+                    {
+                        <li class="list-group-item" data-id="@actor.id">@actor.nameSurnameLabel <button type="button" class="btn btn-danger btn-sm float-right remove-actor">Remove</button></li>
+                    }
+                </ul>
             </div>
             <div class="form-group">
                 <label for="genres">Genres</label>
-                <select asp-for="genres" class="form-control" asp-items="ViewBag.genres"></select>
+                <select asp-for="genres" class="form-control" asp-items="ViewBag.genres" multiple="multiple"></select>
             </div>
             <div class="form-group">
                 <label for="posterImagePath" class="control-label">Upload Poster Image</label>
@@ -65,23 +70,20 @@
     <script>
         $(document).ready(function () {
             let chosenActors = [];
-
             $('#actorSearch').on('keyup', function () {
                 let query = $(this).val();
                 if (query.length >= 2) {
-                    $.ajax
-                        ({
-                            url: '@Url.Action("SearchActors", "Movies")',
-                            data: { searchString: query },
-                            success: function (data) {
-                                $('#actorResults').empty();
-                                data.forEach(actor => {
-                                    $('#actorResults').append(`<li class="list-group-item" data-id="${actor.id}">${actor.nameSurnameLabel}</li>`);
-                                });
-                            }
-                        });
-                }
-                else {
+                    $.ajax({
+                        url: '@Url.Action("SearchActors", "Movies")',
+                        data: { searchString: query },
+                        success: function (data) {
+                            $('#actorResults').empty();
+                            data.forEach(actor => {
+                                $('#actorResults').append(`<li class="list-group-item" data-id="${actor.id}">${actor.nameSurnameLabel}</li>`);
+                            });
+                        }
+                    });
+                } else {
                     $('#actorResults').empty();
                 }
             });
@@ -89,7 +91,6 @@
             $(document).on('click', '#actorResults li', function () {
                 let actorId = $(this).data('id');
                 let actorName = $(this).text();
-
                 if (!chosenActors.includes(actorId)) {
                     chosenActors.push(actorId);
                     $('#chosenActors').append(`<li class="list-group-item" data-id="${actorId}">${actorName} <button type="button" class="btn btn-danger btn-sm float-right remove-actor">Remove</button></li>`);
@@ -109,6 +110,12 @@
             function updateSelectedActors() {
                 $('#selectedActors').val(chosenActors.join(','));
             }
+
+            $('#chosenActors li').each(function () 
+            {
+                chosenActors.push($(this).data('id'));
+            });
+            updateSelectedActors();
         });
     </script>
 }
