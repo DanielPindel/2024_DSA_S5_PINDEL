@@ -40,25 +40,23 @@
             </div>
             <button type="submit" class="btn">Login</button>
         </form>
-        <form>
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) > 0)
+        <div>
+            @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+            {
+                foreach (var provider in Model.ExternalLogins)
                 {
-                    foreach (var provider in Model.ExternalLogins!)
-                    {
-                        <form asp-page-handler="ExternalLogin" method="post">
-                            <input type="hidden" name="provider" value="@provider.Name" />
-                            <button type="submit" class="btn2">
-                                <i class="fa-brands fa-google" style="color: #db180a;"></i> Sign-in with @provider.DisplayName
-                            </button>
-                        </form>
-                    }
+                    <form asp-page-handler="ExternalLogin" method="post" style="display:inline;">
+                        <input type="hidden" name="provider" value="@provider.Name" />
+                        <button type="submit" class="btn2">
+                            <i class="fa-brands fa-google" style="color: #db180a;"></i> Sign-in with @provider.DisplayName
+                        </button>
+                    </form>
                 }
             }
-            <div class="login-register">
-                <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
-            </div>
-        </form>
+        </div>
+        <div class="login-register">
+            <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+        </div>
     </div>
 </div>
 
