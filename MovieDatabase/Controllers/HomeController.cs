@@ -45,8 +45,6 @@ namespace MovieDatabase.Controllers
         {
             var movies = await _movieService.GetAllMoviesAsync();
 
-            Console.WriteLine("==================INDEX=======================");
-
             if (!String.IsNullOrEmpty(searchString))
             {
                 if(searchType=="Title")

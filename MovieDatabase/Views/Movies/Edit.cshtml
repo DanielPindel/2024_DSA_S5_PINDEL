@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit";
+    string poster_image_path = ViewBag.posterImagePathVB;
 }
 
 <h1>Edit</h1>
@@ -13,6 +14,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="id" />
+
             <div class="form-group">
                 <label asp-for="title" class="control-label"></label>
                 <input asp-for="title" class="form-control" />
@@ -24,14 +26,27 @@
                 <span asp-validation-for="year" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="director_id" class="control-label"></label>
+                <label for="director_id">Director</label>
                 <select asp-for="director_id" class="form-control" asp-items="ViewBag.directorVB"></select>
-                <span asp-validation-for="director_id" class="text-danger"></span>
             </div>
-            @* <div class="form-group">
-            <label for="actors">actors</label>
-            <select asp-for="actors" class="form-control" asp-items="ViewBag.actors"></select>
-            </div> *@
+            <div class="form-group">
+                <label for="actorSearch">Actors</label>
+                <input type="text" id="actorSearch" class="form-control" placeholder="Type to search actors..." />
+                <ul id="actorResults" class="list-group"></ul>
+                <input type="hidden" asp-for="actors" id="selectedActors" name="selectedActors" />
+            </div>
+            <div class="form-group">
+                <ul id="chosenActors" class="list-group"></ul>
+            </div>
+            <div class="form-group">
+                <label for="genres">Genres</label>
+                <select asp-for="genres" class="form-control" asp-items="ViewBag.genres"></select>
+            </div>
+            <div class="form-group">
+                <label for="posterImagePath" class="control-label">Upload Poster Image</label>
+                <input type="file" id="posterImagePath" name="posterImagePath" class="form-control" />
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -47,4 +62,53 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        $(document).ready(function () {
+            let chosenActors = [];
+
+            $('#actorSearch').on('keyup', function () {
+                let query = $(this).val();
+                if (query.length >= 2) {
+                    $.ajax
+                        ({
+                            url: '@Url.Action("SearchActors", "Movies")',
+                            data: { searchString: query },
+                            success: function (data) {
+                                $('#actorResults').empty();
+                                data.forEach(actor => {
+                                    $('#actorResults').append(`<li class="list-group-item" data-id="${actor.id}">${actor.nameSurnameLabel}</li>`);
+                                });
+                            }
+                        });
+                }
+                else {
+                    $('#actorResults').empty();
+                }
+            });
+
+            $(document).on('click', '#actorResults li', function () {
+                let actorId = $(this).data('id');
+                let actorName = $(this).text();
+
+                if (!chosenActors.includes(actorId)) {
+                    chosenActors.push(actorId);
+                    $('#chosenActors').append(`<li class="list-group-item" data-id="${actorId}">${actorName} <button type="button" class="btn btn-danger btn-sm float-right remove-actor">Remove</button></li>`);
+                    updateSelectedActors();
+                }
+                $('#actorResults').empty();
+                $('#actorSearch').val('');
+            });
+
+            $(document).on('click', '.remove-actor', function () {
+                let actorId = $(this).closest('li').data('id');
+                chosenActors = chosenActors.filter(id => id !== actorId);
+                $(this).closest('li').remove();
+                updateSelectedActors();
+            });
+
+            function updateSelectedActors() {
+                $('#selectedActors').val(chosenActors.join(','));
+            }
+        });
+    </script>
 }

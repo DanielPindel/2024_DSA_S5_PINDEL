@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Serialization;
@@ -175,23 +176,24 @@ namespace MovieDatabase.Controllers
 
             var movie = await _context.Movie.FindAsync(id);
 
-            /*ViewBag.actorsVB = _context.Actor
-                        .Include(a => a.movies.Where(m => m.id == movie.id))
-                        .ToList();
-
-            List<int> selectedActors = new List<int>();
-            foreach (var actor in movie.actors)
-            {
-                selectedActors.Add(actor.id);
-            }
-            int[] selectedAs = selectedActors.ToArray();*/
-
             if (movie == null)
             {
                 return NotFound();
             }
+
+            var genres = _context.Genre
+                        .Include(g => g.movies.Where(m => m.id == movie.id))
+                        .ToList();
+            var actors = _context.Actor
+                        .Include(a => a.movies.Where(m => m.id == movie.id))
+                        .ToList();
+
+
             ViewBag.directorVB = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
-            //ViewBag.actors = new MultiSelectList(_context.Actor, "id", "nameSurnameLabel", selectedAs);
+            ViewBag.genres = new MultiSelectList(_context.Genre, "id", "tag", movie.genres);
+            ViewBag.actorsVB = actors;
+
+            ViewBag.posterImagePathVB = movie.posterImagePath;
             return View(movie);
         }
 
@@ -200,46 +202,67 @@ namespace MovieDatabase.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,title,year,director_id,description,trailer_link,rate")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("id,title,year,director_id,description,trailer_link,rate")] Movie movie, IFormFile posterImagePath, string selectedActors, int[] genres)
         {
             if (id != movie.id)
             {
                 return NotFound();
             }
 
+            if (posterImagePath != null && posterImagePath.Length > 0)
+            {
+                var fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(posterImagePath.FileName);
+                var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", fileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await posterImagePath.CopyToAsync(fileStream);
+                }
+
+                movie.posterImagePath = fileName;
+                ModelState.Remove("posterImagePath");
+            }
+
             if (ModelState.IsValid)
             {
+                var actorIds = selectedActors?.Split(',').Select(int.Parse).ToList();
 
-                /*ViewBag.actorsVB = _context.Actor
-                        .Include(a => a.movies.Where(m => m.id == movie.id))
-                        .ToList();
+                if (actorIds != null)
+                {
+                    var selectedActorsList = _context.Actor.Where(a => actorIds.Contains(a.id)).ToList();
+                    movie.actors = selectedActorsList;
+                }
 
-                _context.Entry(movie).State = EntityState.Modified;
-                _context.Entry(movie).Collection(p => p.actors).Load();
-
-                var newActors = _context.Actor.Where(x => actors.Contains(x.id)).ToList();
-                movie.actors = newActors;*/
-
+                if (genres != null)
+                {
+                    var selectedGenresList = _context.Genre.Where(g => genres.Contains(g.id)).ToList();
+                    movie.genres = selectedGenresList;
+                }
 
                 try
                 {
-                    _context.Update(movie);
+                    _context.Add(movie);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception ex)
                 {
-                    if (!MovieExists(movie.id))
+                    Console.WriteLine($"Error saving movie: {ex.Message}");
+                }
+            }
+            else
+            {
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
                     {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
+                        Console.WriteLine($"Model error: {error.ErrorMessage}");
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
+
             ViewBag.directorVB = new SelectList(_context.Director, "id", "nameSurnameLabel", movie.director_id);
+            ViewBag.genres = new MultiSelectList(_context.Genre, "id", "tag", movie.genres);
 
             return View(movie);
         }
