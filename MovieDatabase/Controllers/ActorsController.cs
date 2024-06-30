@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,6 +24,17 @@ namespace MovieDatabase.Controllers
         // GET: Actors
         public async Task<IActionResult> Index()
         {
+            ViewBag.isAdminVB = false;
+            string? user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (user_id != null)
+            {
+                var user = await _context.User.FirstOrDefaultAsync(u => u.Id == user_id);
+                if (user != null)
+                {
+                    ViewBag.isAdminVB = user.is_admin;
+                }
+            }
+
             return View(await _context.Actor.ToListAsync());
         }
 
@@ -50,6 +62,17 @@ namespace MovieDatabase.Controllers
             //has only the ones added to it, that's why this line has to be here.
             ViewBag.moviesVB = actor.movies;
 
+
+            ViewBag.isAdminVB = false;
+            string? user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (user_id != null)
+            {
+                var user = await _context.User.FirstOrDefaultAsync(u => u.Id == user_id);
+                if (user != null)
+                {
+                    ViewBag.isAdminVB = user.is_admin;
+                }
+            }
 
             return View(actor);
         }

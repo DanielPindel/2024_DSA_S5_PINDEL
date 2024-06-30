@@ -55,7 +55,7 @@
 }
 
 h2 {
-    font-size: 1em;
+    font-size: 0.9em;
     color: #cccccc;
     margin: 10px 0;
 }
@@ -68,7 +68,8 @@ h3 {
 
 h4, h5 {
     font-size: 1.2em;
-    color: #bbbbbb;
+    /*color: #bbbbbb;*/
+    color: slategray;
     margin: 5px 0;
 }
 
@@ -278,3 +279,4 @@ button {
         background-color: #777777;
         transform: scale(1.05);
     }
+

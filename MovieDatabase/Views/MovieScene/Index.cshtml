@@ -52,26 +52,35 @@
                             <a href="@Url.Action("Edit", "Movies", new { id = movie.id })">Edit</a>
                     }
                     <h2>@Html.DisplayFor(model => model.description)</h2>
+                    <br>
                 </div>
                 <div class="genre-info">
                     <h4>Genres:</h4>
                     @foreach (var g in ViewBag.genresVB)
                     {
-                        <h5>@Html.Raw(g.tag)</h5>
+                        <h2>@Html.Raw(g.tag)</h2>
                     }
                 </div>
                 <div class="actor-info">
                     <h4>Actors:</h4>
                     @foreach (var a in ViewBag.actorsVB)
                     {
-                        <h5>@Html.Raw(a.nameSurnameLabel)</h5>
+                        <a href="@Url.Action("Details", "Actors", new { id = a.id })" style="text-decoration: none">
+                            <h2>
+                                @a.nameSurnameLabel
+                            </h2>
+                        </a>
                     }
                 </div>
                 <div class="director-info">
                     <h4>Director:</h4>
                     @foreach (var d in ViewBag.directorVB)
                     {
-                        <h5>@Html.Raw(d.nameSurnameLabel)</h5>
+                        <a href="@Url.Action("Details", "Directors", new { id = d.id })" style="text-decoration: none">
+                            <h2>
+                                @d.nameSurnameLabel
+                            </h2>
+                        </a>
                     }
                 </div>
                 <div class="trailer-info">
@@ -185,7 +194,7 @@
                 {
                     if (comment.is_blocked)
                     {
-                        break;
+                        continue;
                     }
 
                     List<User> usersCommenting = [];
@@ -213,9 +222,12 @@
                                     <a href="@Url.Action("Edit", "Comments", new { id = comment.id, movie_id = movie.id })">Edit</a>
                                     <a href="@Url.Action("Delete", "Comments", new { id = comment.id, movie_id = movie.id })">Delete</a>
                                 }
-                                if (currentUser.is_admin)
+                                else
                                 {
-                                    <a href="@Url.Action("BlockComment", "Comments", new { com_id = comment.id, movie_id = movie.id  })">Block</a>
+                                    if (currentUser.is_admin)
+                                    {
+                                        <a href="@Url.Action("Block", "Comments", new { id = comment.id, movie_id = movie.id, user_id=comment.user_id })">Block</a>
+                                    }
                                 }
                             }
                             <a href="@Url.Action(@subcommentActionStr, "Subcomments", new { com_id = comment.id, movie_id = movie.id })">Reply</a>
@@ -223,6 +235,11 @@
                         </div>
                         @foreach (var subcomment in subcomments)
                         {
+                            if (subcomment.is_blocked)
+                            {
+                                continue;
+                            }
+
                             if (subcomment.comment_id == comment.id)
                             {
                                 User userSubcommenting = new User();
@@ -251,9 +268,12 @@
                                                 <a href="@Url.Action("Edit", "Subcomments", new { id = subcomment.id, com_id = comment.id, movie_id = movie.id })">Edit</a>
                                                 <a href="@Url.Action("Delete", "Subcomments", new { id = subcomment.id, com_id = comment.id, movie_id = movie.id})">Delete</a>
                                             }
-                                            if (currentUser.is_admin)
+                                            else
                                             {
-                                                <a href="@Url.Action("BlockSubcomment", "Subomments", new { id = subcomment.id, com_id = comment.id, movie_id = movie.id  })">Block</a>
+                                                if (currentUser.is_admin)
+                                                {
+                                                    <a href="@Url.Action("Block", "Subcomments", new { id = subcomment.id })">Block</a>
+                                                }
                                             }
                                         }
 

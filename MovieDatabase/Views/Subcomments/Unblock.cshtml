@@ -1,0 +1,43 @@
+﻿@model MovieDatabase.Models.Subcomment
+
+@{
+    ViewData["Title"] = "Unblock";
+}
+
+@{
+    var movie = ViewBag.movieVB;
+    var content = Model.content;
+    var user = ViewBag.userVB;
+}
+
+<h3>Unblock the following subcomment?</h3>
+
+<hr />
+<p>@user.UserName<br>"@content"</p>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Unblock">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="id" />
+                <input type="hidden" asp-for="content" />
+                <span asp-validation-for="content" class="text-danger"></span>
+            <div>
+                    <input type="submit" value="Unblock" class="btn btn-success" />
+             </div>
+            <br>
+            </form>
+            <div>
+                <a href="@Url.Action("Blocked", "Subcomments")">
+                    <button class="btn btn-secondary">Cancel</button>
+                </a>
+            </div>
+            
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -17,6 +17,7 @@ namespace MovieDatabase.Controllers
         private readonly MovieDatabaseContext _context;
         private static Movie currentMovie = new Movie();
         private static Comment currentComment = new Comment();
+        private static User subcommentUser = new User();
 
         public SubcommentsController(MovieDatabaseContext context)
         {
@@ -29,6 +30,26 @@ namespace MovieDatabase.Controllers
 
             return View(await _context.Subcomment.ToListAsync());
         }
+
+
+        public async Task<IActionResult> Blocked()
+        {
+
+            var blockedSubcomments = await _context.Subcomment.ToListAsync();
+            blockedSubcomments = blockedSubcomments.Where(sc => sc.is_blocked == true).ToList();
+
+            var movies = await _context.Movie.ToListAsync();
+            var users = await _context.User.ToListAsync();
+            var comments = await _context.Comment.ToListAsync();
+
+            ViewBag.usersVB = users;
+            ViewBag.moviesVB = movies;
+            ViewBag.commentsVB = comments;
+
+
+            return View(blockedSubcomments);
+        }
+
 
         // GET: Subcomments/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -246,29 +267,17 @@ namespace MovieDatabase.Controllers
         // GET: Subcomments/Delete/5
         public async Task<IActionResult> Delete(int? id, int? com_id, int? movie_id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) { return NotFound(); }
 
             var subcomment = await _context.Subcomment
                 .FirstOrDefaultAsync(m => m.id == id);
-            if (subcomment == null)
-            {
-                return NotFound();
-            }
+            if (subcomment == null) { return NotFound(); }
 
-            if (movie_id == null)
-            {
-                return NotFound();
-            }
+            if (movie_id == null){ return NotFound(); }
 
             var movie = await _context.Movie
                 .FirstOrDefaultAsync(m => m.id == movie_id);
-            if (movie == null)
-            {
-                return NotFound();
-            }
+            if (movie == null){ return NotFound(); }
 
             currentMovie = movie;
             ViewBag.movieVB = movie;
@@ -298,5 +307,152 @@ namespace MovieDatabase.Controllers
         }
 
         public IActionResult Nope() { return View(); }
+
+
+
+
+        public async Task<IActionResult> Block(int? id)
+        {
+            if (id == null) { return NotFound(); }
+            var subcomment = await _context.Subcomment.FindAsync(id);
+            if (subcomment == null) { return NotFound(); }
+
+            var comment = await _context.Comment.FirstOrDefaultAsync(c => c.id == subcomment.comment_id);
+            if (comment == null) { return NotFound(); }
+
+            currentComment = comment;
+            ViewBag.commentVB = comment;
+
+            var movie = await _context.Movie.FirstOrDefaultAsync(m => m.id == comment.movie_id);
+            if (movie == null) { return NotFound(); }
+
+            currentMovie = movie;
+            ViewBag.movieVB = movie;
+
+
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == subcomment.user_id);
+            if (user == null) { return NotFound(); }
+
+            subcommentUser = user;
+            ViewBag.userVB = user;
+
+           
+
+            return View(subcomment);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Block(int id, [Bind("id,movie_id,user_id,content,time,is_blocked")] Subcomment subcomment)
+        {
+            if (id != subcomment.id)
+            {
+                return NotFound();
+            }
+
+            subcomment.time = DateTime.Now;
+            subcomment.user_id = subcommentUser.Id;
+            subcomment.comment_id = currentComment.id;
+            subcomment.is_blocked = true;
+
+            var context = new ValidationContext(subcomment, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(subcomment, context, validationResults, true))
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                _context.Update(subcomment);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!SubcommentExists(subcomment.id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToAction(nameof(Index), "MovieScene", new { id = currentMovie.id });
+        }
+
+
+        public async Task<IActionResult> Unblock(int? id)
+        {
+            if (id == null){ return NotFound(); }
+
+            var subcomment = await _context.Subcomment.FindAsync(id);
+            if (subcomment == null){ return NotFound(); }
+
+            var comment = await _context.Comment.FirstOrDefaultAsync(c => c.id == subcomment.comment_id);
+            if (comment == null) { return NotFound(); }
+
+            currentComment = comment;
+            ViewBag.commentVB = comment;
+
+            var movie = await _context.Movie.FirstOrDefaultAsync(m => m.id == comment.movie_id);
+            if (movie == null) {  return NotFound(); }
+
+            currentMovie = movie;
+            ViewBag.movieVB = movie;
+
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Id == subcomment.user_id);
+            if (user == null) { return NotFound(); }
+
+            subcommentUser = user;
+            ViewBag.userVB = user;
+
+            return View(subcomment);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Unblock(int id, [Bind("id,movie_id,user_id,content,time,is_blocked")] Subcomment subcomment)
+        {
+            if (id != subcomment.id)
+            {
+                return NotFound();
+            }
+
+            subcomment.time = DateTime.Now;
+            subcomment.comment_id = currentComment.id;
+            subcomment.user_id = subcommentUser.Id;
+            subcomment.is_blocked = false;
+
+            var context = new ValidationContext(subcomment, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(subcomment, context, validationResults, true))
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                _context.Update(subcomment);
+                await _context.SaveChangesAsync();
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!SubcommentExists(subcomment.id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Blocked), "Subcomments");
+        }
+
+
+
     }
 }

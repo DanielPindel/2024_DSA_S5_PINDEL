@@ -1,0 +1,70 @@
+﻿@model IEnumerable<MovieDatabase.Models.Comment>
+
+@{
+    ViewData["Title"] = "Blocked comments";
+}
+
+
+<h1>Blocked</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.Raw("User")
+            </th>
+            <th>
+                @Html.Raw("Comment")
+            </th>
+            <th>
+                @Html.Raw("Movie")
+            </th>
+            <th>
+                @Html.Raw("Time")
+            </th>
+            <th>
+                @Html.Raw("Blocked")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            <tr>
+                @{
+                    foreach (User u in ViewBag.usersVB)
+                    {
+                        if(u.Id == item.user_id){
+                            <td>@u.UserName</td>
+                            break;
+                        }
+                    }
+                }
+            <td>
+                @Html.DisplayFor(modelItem => item.content)
+            </td>
+            @{
+                foreach (Movie m in ViewBag.moviesVB)
+                {
+                    if (m.id == item.movie_id)
+                    {
+                        <td>@m.title</td>
+                        break;
+                    }
+                }
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.is_blocked)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
+                <a href="@Url.Action("Unblock", "Comments", new { id = @item.id, movie_id = @item.movie_id, user_id=@item.user_id })">Unblock</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
