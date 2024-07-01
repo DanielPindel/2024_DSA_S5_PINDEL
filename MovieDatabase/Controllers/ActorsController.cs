@@ -10,18 +10,35 @@ using MovieDatabase.Data;
 using MovieDatabase.Models;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
+/**
+ * A Controller namespace for MovieDatabase controllers.
+ */
 namespace MovieDatabase.Controllers
 {
+    /**
+     * An Actor Controller class controlling all actions executed on actors.
+     */
     public class ActorsController : Controller
     {
+        /**
+         * A MovieDatabase context object encapsulating all information about an individual HTTP request and response. 
+         */
         private readonly MovieDatabaseContext _context;
 
+        /**
+         * An Actors Controller constructor. 
+         * @param context of the database application.
+         */
         public ActorsController(MovieDatabaseContext context)
         {
             _context = context;
         }
 
-        // GET: Actors
+
+        /**
+         * An Index GET action passing all actors from database to the view displaying actors in a table.
+         * @return view with all actors.
+         */
         public async Task<IActionResult> Index()
         {
             ViewBag.isAdminVB = false;
@@ -38,7 +55,13 @@ namespace MovieDatabase.Controllers
             return View(await _context.Actor.ToListAsync());
         }
 
-        // GET: Actors/Details/5
+
+        /**
+         * A Details GET action passing a given actor and all related information for display to the view.
+         * The view displays the details of the actor in a table.
+         * @param id of the actor the details will be displayed of.
+         * @return view with the Actor object.
+         */
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -77,15 +100,21 @@ namespace MovieDatabase.Controllers
             return View(actor);
         }
 
-        // GET: Actors/Create
+
+        /**
+        * A Create GET action for actor creation.
+        * @return view for creating the actor.
+        */
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Actors/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /**
+         * A Create POST action adding the actor to the database if the model is valid.
+         * @param Actor class object passed from the view.
+         * @return view with the actor if model not valid, redirect to Index view if valid.
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,name,surname,date_of_birth")] Actor actor)
@@ -99,7 +128,12 @@ namespace MovieDatabase.Controllers
             return View(actor);
         }
 
-        // GET: Actors/Edit/5
+
+        /**
+         * An Edit GET action passing actor and related information from database necessary for editing the actor.
+         * @param id of the actor to edit.
+         * @return view for editing the actor.
+         */
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -115,9 +149,11 @@ namespace MovieDatabase.Controllers
             return View(actor);
         }
 
-        // POST: Actors/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /**
+         * An Edit POST action updating the actor in the database if the model is valid.
+         * @param Actor class object passed from the view.
+         * @return editing view with the actor if model not valid, redirect to Index view if valid.
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,name,surname,date_of_birth")] Actor actor)
@@ -150,7 +186,11 @@ namespace MovieDatabase.Controllers
             return View(actor);
         }
 
-        // GET: Actors/Delete/5
+        /**
+         * A Delete GET action passing the actor to the Delete view.
+         * @param id of the actor to delete.
+         * @return view for deleting the actor.
+         */
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -168,7 +208,12 @@ namespace MovieDatabase.Controllers
             return View(actor);
         }
 
-        // POST: Actors/Delete/5
+
+        /**
+         * A Delete POST action deleting the actor from the database.
+         * @param id of the actor to be deleted.
+         * @return redirect to Index action.
+         */
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -183,6 +228,12 @@ namespace MovieDatabase.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        /**
+         * A member method for checking whether the given actor exists.
+         * @param id of the actor to be searched for.
+         * @return bool value of whether the actor was found.
+         */
         private bool ActorExists(int id)
         {
             return _context.Actor.Any(e => e.id == id);

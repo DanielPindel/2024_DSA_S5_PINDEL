@@ -11,18 +11,34 @@ using MovieDatabase.Data;
 using MovieDatabase.Models;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
+/**
+ * A Controller namespace for MovieDatabase controllers.
+ */
 namespace MovieDatabase.Controllers
 {
+    /**
+     * A Genres Controller class controlling all actions executed on genres.
+     */
     public class GenresController : Controller
     {
+        /**
+         * A MovieDatabase context object encapsulating all information about an individual HTTP request and response. 
+         */
         private readonly MovieDatabaseContext _context;
 
+        /**
+         * A Genres Controller constructor. 
+         * @param context of the database application.
+         */
         public GenresController(MovieDatabaseContext context)
         {
             _context = context;
         }
 
-        // GET: Genres
+        /**
+         * An Index GET action passing all genres from database to the view displaying genres in a table.
+         * @return view with all genres.
+         */
         public async Task<IActionResult> Index()
         {
             ViewBag.isAdminVB = false;
@@ -39,7 +55,12 @@ namespace MovieDatabase.Controllers
             return View(await _context.Genre.ToListAsync());
         }
 
-        // GET: Genres/Details/5
+        /**
+          * A Details GET action passing a given genre and all related information for display to the view.
+          * The view displays the details of the genre in a table.
+          * @param id of the genre the details will be displayed of.
+          * @return view with the Genre object.
+          */
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -73,20 +94,25 @@ namespace MovieDatabase.Controllers
                     ViewBag.isAdminVB = user.is_admin;
                 }
             }
-
-
             return View(genre);
         }
 
-        // GET: Genres/Create
+
+        /**
+        * A Create GET action for genre creation.
+        * @return view for creating the genre.
+        */
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Genres/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        /**
+         * A Create POST action adding the genre to the database if the model is valid.
+         * @param Genre class object passed from the view.
+         * @return view with the genre if model not valid, redirect to Index view if valid.
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,tag")] Genre genre)
@@ -100,7 +126,11 @@ namespace MovieDatabase.Controllers
             return View(genre);
         }
 
-        // GET: Genres/Edit/5
+        /**
+         * An Edit GET action passing genre to the editing view.
+         * @param id of the genre to edit.
+         * @return view for editing the genre.
+         */
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -116,9 +146,11 @@ namespace MovieDatabase.Controllers
             return View(genre);
         }
 
-        // POST: Genres/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /**
+         * An Edit POST action updating the genre in the database if the model is valid.
+         * @param Genre class object passed from the view.
+         * @return editing view with the genre if model not valid, redirect to Index view if valid.
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,tag")] Genre genre)
@@ -151,7 +183,12 @@ namespace MovieDatabase.Controllers
             return View(genre);
         }
 
-        // GET: Genres/Delete/5
+
+        /**
+         * A Delete GET action passing the genre to the Delete view.
+         * @param id of the genre to delete.
+         * @return view for deleting the genre.
+         */
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -169,7 +206,12 @@ namespace MovieDatabase.Controllers
             return View(genre);
         }
 
-        // POST: Genres/Delete/5
+
+        /**
+         * A Delete POST action deleting the genre from the database.
+         * @param id of the genre to be deleted.
+         * @return redirect to Index action.
+         */
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -184,6 +226,12 @@ namespace MovieDatabase.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        /**
+         * A member method for checking whether the given genre exists.
+         * @param id of the genre to be searched for.
+         * @return bool value of whether the genre was found.
+         */
         private bool GenreExists(int id)
         {
             return _context.Genre.Any(e => e.id == id);

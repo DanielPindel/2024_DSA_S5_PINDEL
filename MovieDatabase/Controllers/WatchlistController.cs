@@ -8,20 +8,34 @@ using Org.BouncyCastle.Bcpg;
 using Org.BouncyCastle.Bcpg.Sig;
 using System.Security.Claims;
 
+/**
+ * A Controller namespace for MovieDatabase controllers.
+ */
 namespace MovieDatabase.Controllers
 {
+    /**
+     * A Watchlist Controller class controlling all actions executed on favourites list.
+     */
     public class WatchlistController : Controller
     {
-        // Declaration of context as a class member
+        /**
+         * A MovieDatabase context object encapsulating all information about an individual HTTP request and response. 
+         */
         private readonly MovieDatabaseContext _context;
 
-        // Watchlist constructor that assigns our context to the class
+        /**
+         * A Watchlist Controller constructor. 
+         * @param context of the database application.
+         */
         public WatchlistController(MovieDatabaseContext context)
         {
             _context = context;
         }
 
-
+        /**
+         * An Index GET action passing all movies and user information from database to the view displaying watchlist of the user.
+         * @return view with the user.
+         */
         public async Task<IActionResult> Index()
         {
             // Some stuff to get the user
@@ -53,11 +67,14 @@ namespace MovieDatabase.Controllers
 
             ViewBag.moviesVB = movies;
 
-
-
             return View(user);
         }
 
+        /**
+         * A Remove POST action deleting the userMovie object (user-movie connection) from the database.
+         * @param id of the movie from user-movie connection to be deleted.
+         * @return OkResult object.
+         */
         public async Task<IActionResult> Remove(int id)
         {
             string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

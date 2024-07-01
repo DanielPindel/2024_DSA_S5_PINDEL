@@ -14,24 +14,48 @@ using MovieDatabase.Data;
 using MovieDatabase.Models;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
-//there are some parts regarding editing of the actors to be uncommented and tested once editing works
 
+/**
+ * A Controller namespace for MovieDatabase controllers.
+ */
 namespace MovieDatabase.Controllers
 {
+    /**
+     * A Movie Controller class controlling all actions executed on movies.
+     */
     public class MoviesController : Controller
     {
 
+        /**
+         * A MovieDatabase context object encapsulating all information about an individual HTTP request and response. 
+         */
         private readonly MovieDatabaseContext _context;
+
+        /**
+         * An IWebHostEnvironment object providing information about the web hosting environment an application is running in.
+         */
         private readonly IWebHostEnvironment _webHostEnvironment;
+
+        /**
+         * A collection for storing actors chosen from the list during creation or editing of the movie.
+         */
         private static IEnumerable<int> chosenActorsId = new HashSet<int>();
 
+        /**
+         * A Movie Controller constructor. 
+         * @param context of the database application.
+         * @param webHostEnvironment providing information about the web hosting environment.
+         */
         public MoviesController(MovieDatabaseContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
 
-        // GET: Movies
+        /**
+         * An Index GET action passing all movies from database to the view displaying movies in a table.
+         * @return view with all movies.
+         */
         public async Task<IActionResult> Index()
         {
             ViewBag.isAdminVB = false;
@@ -47,7 +71,12 @@ namespace MovieDatabase.Controllers
             return View(await _context.Movie.ToListAsync());
         }
 
-        // GET: Movies/Details/5
+        /**
+         * A Details GET action passing a given movie and all related information for display to the view.
+         * The view displays the movie details in a table.
+         * @param id of the movie the details will be displayed of.
+         * @return view with the movie.
+         */
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -99,7 +128,10 @@ namespace MovieDatabase.Controllers
             return View(movie);
         }
 
-        // GET: Movies/Create
+        /**
+         * A Create GET action passing related information from database necessary for movie creation.
+         * @return view for creating the movie.
+         */
         public IActionResult Create()
         {
             ViewBag.directorVB = new SelectList(_context.Director, "id", "nameSurnameLabel");
@@ -108,9 +140,14 @@ namespace MovieDatabase.Controllers
         }
 
 
-        // POST: Movies/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /**
+         * A Create POST action adding the movie to the database if the model is valid.
+         * @param Movie class object passed from the view.
+         * @param IFormFile object representing a file sent with the HttpRequest for the poster image.
+         * @param string of selected actors.
+         * @param int array of selected genres.
+         * @return view with the movie if model not valid, redirect to Index view if valid.
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,title,year,director_id,description,trailer_link,rate")] Movie movie, IFormFile posterImagePath, string selectedActors, int[] genres)
@@ -172,7 +209,11 @@ namespace MovieDatabase.Controllers
             return View(movie);
         }
 
-
+        /**
+         * A SearchActors GET action passing actors filtered with searchString to the view.
+         * @param string searchString object passed from the view for filtering the actors.
+         * @return a JsonResult object.
+         */
         [HttpGet]
         public IActionResult SearchActors(string searchString)
         {
@@ -189,7 +230,11 @@ namespace MovieDatabase.Controllers
             return Json(actors);
         }
 
-        // GET: Movies/Edit/5
+        /**
+         * An Edit GET action passing movie and related information from database necessary for editing the movie.
+         * @param id of the movie to edit.
+         * @return view for editing the movie.
+         */
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -214,20 +259,18 @@ namespace MovieDatabase.Controllers
             return View(movie);
         }
 
-        // POST: Movies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /**
+         * An Edit POST action updating the movie in the database if the model is valid.
+         * @param Movie class object passed from the view.
+         * @param IFormFile object representing a file sent with the HttpRequest for the poster image.
+         * @param string of selected actors.
+         * @param int array of selected genres.
+         * @return editing view with the movie if model not valid, redirect to Index view if valid.
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,title,year,director_id,description,trailer_link,rate")] Movie movie, IFormFile posterImagePath, string selectedActors, int[] genres)
         {
-            Console.WriteLine($"Movie ID: {movie.id}");
-            Console.WriteLine($"Title: {movie.title}");
-            Console.WriteLine($"Year: {movie.year}");
-            Console.WriteLine($"Director ID: {movie.director_id}");
-            Console.WriteLine($"Selected Actors: {selectedActors}");
-            Console.WriteLine($"Genres: {string.Join(",", genres)}");
-
             if (id != movie.id)
             {
                 return NotFound();
@@ -315,7 +358,12 @@ namespace MovieDatabase.Controllers
             return View(movie);
         }
 
-        // GET: Movies/Delete/5
+
+        /**
+         * A Delete GET action passing the movie to the Delete view.
+         * @param id of the movie to delete.
+         * @return view for deleting the movie.
+         */
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -333,7 +381,11 @@ namespace MovieDatabase.Controllers
             return View(movie);
         }
 
-        // POST: Movies/Delete/5
+        /**
+         * A Delete POST action deleting the movie from the database.
+         * @param id of the movie to be deleted.
+         * @return redirect to Index action.
+         */
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -357,6 +409,11 @@ namespace MovieDatabase.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        /**
+         * A member method for checking whether the given movie exists.
+         * @param id of the movie to be searched for.
+         * @return bool value of whether the movie was found.
+         */
         private bool MovieExists(int id)
         {
             return _context.Movie.Any(e => e.id == id);

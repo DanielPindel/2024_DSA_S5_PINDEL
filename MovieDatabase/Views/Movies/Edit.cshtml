@@ -51,6 +51,11 @@
                 <label for="posterImagePath" class="control-label">Upload Poster Image</label>
                 <input type="file" id="posterImagePath" name="posterImagePath" class="form-control" />
             </div>
+            <div class="form-group">
+                <label asp-for="trailer_link" class="control-label"></label>
+                <input asp-for="trailer_link" class="form-control" />
+                <span asp-validation-for="trailer_link" class="text-danger"></span>
+            </div>
 
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

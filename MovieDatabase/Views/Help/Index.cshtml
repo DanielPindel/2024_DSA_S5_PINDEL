@@ -1,9 +1,215 @@
 ﻿@{
     ViewData["Title"] = "Help Page";
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/HelpStyleSheet.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+</head>
+<body>
 
-<h3>Help</h3>
-<p><b>Writing a comment</b></p>
-<div class="form-group">
-    To write a comment click on a "Write a comment" button under the comment section 
-</div>
+    <h3>Profile</h3>
+    <details>
+        <summary><b>How do I create an account?</b></summary>
+        <p style="margin-left: 40px;">
+            To create a new account:<br> 
+            1) Click on the <b>Register</b> button on the upper bar of the site.<br>
+            2) Register by entering your email address, a password and the same password again to confirm it.<br>
+            3) Click the I agree to the terms & conditions checkbox.<br />
+            4) Click the <b>Register</b> button and your account will be created.
+        </p>
+    </details>
+    <details>
+        <summary><b>How do I log into my account?</b></summary>
+        <p>
+            To log into your account:<br>
+            1) Click on the <b>Login</b> button on the upper bar of the site.<br>
+            2) Log in by entering your email address and your password. <br>
+            3) Click the <b>Login</b> button and you will be logged into your account.
+        </p>
+    </details>
+    <details>
+        <summary><b>Can I log in with an external account?</b></summary>
+        <p>
+            Yes, you can log in with a Google account. To do so:<br>
+            1) Click on the <b>Login</b> button on the upper bar of the site.<br>
+            2) Click <b>Sign in with Google</b>, enter your email address and click <b>Register</b>.<br>
+            That will automatically register your account with association to your Google one.
+        </p>
+    </details>
+    <details>
+        <summary><b>How do I change my profile picture?</b></summary>
+        <p>
+            To change the profile picture:<br>
+            1) Go to your profile page by clicking <b>Profile</b> button on the upper bar of the site.<br>
+            2) Click on the circle icon with a pencil located on the top of your picture.<br>
+            3) Choose a picture of your desire.<br>
+            4) Upload this picture.<br>
+            5) Click <b>Save Changes</b> button.
+        </p>
+    </details>
+    <details>
+        <summary><b>How do I change my username?</b></summary>
+        <p>
+            To change your username:<br>
+            1) Go to your profile page<br>
+            2) Type the new username into the text box underneath your profile picture.<br>
+            3) Click <b>Save Changes</b> button.<br>
+        </p>
+    </details>
+    <br>
+
+    <h3>Search</h3>
+    <details>
+        <summary><b>How do I search for a specific movie?</b></summary>
+        <p>
+            To search a movie by <u>title</u>:<br>
+            1) Enter either the whole title or just a part of it into the search bar at the top of the page. <br>
+            2) Click the <b>Search</b> button.<br>
+            The filtered results will show on the main page.<br>
+            <br>
+            You can also filter the movies by <u>genres or actors</u>:<br>
+            1) Click on the dropdown list next to the search bar.<br>
+            2) Choose what you wish to filter the movies by. <br>
+            3) Enter the text into the search bar (for actors - their name or surname, for genres - the genre name). <br>
+            4) Click the <b>Search</b> button.<br>
+            The results will show movies with a given actor or in a given genre that contains in its name what was entered into the search bar.
+        </p>
+    </details>
+
+    <br>
+    <h3>My movie lists</h3>
+    <details>
+        <summary><b>Where can I view my movie statistics?</b></summary>
+        <p>
+            You can view your watchlist, favorites and added ratings statistics on your <b>profile page</b>.
+        </p>
+    </details>
+    <details>
+        <summary><b>Where do I find my watchlist?</b></summary>
+        <p>
+            Your watchlist can be viewed by clicking the <b>Want to watch</b> button on your <b>profile page</b>.
+        </p>
+    </details>
+    <details>
+        <summary><b>Where do I find movies saved to my favorites?</b></summary>
+        <p>
+            Your favorites can be viewed by clicking the <b>Favorite films</b> button on your <b>profile page</b>.
+        </p>
+    </details>
+    <br>
+
+    <h3>Comments</h3>
+    <details>
+        <summary><b>How do I add a comment to a movie?</b></summary>
+        <p>
+            To post a comment to a movie:<br>
+            1) Click on the <b>Write a comment</b> button underneath the comment section.<br>
+            2) Write your comment in the empty textbox. <br>
+            3) Click the <b>Submit</b> button.
+        </p>
+    </details>
+    <details>
+        <summary><b>How do I cancel my comment after I wrote it?</b></summary>
+        <p>
+            To cancel posting the comment:<br>
+            1) Click the <b>Back to Movie</b> button located underneath the Submit button.<br>
+            This will cancel the written comment and move you back to the movie page.
+        </p>
+    </details>
+    <details>
+        <summary><b>How do I reply to someone’s comment?</b></summary>
+        <p>
+            To reply to a comment click on the <b>Reply</b> link button underneath the comment you wish to reply to.
+        </p>
+    </details>
+    <details>
+        <summary><b>How do I reply to someone’s reply?</b></summary>
+        <p>
+            You <b>can’t</b> really reply to someone else’s reply, there is no button for that.<br>
+            What you can do is to <b>write a reply to the comment the other reply is posted under</b>.
+        </p>
+    </details>
+    <details>
+        <summary><b>Can I reply to my own comment?</b></summary>
+        <p>
+            Yes, very much so. Just click the <b>Reply</b> button underneath your own comment.
+        </p>
+    </details>
+    <details>
+        <summary><b>Can I edit my comment?</b></summary>
+        <p>
+            Yes, of course. Click on the <b>Edit</b> button underneath your comment you wish to edit.
+        </p>
+    </details>
+    <details>
+        <summary><b>Can I delete my comment?</b></summary>
+        <p>
+            Yes. Click on the <b>Delete</b> button underneath your comment you wish to delete.
+        </p>
+    </details>
+    <details>
+        <summary><b>Can I add multiple comments to one movie?</b></summary>
+        <p>
+            Absolutely. Simply use the button <b>Write a comment</b> to post another comment under the movie of your choice.
+        </p>
+    </details>
+    <br>
+
+    <h3>Ratings and reviews</h3>
+    <details>
+        <summary><b>How do I rate a movie?</b></summary>
+        <p>
+            To rate a movie:<br>
+            1) Click on the <b>Rate movie</b> button on the page of the movie you wish to rate. <br>
+            2) Choose a rating between 1 and 10 from a dropdown list. <br>
+            3) Optionally add a review in the empty text box. <br>
+            4) Click the <b>Add rating</b> button to add your rating to the movie.
+        </p>
+    </details>
+    <details>
+        <summary><b>How do I add a review?</b></summary>
+        <p>
+            To write a review:<br>
+            1) Click on the <b>Rate movie</b> button on the page of the movie you wish to write a review to. <br>
+            2) Choose a rating between 1 and 10 from a dropdown list. <br>
+            3) Add a review in the empty text box. <br>
+            4) Click the <b>Add rating</b> button to add your rating to the movie.
+        </p>
+    </details>
+    <details>
+        <summary><b>Do I have to write a review to rate a movie?</b></summary>
+        <p>
+            No, the review is <b>optional</b>. <br>
+            You can just choose a rating from the dropdown list and leave the review textbox empty when adding a rating.<br>
+            This will add just the rating to the movie and will not be displayed in the Reviews section on the movie page.
+        </p>
+    </details>
+    <details>
+        <summary><b>Is there a page where I can view all my ratings?</b></summary>
+        <p>
+            Yes, you can view all your ratings along with reviews by clicking the <b>Ratings and reviews</b> button on your <b>profile page</b>.
+        </p>
+    </details>
+    <details>
+        <summary><b>Can I add multiple reviews to one movie?</b></summary>
+        <p>
+            No, you can only add <b>one rating</b> with an optional review to a specific movie.
+        </p>
+    </details>
+    <details>
+        <summary><b>How do I cancel my review?</b></summary>
+        <p>
+            To cancel posting the review:<br>
+            Click the <b>Back to Movie</b> button underneath the Submit button.<br>
+            This will cancel the written review and chosen rating and move you back to the movie page.
+        </p>
+    </details>
+
+
+    <br>
+    <br>
+
+ </body>

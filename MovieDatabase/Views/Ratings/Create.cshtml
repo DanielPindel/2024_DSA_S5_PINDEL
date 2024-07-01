@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Rate movie";
+    var movie = ViewBag.movieVB;
 }
 
 <h3>Rate a movie and write a review (optional)</h3>
@@ -32,7 +33,9 @@
     </div>
 </div>
 
-
+<div>
+    <a href="@Url.Action("Index", "MovieScene", new { id = movie.id })">Back to Movie</a>
+</div>
 
 @section Scripts {
     @{

@@ -75,6 +75,7 @@ namespace MovieDatabase.Controllers
             }
 
             currentMovie = movie;
+            ViewBag.movieVB = movie;
             return View();
         }
 

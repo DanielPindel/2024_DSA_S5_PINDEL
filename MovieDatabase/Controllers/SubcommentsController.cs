@@ -10,21 +10,49 @@ using Microsoft.EntityFrameworkCore;
 using MovieDatabase.Data;
 using MovieDatabase.Models;
 
+/**
+ * A Controller namespace for MovieDatabase controllers.
+ */
 namespace MovieDatabase.Controllers
 {
+    /**
+     * A Subcomments Controller class controlling all actions executed on actors.
+     */
     public class SubcommentsController : Controller
     {
+        /**
+         * A MovieDatabase context object encapsulating all information about an individual HTTP request and response. 
+         */
         private readonly MovieDatabaseContext _context;
+
+        /**
+         * A Movie object for storing the last opened movie information. 
+         */
         private static Movie currentMovie = new Movie();
+
+        /**
+         * A Comment object for storing the comment the subcomment is related to.
+         */
         private static Comment currentComment = new Comment();
+
+        /**
+         * A User object for storing the user that created the subcomment.
+         */
         private static User subcommentUser = new User();
 
+        /**
+         * A Subcomments Controller constructor. 
+         * @param context of the database application.
+         */
         public SubcommentsController(MovieDatabaseContext context)
         {
             _context = context;
         }
 
-        // GET: Subcomments
+        /**
+         * An Index GET action passing all subcomments from database to the view displaying subcomments in a table.
+         * @return view with all subcomments.
+         */
         public async Task<IActionResult> Index()
         {
 
@@ -32,6 +60,10 @@ namespace MovieDatabase.Controllers
         }
 
 
+        /**
+        * A Blocked GET action passing all blocked subcomments from database to the view.
+        * @return view with all blocked subcomments.
+        */
         public async Task<IActionResult> Blocked()
         {
 
@@ -51,7 +83,12 @@ namespace MovieDatabase.Controllers
         }
 
 
-        // GET: Subcomments/Details/5
+        /**
+         * A Details GET action passing a given subcomment and all related information for display to the view.
+         * The view displays the details of the subcomment in a table.
+         * @param id of the subcomment the details will be displayed of.
+         * @return view with the Subcomment object.
+         */
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -69,6 +106,12 @@ namespace MovieDatabase.Controllers
             return View(subcomment);
         }
 
+        /**
+        * A Create GET action for subcomment creation.
+        * @param id of the comment the subcomment will be related to.
+        * @param id of the movie the subcomment will be related to.
+        * @return view for creating the subcomment.
+        */
         public async Task<IActionResult> Create(int? com_id, int? movie_id)
         {
             if (com_id == null)
@@ -108,9 +151,12 @@ namespace MovieDatabase.Controllers
             return View();
         }
 
-        // POST: Comments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        /**
+         * A Create POST action adding the subcomment to the database if the model is valid.
+         * @param Subcomment class object passed from the view.
+         * @return view with the subcomment if model not valid, redirect to Index view from MovieScene if valid.
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,comment_id,user_id,content,time,is_blocked")] Subcomment subcomment)
@@ -151,7 +197,13 @@ namespace MovieDatabase.Controllers
         }
 
 
-        // GET: Subcomments/Edit/5
+        /**
+         * An Edit GET action passing subcomment and related movie necessary for the editing view of the comment.
+         * @param id of the comment to edit.
+         * @param id of the comment the subcomment is related to.
+         * @param id of the movie the comment is related to.
+         * @return view for editing the actor.
+         */
         public async Task<IActionResult> Edit(int? id, int? com_id, int? movie_id)
         {
             if (id == null)
@@ -202,9 +254,12 @@ namespace MovieDatabase.Controllers
             return View(subcomment);
         }
 
-        // POST: Subcomments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        /**
+         * An Edit POST action updating the subcomment in the database if the model is valid.
+         * @param Subcomment class object passed from the view.
+         * @return editing view with the subcomment if model not valid, redirect to Index view from MovieScene if valid.
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,comment_id,user_id,content,time,is_blocked")] Subcomment subcomment)
@@ -264,7 +319,13 @@ namespace MovieDatabase.Controllers
 
 
 
-        // GET: Subcomments/Delete/5
+        /**
+         * A Delete GET action passing the subcomment to the Delete view.
+         * @param id of the subcomment to delete.
+         * @param id of the comment the subcomment is related to.
+         * @param id of the movie the subcomment is related to.
+         * @return view for deleting the subcomment.
+         */
         public async Task<IActionResult> Delete(int? id, int? com_id, int? movie_id)
         {
             if (id == null) { return NotFound(); }
@@ -285,7 +346,12 @@ namespace MovieDatabase.Controllers
             return View(subcomment);
         }
 
-        // POST: Subcomments/Delete/5
+
+        /**
+         * A Delete POST action deleting the subcomment from the database.
+         * @param id of the subcomment to be deleted.
+         * @return redirect to Index action from MovieScene.
+         */
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -301,16 +367,28 @@ namespace MovieDatabase.Controllers
             return RedirectToAction(nameof(Index), "MovieScene", new { id = currentMovie.id });
         }
 
+        /**
+         * A member method for checking whether the given subcomment exists.
+         * @param id of the subcomment to be searched for.
+         * @return bool value of whether the subcomment was found.
+         */
         private bool SubcommentExists(int id)
         {
             return _context.Subcomment.Any(e => e.id == id);
         }
 
+        /**
+         * A member method for directing to an instruction view for not logged in user.
+         * @return view with instruction.
+         */
         public IActionResult Nope() { return View(); }
 
 
-
-
+        /**
+         * A Block GET action passing the subcomment to the Block view.
+         * @param id of the subcomment to block.
+         * @return view for blocking the subcomment.
+         */
         public async Task<IActionResult> Block(int? id)
         {
             if (id == null) { return NotFound(); }
@@ -341,6 +419,12 @@ namespace MovieDatabase.Controllers
             return View(subcomment);
         }
 
+
+        /**
+         * A Block POST action updating the subcomment in the database if the model is valid.
+         * @param Subcomment class object passed from the view.
+         * @return block view with the subcomment if model not valid, redirect to Index view from MovieScene if valid.
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Block(int id, [Bind("id,movie_id,user_id,content,time,is_blocked")] Subcomment subcomment)
@@ -383,6 +467,11 @@ namespace MovieDatabase.Controllers
         }
 
 
+        /**
+        * An Unblock GET action passing the subcomment to the Unblock view.
+        * @param id of the subcomment to block.
+        * @return view for unblocking the subcomment.
+        */
         public async Task<IActionResult> Unblock(int? id)
         {
             if (id == null){ return NotFound(); }
@@ -411,6 +500,12 @@ namespace MovieDatabase.Controllers
             return View(subcomment);
         }
 
+
+        /**
+         * An Unblock POST action updating the subcomment in the database if the model is valid.
+         * @param Subcomment class object passed from the view.
+         * @return unblock view with the subcomment if model not valid, redirect to Blocked view if valid.
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Unblock(int id, [Bind("id,movie_id,user_id,content,time,is_blocked")] Subcomment subcomment)
