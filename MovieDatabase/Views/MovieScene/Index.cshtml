@@ -66,11 +66,11 @@
                     <div class="form-group">
                         @if (alreadyRated)
                         {
-                            <a href="@Url.Action("Edit", "Ratings", new { id = currentUserRating.id, movie_id = movie.id })">Rate movie (Edit)</a>
+                            <a class="btn btn-primary" href="@Url.Action("Edit", "Ratings", new { id = currentUserRating.id, movie_id = movie.id })">Rate movie (Edit)</a>
                         }
                         else
                         {
-                            <a href="@Url.Action("Create", "Ratings", new { movie_id = movie.id })">Rate movie</a>
+                            <a class="btn btn-primary" href="@Url.Action("Create", "Ratings", new { movie_id = movie.id })">Rate movie</a>
                         }
                     </div>
                 </div>
