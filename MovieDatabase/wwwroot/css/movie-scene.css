@@ -101,10 +101,12 @@ h4, h5 {
             box-shadow: 0 0 20px gray;
         }
 
-.stars {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
+.stars
+{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    grid-column: 2 / 3;
 }
 
 .review-section, .comments-section {

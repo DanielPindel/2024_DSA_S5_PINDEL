@@ -25,6 +25,20 @@
     }
     <div class="grid-container-main-page">
         <div class="main-page-movie">
+            <div class="stars">
+                @{
+                    decimal r = 0;
+                    if (movie.rate != null)
+                    {
+                        r = Convert.ToDecimal(movie.rate);
+                        <b>@Math.Round(r, 1)</b>
+                        for (int j = 1; j <= movie.rate; j++)
+                        {
+                            <span class="star" data-value="@j">&#9733;</span>
+                        }
+                    }
+                }
+            </div>
             <div class="main-page-movie-poster">
                 <img class="main-poster" src="~/images/@path" alt="@Model.title Poster" />
 
