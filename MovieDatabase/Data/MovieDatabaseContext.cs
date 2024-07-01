@@ -11,26 +11,87 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
 using MovieDatabase.Models;
 
+/**
+ * A Data namespace for MovieDatabase data.
+ */
 namespace MovieDatabase.Data
 {
+    /**
+     * A Movie Database Context class inheriting after the base class of the Entity Framework database context used for identity.
+     */
     public class MovieDatabaseContext : IdentityDbContext<User>
     {
+        /**
+         * MovieDatabaseContext constructor.
+         * @param options to be used by a DbContext.
+         */
         public MovieDatabaseContext (DbContextOptions<MovieDatabaseContext> options)
             : base(options)
         {
         }
-
+        /**
+         * A DbSet for Movies to be used to query and save instances of Movie, 
+         * where LINQ queries against this set will be translated into queries against the database.
+         */
         public DbSet<MovieDatabase.Models.Movie> Movie { get; set; } = default!;
-		public DbSet<MovieDatabase.Models.Actor> Actor { get; set; } = default!;
+
+        /**
+         * A DbSet for Actors to be used to query and save instances of Actor,
+         * where LINQ queries against this set will be translated into queries against the database.
+         */
+        public DbSet<MovieDatabase.Models.Actor> Actor { get; set; } = default!;
+
+        /**
+         * A DbSet for Directors to be used to query and save instances of Director, 
+         * where LINQ queries against this set will be translated into queries against the database.
+         */
         public DbSet<MovieDatabase.Models.Director> Director { get; set; } = default!;
+
+        /**
+         * A DbSet for Users to be used to query and save instances of User, 
+         * where LINQ queries against this set will be translated into queries against the database.
+         */
         public DbSet<MovieDatabase.Models.User> User { get; set; } = default!;
+
+        /**
+         * A DbSet for UserMovies to be used to query and save instances of UserMovie, 
+         * where LINQ queries against this set will be translated into queries against the database.
+         */
         public DbSet<MovieDatabase.Models.UserMovie> UserMovie { get; set; } = default!;
+
+        /**
+         * A DbSet for Genres to be used to query and save instances of Genre, 
+         * where LINQ queries against this set will be translated into queries against the database.
+         */
         public DbSet<MovieDatabase.Models.Genre> Genre { get; set; } = default!;
+
+        /**
+         * A DbSet for GenreMovies to be used to query and save instances of GenreMovie, 
+         * where LINQ queries against this set will be translated into queries against the database.
+         */
         public DbSet<MovieDatabase.Models.GenreMovie> GenreMovie { get; set; } = default!;
+
+        /**
+         * A DbSet for Comments to be used to query and save instances of Comment, 
+         * where LINQ queries against this set will be translated into queries against the database.
+         */
         public DbSet<MovieDatabase.Models.Comment> Comment { get; set; } = default!;
+
+        /**
+         * A DbSet for Subcomments to be used to query and save instances of Subcomment, 
+         * where LINQ queries against this set will be translated into queries against the database.
+         */
         public DbSet<MovieDatabase.Models.Subcomment> Subcomment { get; set; } = default!;
+
+        /**
+         * A DbSet for Ratings to be used to query and save instances of Rating, 
+         * where LINQ queries against this set will be translated into queries against the database.
+         */
         public DbSet<MovieDatabase.Models.Rating> Rating { get; set; } = default!;
 
+        /**
+         * An override of the method OnModelCreating for using the API to configure the model. 
+         */
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

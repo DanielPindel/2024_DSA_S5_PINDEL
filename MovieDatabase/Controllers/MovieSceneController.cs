@@ -1,32 +1,58 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.VisualBasic;
 using MovieDatabase.Data;
 using MovieDatabase.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Security.Claims;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
+/**
+ * A Controller namespace for MovieDatabase controllers.
+ */
 namespace MovieDatabase.Controllers
 {
+    /**
+     * A MovieScene Controller class controlling actions executed on the movie page.
+     */
     public class MovieSceneController : Controller
     {
+        /**
+         * A MovieDatabase context object encapsulating all information about an individual HTTP request and response. 
+         */
         private readonly MovieDatabaseContext _context;
-        private readonly ILogger<MovieSceneController> _logger;
-        private readonly IMovieService _movieService;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        private static Movie currentMovie = new Movie();
-        private static Comment currentComment = new Comment();
 
-        public MovieSceneController(ILogger<MovieSceneController> logger, IMovieService movieService, MovieDatabaseContext context, IWebHostEnvironment webHostEnvironment)
+        /**
+         * A IMovieService object - interface for accessing movie data from the database
+         */
+        private readonly IMovieService _movieService;
+
+        /**
+         * A Movie object for storing the currenly opened movie information. 
+         */
+        private static Movie currentMovie = new Movie();
+
+        /**
+         * A MovieSceneController constructor.
+         * @param IMovieService object
+         * @param context - MovieDatabaseContext object
+         */
+        public MovieSceneController(IMovieService movieService, MovieDatabaseContext context)
         {
             _context = context;
-            _logger = logger;
             _movieService = movieService;
-            _webHostEnvironment = webHostEnvironment;
         }
+
+        /**
+         * An Index GET action passing a movie and all related information from database to the view.
+         * @param id of the movie to be displayed.
+         * @return view with the movie.
+         */
         public async Task<IActionResult> Index(int id)
         {
-
             if (id == null)
             {
                 return NotFound();
@@ -38,7 +64,6 @@ namespace MovieDatabase.Controllers
             {
                 return NotFound();
             }
-
 
             // Calculating movie average rating
             var ratings = _context.Rating
@@ -66,12 +91,7 @@ namespace MovieDatabase.Controllers
             }
             // ---
 
-
-
-
-
             currentMovie = movie;
-
 
             ViewBag.directorVB = _context.Director
                         .Where(d => d.id == movie.director_id)
@@ -81,21 +101,15 @@ namespace MovieDatabase.Controllers
                         .Include(a => a.movies.Where(m => m.id == movie.id))
                         .ToList();
 
-
             ViewBag.genresVB = _context.Genre
                         .Include(g => g.movies.Where(m => m.id == movie.id))
                         .ToList();
-
-
 
             var reviews = _context.Rating
                        .Where(c => c.movie_id == id)
                        .ToList();
 
             ViewBag.reviewsVB = reviews;
-
-
-
 
             var comments = _context.Comment
                         .Where(c => c.movie_id == id)
@@ -117,9 +131,6 @@ namespace MovieDatabase.Controllers
 
             ViewBag.usersVB = await _context.Users.ToListAsync();
 
-
-
-            // Some stuff to get the user
             string? u_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (u_id == null)
             {
@@ -132,19 +143,17 @@ namespace MovieDatabase.Controllers
             }
 
             ViewBag.currentUserVB = user;
-
-
-            //Not sure why, but after the previous query ViewBag has all the actors available, but movie.actors
-            //has only the ones added to it, that's why this line has to be here.
             ViewBag.actorsVB = movie.actors;
             ViewBag.genresVB = movie.genres;
-           
           
             return View(movie);
         }
 
 
-
+        /**
+         * An AddToFavorites POST action creating a new userMovie object with the correct context id (user-movie connection) in the database.
+         * @return redirection to the Index view.
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToFavorites()
@@ -180,6 +189,10 @@ namespace MovieDatabase.Controllers
         }
 
 
+        /**
+         * An AddToWatchlist POST action creating a new userMovie object with the correct context id (user-movie connection) in the database.
+         * @return redirection to the Index view.
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToWatchlist()
@@ -215,7 +228,10 @@ namespace MovieDatabase.Controllers
         }
 
 
-
+        /**
+        * A member method for directing to an instruction view for not logged in user.
+        * @return view with instruction.
+        */
         public IActionResult Nope() { return View(); }
 
     }

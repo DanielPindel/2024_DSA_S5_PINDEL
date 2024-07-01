@@ -4,23 +4,36 @@ using MovieDatabase.Data;
 using MovieDatabase.Models;
 using System.Security.Claims;
 
+/**
+ * A Controller namespace for MovieDatabase controllers.
+ */
 namespace MovieDatabase.Controllers
 {
+    /**
+     * A Ratings And Reviews Controller class controlling all actions executed on ratings and reviews list.
+     */
     public class RatingsAndReviewsController : Controller
     {
-        // Declaration of context as a class member
+        /**
+         * A MovieDatabase context object encapsulating all information about an individual HTTP request and response. 
+         */
         private readonly MovieDatabaseContext _context;
 
-        // Watchlist constructor that assigns our context to the class
+        /**
+         * A Ratings And Reviews Controller constructor. 
+         * @param context of the database application.
+         */
         public RatingsAndReviewsController(MovieDatabaseContext context)
         {
             _context = context;
         }
 
-
+        /**
+         * An Index GET action passing all rated movies and user information from database to the view displaying ratings of the user.
+         * @return view with the user.
+         */
         public async Task<IActionResult> Index()
         {
-            // Some stuff to get the user
             string? id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (id == null)
             {

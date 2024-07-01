@@ -16,7 +16,7 @@ using MovieDatabase.Models;
 namespace MovieDatabase.Controllers
 {
     /**
-     * A Subcomments Controller class controlling all actions executed on actors.
+     * A Subcomments Controller class controlling all actions executed on subcomments.
      */
     public class SubcommentsController : Controller
     {
@@ -202,7 +202,7 @@ namespace MovieDatabase.Controllers
          * @param id of the comment to edit.
          * @param id of the comment the subcomment is related to.
          * @param id of the movie the comment is related to.
-         * @return view for editing the actor.
+         * @return view for editing the subcomment.
          */
         public async Task<IActionResult> Edit(int? id, int? com_id, int? movie_id)
         {

@@ -9,17 +9,44 @@ using Org.BouncyCastle.Bcpg.Sig;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Hosting;
 
-
+/**
+ * A Controller namespace for MovieDatabase controllers.
+ */
 namespace MovieDatabase.Controllers
 {
+    /**
+     * A User Profile Controller class controlling all actions executed on the profile.
+     */
     public class UserProfileController : Controller
     {
+        /**
+         * A MovieDatabase context object encapsulating all information about an individual HTTP request and response.
+         */
         private readonly MovieDatabaseContext _context;
+
+        /**
+         * An IWebHostEnvironment object providing information about the web hosting environment an application is running in.
+         */
         private readonly IWebHostEnvironment _webHostEnvironment;
+
+        /**
+         * A UserManager object - provides the APIs for managing the user in the persistence store.
+         */
         private readonly UserManager<User> _userManager;
+
+        /**
+         * A SignInManager object - provides the APIs for user sign in.
+         */
         private readonly SignInManager<User> _signInManager;
 
-        // Watchlist constructor that assigns our context to the class
+
+        /**
+         * A User Profile Controller constructor.
+         * @param context of the database application.
+         * @param UserManager object
+         * @param SignInManager object
+         * @param IWebHostEnvironment object
+         */
         public UserProfileController(MovieDatabaseContext context, UserManager<User> userManager, SignInManager<User> signInManager, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
@@ -29,6 +56,10 @@ namespace MovieDatabase.Controllers
         }
 
 
+        /**
+         * An Index GET action passing user and all related information from database to the view displaying user profile.
+         * @return view with the currently logged in user.
+         */
         public async Task<IActionResult> Index()
         {
             string? id = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -80,6 +111,13 @@ namespace MovieDatabase.Controllers
             return View(user);
         }
 
+
+        /**
+        * An Index POST action for changing the user profile picture.
+        * @param User object of currently logged in user.
+        * @param IFormFile object with new profile picture image path.
+        * @return redirect to Index action.
+        */
         [HttpPost]
         public async Task<IActionResult> Index(User model, IFormFile avatarImagePath)
         {

@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using MovieDatabase.Data;
 using MovieDatabase.Models;
 
+// Possibly not used anymore?
+
 namespace MovieDatabase.Controllers
 {
     public class UsersController : Controller

@@ -7,17 +7,41 @@ using MovieDatabase.Data;
 using MovieDatabase.Models;
 using SQLitePCL;
 using System.Diagnostics;
+using System.Reflection;
 using System.Security.Claims;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
+/**
+ * A Controller namespace for MovieDatabase controllers.
+ */
 namespace MovieDatabase.Controllers
 {
+    /**
+     * A Home Controller class controlling the Home Page
+     */
     public class HomeController : Controller
     {
+        /**
+         * An ILogger object - a generic interface for logging where the category name is derived from the specified HomeController type name.
+         */
         private readonly ILogger<HomeController> _logger;
+
+        /**
+         * A IMovieService object - interface for accessing movie data from the database
+         */
         private readonly IMovieService _movieService;
+
+        /**
+         * A MovieDatabase context object encapsulating all information about an individual HTTP request and response. 
+         */
         private readonly MovieDatabaseContext _context;
 
+        /**
+         * A HomeController constructor.
+         * @param logger - an ILogger object.
+         * @param IMovieService object
+         * @param context - MovieDatabaseContext object
+         */
         public HomeController(ILogger<HomeController> logger, IMovieService movieService, MovieDatabaseContext context)
         {
             _logger = logger;
@@ -25,22 +49,13 @@ namespace MovieDatabase.Controllers
             _context = context;
         }
 
-        /*[HttpGet]
-        public IActionResult SearchMovies(string searchString)
-        {
-            if (string.IsNullOrEmpty(searchString))
-            {
-                return Json(new List<Movie>());
-            }
 
-            var movies = _context.Movie
-                .Where(m => (m.title).Contains(searchString))
-                .Select(m => new { m.id, title = m.title })
-                .ToList();
-
-            return Json(movies);
-        }*/
-
+        /**
+         * An Index GET action passing all movies from database to the view along with other related information for display.
+         * @param searchString - string object passed from the view for filtering the movies.
+         * @param searchType - string object passed from the view for the type of filtering.
+         * @return view with all movies.
+         */
         public async Task<IActionResult> Index(string searchString, string searchType)
         {
             var movies = await _movieService.GetAllMoviesAsync();
@@ -104,12 +119,21 @@ namespace MovieDatabase.Controllers
 
             return View(movies);
         }
-        
+
+
+        /**
+         * A member method for directing to a view displaying Privacy.
+         * @return view.
+         */
         public IActionResult Privacy()
         {
             return View();
         }
 
+        /**
+         * A member method for directing to an error view.
+         * @return view with error.
+         */
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

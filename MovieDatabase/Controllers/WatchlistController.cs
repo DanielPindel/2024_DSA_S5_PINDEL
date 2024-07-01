@@ -14,7 +14,7 @@ using System.Security.Claims;
 namespace MovieDatabase.Controllers
 {
     /**
-     * A Watchlist Controller class controlling all actions executed on favourites list.
+     * A Watchlist Controller class controlling all actions executed on watchlist.
      */
     public class WatchlistController : Controller
     {

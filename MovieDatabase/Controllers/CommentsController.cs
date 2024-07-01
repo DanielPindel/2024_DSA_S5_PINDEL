@@ -16,7 +16,7 @@ using MovieDatabase.Models;
 namespace MovieDatabase.Controllers
 {
     /**
-     * A Comments Controller class controlling all actions executed on actors.
+     * A Comments Controller class controlling all actions executed on comments.
      */
     public class CommentsController : Controller
     {
@@ -177,7 +177,7 @@ namespace MovieDatabase.Controllers
          * An Edit GET action passing comment and related movie necessary for the editing view of the comment.
          * @param id of the comment to edit.
          * @param id of the movie the comment is related to.
-         * @return view for editing the actor.
+         * @return view for editing the comment.
          */
         public async Task<IActionResult> Edit(int? id, int? movie_id)
         {
