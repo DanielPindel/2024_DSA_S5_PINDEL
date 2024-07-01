@@ -16,12 +16,16 @@ namespace MovieDatabase.Controllers
     {
         private readonly MovieDatabaseContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
         // Watchlist constructor that assigns our context to the class
-        public UserProfileController(MovieDatabaseContext context, IWebHostEnvironment webHostEnvironment)
+        public UserProfileController(MovieDatabaseContext context, UserManager<User> userManager, SignInManager<User> signInManager, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
 
@@ -73,11 +77,11 @@ namespace MovieDatabase.Controllers
 
             ViewBag.avatarPathVB = user.avatar_path;
 
-            return View();
+            return View(user);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(IFormFile avatarImagePath)
+        public async Task<IActionResult> Index(User model, IFormFile avatarImagePath)
         {
             string? id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (id == null)
@@ -90,7 +94,26 @@ namespace MovieDatabase.Controllers
                 return NotFound();
             }
 
+            if (string.IsNullOrWhiteSpace(model.UserName) || model.UserName.Contains(" "))
+            {
+                ModelState.AddModelError("UserName", "Username cannot be empty or contain spaces.");
+            }
 
+            if (!ModelState.IsValid)
+            {
+                ViewBag.isAdminVB = user.is_admin;
+                ViewBag.watchlistNoVB = await _context.UserMovie.CountAsync(um => um.user_id == id && um.context_id == 1);
+                ViewBag.favNoVB = await _context.UserMovie.CountAsync(um => um.user_id == id && um.context_id == 2);
+                ViewBag.ratedNoVB = await _context.Rating.CountAsync(r => r.user_id == id);
+                ViewBag.avatarPathVB = user.avatar_path;
+
+                return View(user);
+            }
+
+            if (model.UserName != user.UserName)
+            {
+                user.UserName = model.UserName;
+            }
 
             if (avatarImagePath != null && avatarImagePath.Length > 0)
             {
@@ -106,13 +129,22 @@ namespace MovieDatabase.Controllers
                 ModelState.Remove("avatarImagePath");
             }
 
-
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return View(user);
+            }
             _context.Update(user);
             await _context.SaveChangesAsync();
 
+            await _signInManager.RefreshSignInAsync(user);
+            TempData["StatusMessage"] = "Your profile has been updated";
 
             return RedirectToAction(nameof(Index));
         }
-
     }
 }
