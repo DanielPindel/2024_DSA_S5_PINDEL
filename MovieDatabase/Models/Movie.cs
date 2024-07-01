@@ -8,7 +8,7 @@ namespace MovieDatabase.Models
         public string title { get; set; }
         public int year { get; set; }
         public int director_id { get; set; }
-        public string posterImagePath { get; set; }
+        public string? posterImagePath { get; set; }
         public string? description { get; set; }
         public string? trailer_link {  get; set; }
         public float? rate { get; set; }

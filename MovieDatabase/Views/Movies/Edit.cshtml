@@ -2,7 +2,12 @@
 
 @{
     ViewData["Title"] = "Edit";
-    string poster_image_path = ViewBag.posterImagePathVB;
+    string? poster_image_path = ViewBag.posterImagePathVB;
+    bool has_poster = false;
+    if (poster_image_path != null)
+    {
+        has_poster = true;
+    }
 }
 
 <h1>Edit</h1>

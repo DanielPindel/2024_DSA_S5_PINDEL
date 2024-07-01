@@ -33,12 +33,14 @@
                     </div>
                     <div class="main-page-movie-title">
                         @Html.DisplayFor(modelItem => item.title)
-                    </div>
-                    <div>
-                        @foreach (Genre genre in item.genres)
-                        {
-                            <h4 style="color:DarkGray;">@genre.tag</h4>
-                        }
+                        <br>
+                        <p style="color:DarkGray; font-size: 40px;">
+                            @foreach (Genre genre in item.genres)
+                            {
+                                @genre.tag
+                                <span>&nbsp;</span>
+                            }
+                        </p>
                     </div>
                     <div class="main-page-star" onclick="redirectToComments(event, '@item.id')">
                         &#9733;
@@ -53,6 +55,7 @@
                     <div class="main-page-movie-rating">
                         @Math.Round(r, 1)
                     </div>
+
                 </div>
             </a>
         }

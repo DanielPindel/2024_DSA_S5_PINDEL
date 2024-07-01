@@ -41,6 +41,10 @@ namespace MovieDatabase.Controllers
          */
         private static IEnumerable<int> chosenActorsId = new HashSet<int>();
 
+        private static string? currentPoster = null;
+
+        private static int[] currentGenresId;
+
         /**
          * A Movie Controller constructor. 
          * @param context of the database application.
@@ -256,6 +260,7 @@ namespace MovieDatabase.Controllers
             ViewBag.genres = new MultiSelectList(_context.Genre, "id", "tag", movie.genres.Select(g => g.id));
             ViewBag.actorsVB = movie.actors.Select(a => new { a.id, nameSurnameLabel = a.name + " " + a.surname }).ToList();
             ViewBag.posterImagePathVB = movie.posterImagePath;
+            currentPoster = movie.posterImagePath;
             return View(movie);
         }
 
@@ -289,6 +294,17 @@ namespace MovieDatabase.Controllers
                 movie.posterImagePath = fileName;
                 ModelState.Remove("posterImagePath");
             }
+
+            if (posterImagePath == null)
+            {
+                if(currentPoster != null)
+                {
+                    movie.posterImagePath = currentPoster;
+                    ModelState.Remove("posterImagePath");
+                }
+            }
+
+
 
             if (ModelState.IsValid)
             {
