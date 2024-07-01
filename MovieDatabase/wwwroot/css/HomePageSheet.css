@@ -115,3 +115,11 @@ a
 {
     text-decoration: none;
 }
+
+.main-page-movie-genres
+{
+    grid-column: 3;
+    grid-row: 2;
+    padding-left: 20%;
+    padding-top: 2%;
+}

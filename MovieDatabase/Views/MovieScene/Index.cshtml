@@ -17,7 +17,7 @@
 
         bool is_admin = false;
 
-        if(currentUser != null)
+        if (currentUser != null)
         {
             is_admin = true;
         }
@@ -27,33 +27,64 @@
         <div class="main-page-movie">
             <div class="main-page-movie-poster">
                 <img class="main-poster" src="~/images/@path" alt="@Model.title Poster" />
-            </div>
-            <div class="stars">
-                @{
-                    decimal r = 0;
-                    if (movie.rate != null)
-                    {
-                        r = Convert.ToDecimal(movie.rate);
+
+                <div class="poster-actions">
+                    @{
+                        string actionFavorites = "AddToFavorites";
+                        string actionWatchlist = "AddToWatchlist";
+                        bool alreadyRated = false;
+                        Rating currentUserRating = new Rating();
+                        if (currentUser == null)
+                        {
+                            actionFavorites = "Nope";
+                            actionWatchlist = "Nope";
+                        }
+                        else
+                        {
+                            @foreach (Rating rating in ViewBag.reviewsVB)
+                            {
+                                if (rating.user_id == currentUser.Id)
+                                {
+                                    alreadyRated = true;
+                                    currentUserRating = rating;
+                                }
+                            }
+                        }
                     }
 
-                    <b>@Math.Round(r, 1)</b>
+                    <form asp-action="@actionFavorites">
+                        <div class="form-group">
+                            <input type="submit" value="Add to favorites" class="btn btn-primary" />
+                        </div>
+                    </form>
+                    <form asp-action="@actionWatchlist">
+                        <div class="form-group">
+                            <input type="submit" value="Add to watchlist" class="btn btn-primary" />
+                        </div>
+                    </form>
 
-                    for (int j = 1; j <= movie.rate; j++)
-                    {
-                        <span class="star" data-value="@j">&#9733;</span>
-                    }
-                }
+                    <div class="form-group">
+                        @if (alreadyRated)
+                        {
+                            <a class="btn btn-primary" href="@Url.Action("Edit", "Ratings", new { id = currentUserRating.id, movie_id = movie.id })">Rate movie (Edit)</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-primary" href="@Url.Action("Create", "Ratings", new { movie_id = movie.id })">Rate movie</a>
+                        }
+                    </div>
+                </div>
             </div>
             <div class="main-page-movie-info">
                 <div class="main-page-movie-title">
                     <h3>
                         @Html.DisplayFor(model => model.title)&ensp;
-                    @if (is_admin)
-                    {
+                        @if (is_admin)
+                        {
                             <a href="@Url.Action("Edit", "Movies", new { id = movie.id })">
-                            <button class="btn btn-secondary btn-sm">Edit</button>
+                                <button class="btn btn-secondary btn-sm">Edit</button>
                             </a>
-                    }
+                        }
                     </h3>
                     <h2>@Html.DisplayFor(model => model.description)</h2>
                     <br>
@@ -96,53 +127,6 @@
                     <iframe src="@Model.trailer_link" allowfullscreen></iframe>
                 </div>
             </div>
-
-            @{
-                string actionFavorites = "AddToFavorites";
-                string actionWatchlist = "AddToWatchlist";
-                bool alreadyRated = false;
-                Rating currentUserRating = new Rating();
-                if (currentUser == null)
-                {
-                    actionFavorites = "Nope";
-                    actionWatchlist = "Nope";
-                }
-                else
-                {
-                    @foreach (Rating rating in ViewBag.reviewsVB)
-                    {
-                        if(rating.user_id == currentUser.Id)
-                        {
-                            alreadyRated = true;
-                            currentUserRating = rating;
-                        }
-                    }
-                }
-            }
-
-            <form asp-action="@actionFavorites">
-                <div class="form-group">
-                    <input type="submit" value="Add to favorites" class="btn btn-primary" />
-                </div>
-            </form>
-            <form asp-action="@actionWatchlist">
-                <div class="form-group">
-                    <input type="submit" value="Add to watchilist" class="btn btn-primary" />
-                </div>
-            </form>
-
-            <div class="form-group">
-                @if (alreadyRated)
-                {
-                    <a href="@Url.Action("Edit", "Ratings", new { id = currentUserRating.id, movie_id = movie.id })">Rate movie (Edit)</a>
-                }
-                else
-                {
-                    <a href="@Url.Action("Create", "Ratings", new { movie_id = movie.id })">Rate movie</a>
-                }
-
-            </div>
-
 
             <div class="review-section" id="reviews">
                 <h3>Reviews</h3>

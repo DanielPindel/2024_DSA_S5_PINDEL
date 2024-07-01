@@ -11,7 +11,7 @@
         function redirectToComments(event, movieId) 
         {
             event.preventDefault();
-            window.location.href = '/MovieScene/Index/' + movieId + '#comments';
+            window.location.href = '/MovieScene/Index/' + movieId + '#reviews';
         }
     </script>
 </head>
@@ -33,14 +33,12 @@
                     </div>
                     <div class="main-page-movie-title">
                         @Html.DisplayFor(modelItem => item.title)
-                        <br>
-                        <p style="color:DarkGray; font-size: 40px;">
-                            @foreach (Genre genre in item.genres)
-                            {
-                                @genre.tag
-                                <span>&nbsp;</span>
-                            }
-                        </p>
+                    </div>
+                    <div class="main-page-movie-genres">
+                        @foreach (Genre genre in item.genres)
+                        {
+                            <h4 style="color:DarkGray;">@genre.tag</h4>
+                        }
                     </div>
                     <div class="main-page-star" onclick="redirectToComments(event, '@item.id')">
                         &#9733;
