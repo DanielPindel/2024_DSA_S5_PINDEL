@@ -99,17 +99,6 @@ namespace MovieDatabase.Controllers
                 ModelState.AddModelError("UserName", "Username cannot be empty or contain spaces.");
             }
 
-            if (!ModelState.IsValid)
-            {
-                ViewBag.isAdminVB = user.is_admin;
-                ViewBag.watchlistNoVB = await _context.UserMovie.CountAsync(um => um.user_id == id && um.context_id == 1);
-                ViewBag.favNoVB = await _context.UserMovie.CountAsync(um => um.user_id == id && um.context_id == 2);
-                ViewBag.ratedNoVB = await _context.Rating.CountAsync(r => r.user_id == id);
-                ViewBag.avatarPathVB = user.avatar_path;
-
-                return View(user);
-            }
-
             if (model.UserName != user.UserName)
             {
                 user.UserName = model.UserName;
