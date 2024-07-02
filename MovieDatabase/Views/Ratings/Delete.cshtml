@@ -35,10 +35,16 @@
             @Html.DisplayFor(model => model.review)
         </dd>
     </dl>
-    
+    <br>
     <form asp-action="Delete">
         <input type="hidden" asp-for="id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a href="@Url.Action("Index", "MovieScene", new { id = movie.id })">Back to Movie</a>
+        <input type="submit" value="Delete" class="btn btn-danger" />
     </form>
+</div>
+<br>
+
+<div>
+    <a href="@Url.Action("Index", "MovieScene", new { id = movie.id })" style="text-decoration: none">
+        <button class="btn btn-secondary">Back to movie</button>
+    </a>
 </div>

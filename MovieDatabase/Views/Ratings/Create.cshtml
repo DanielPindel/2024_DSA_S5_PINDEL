@@ -26,15 +26,18 @@
                 <input asp-for="review" class="form-control" />
                 <span asp-validation-for="review" class="text-danger"></span>
             </div>
+            <br>
             <div class="form-group">
-                <input type="submit" value="Add rating" class="btn btn-primary" />
+                <input type="submit" value="Add rating" class="btn btn-secondary" />
             </div>
         </form>
     </div>
 </div>
-
+<br>
 <div>
-    <a href="@Url.Action("Index", "MovieScene", new { id = movie.id })">Back to Movie</a>
+    <a href="@Url.Action("Index", "MovieScene", new { id = movie.id })" style="text-decoration: none">
+        <button class="btn btn-secondary">Back to movie</button>
+    </a>
 </div>
 
 @section Scripts {
