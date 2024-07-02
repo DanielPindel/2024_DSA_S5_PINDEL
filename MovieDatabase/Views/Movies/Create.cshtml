@@ -23,6 +23,11 @@
                 <span asp-validation-for="year" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="description" class="control-label"></label>
+                <input asp-for="description" class="form-control" />
+                <span asp-validation-for="description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label for="director_id">Director</label>
                 <select asp-for="director_id" class="form-control" asp-items="ViewBag.directorVB"></select>
             </div>
@@ -49,15 +54,15 @@
                 <span asp-validation-for="trailer_link" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-secondary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<a asp-action="Index" style="text-decoration: none">
+    <button class="btn btn-secondary">Movies list</button>
+</a>
 
 @section Scripts {
     @{

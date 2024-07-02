@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.VisualBasic;
 using MovieDatabase.Data;
 using MovieDatabase.Models;
@@ -174,6 +175,14 @@ namespace MovieDatabase.Controllers
             userMovie.user_id = user.Id;
             userMovie.movie_id = currentMovie.id;
 
+            var userMovies = _context.UserMovie.Where(um => um.user_id == userMovie.user_id).ToList();
+            userMovies = userMovies.Where(um => um.context_id == 2).ToList();
+            bool userMovieExists = userMovies.Any(um => um.movie_id == currentMovie.id);
+            if(userMovieExists)
+            {
+                return RedirectToAction(nameof(Index), new { id = currentMovie.id });
+            }
+
             var context = new ValidationContext(userMovie, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
             if (!Validator.TryValidateObject(userMovie, context, validationResults, true))
@@ -212,6 +221,14 @@ namespace MovieDatabase.Controllers
             userMovie.context_id = 1;
             userMovie.user_id = user.Id;
             userMovie.movie_id = currentMovie.id;
+
+            var userMovies = _context.UserMovie.Where(um => um.user_id == userMovie.user_id).ToList();
+            userMovies = userMovies.Where(um => um.context_id == 2).ToList();
+            bool userMovieExists = userMovies.Any(um => um.movie_id == currentMovie.id);
+            if (userMovieExists)
+            {
+                return RedirectToAction(nameof(Index), new { id = currentMovie.id });
+            }
 
             var context = new ValidationContext(userMovie, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
