@@ -34,20 +34,12 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.SignIn.RequireConfirmedEmail = false;
 });
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-})
-    .AddCookie()
+builder.Services.AddAuthentication()
     .AddGoogle(options =>
     {
-        options.ClientId = configuration["Authentication:Google:ClientId"];
-        options.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+        options.ClientId = builder.Configuration.GetSection("Authentication:Google:ClientId").Value;
+        options.ClientSecret = builder.Configuration.GetSection("Authentication:Google:ClientSecret").Value;
     });
-
-builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IMovieService, MovieService>();
 
@@ -59,10 +51,6 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
-}
-if (builder.Environment.IsProduction())
-{
-    builder.Configuration.AddJsonFile("appsettings.Production.json", optional: true, reloadOnChange: true);
 }
 
 app.UseHttpsRedirection();
