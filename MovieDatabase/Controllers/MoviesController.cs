@@ -41,8 +41,14 @@ namespace MovieDatabase.Controllers
          */
         private static IEnumerable<int> chosenActorsId = new HashSet<int>();
 
+        /**
+         * A nullable string object for storing current movie poster path
+         */
         private static string? currentPoster = null;
 
+        /**
+         * An int array for storing current movie's genres IDs
+         */
         private static int[] currentGenresId;
 
         /**
