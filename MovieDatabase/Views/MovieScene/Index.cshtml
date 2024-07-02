@@ -19,7 +19,10 @@
 
         if (currentUser != null)
         {
-            is_admin = true;
+            if (currentUser.is_admin)
+            {
+                is_admin = true;
+            }
         }
 
     }
